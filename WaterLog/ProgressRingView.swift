@@ -29,6 +29,7 @@ struct ProgressRingView: View {
                     .font(.largeTitle)
                     .bold()
                     .contentTransition(.numericText())
+                    .animation(.easeInOut(duration: 0.5), value: totalMilliliters)
 
                 if reachedGoal {
                     Image(systemName: "checkmark.circle.fill")
