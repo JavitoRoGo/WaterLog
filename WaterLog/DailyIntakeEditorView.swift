@@ -121,7 +121,7 @@ struct AddWaterEntryView: View {
         _selectedDate = State(initialValue: Self.initialSelectedDate(for: initialDate))
     }
 
-    private let amounts = Array(stride(from: 100, through: 5000, by: 100))
+    private let amounts = Array(stride(from: 250, through: 5000, by: 250))
 
     private static func initialSelectedDate(for date: Date, calendar: Calendar = .current) -> Date {
         let time = calendar.dateComponents([.hour, .minute, .second], from: .now)
