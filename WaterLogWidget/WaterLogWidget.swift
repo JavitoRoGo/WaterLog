@@ -7,53 +7,72 @@
 
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), emoji: "😀")
+    func placeholder(in context: Context) -> WaterLogWidgetEntry {
+        WaterLogWidgetEntry(date: .now)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), emoji: "😀")
+    func getSnapshot(in context: Context, completion: @escaping (WaterLogWidgetEntry) -> Void) {
+        let entry = WaterLogWidgetEntry(date: .now)
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, emoji: "😀")
-            entries.append(entry)
-        }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
+    func getTimeline(in context: Context, completion: @escaping (Timeline<WaterLogWidgetEntry>) -> Void) {
+        let entry = WaterLogWidgetEntry(date: .now)
+        let timeline = Timeline(entries: [entry], policy: .never)
         completion(timeline)
     }
-
-//    func relevances() async -> WidgetRelevances<Void> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct WaterLogWidgetEntry: TimelineEntry {
     let date: Date
-    let emoji: String
 }
 
-struct WaterLogWidgetEntryView : View {
+struct WaterLogWidgetEntryView: View {
     var entry: Provider.Entry
+	
+	var body: some View {
+		VStack {
+			Label("WaterLog", systemImage: "drop.fill")
+				.font(.headline)
+				.foregroundStyle(.blue)
+			
+			Spacer()
+			
+			Text("Añadir ahora")
+				.font(.caption)
+				.foregroundStyle(.secondary)
+			
+			WaterAmountButtons()
+		}
+	}
+}
+
+private struct WaterAmountButtons: View {
+	var body: some View {
+		VStack {
+			WaterAmountButton(amount: 125)
+			WaterAmountButton(amount: 250)
+			WaterAmountButton(amount: 500)
+		}
+	}
+}
+
+private struct WaterAmountButton: View {
+    let amount: Int
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
-
-            Text("Emoji:")
-            Text(entry.emoji)
+        Button(intent: AddWaterIntakeIntent(amount: amount)) {
+            Text("\(amount) ml")
+                .font(.caption)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+                .frame(maxWidth: .infinity)
         }
+        .buttonStyle(.borderedProminent)
+        .controlSize(.mini)
     }
 }
 
@@ -71,14 +90,14 @@ struct WaterLogWidget: Widget {
                     .background()
             }
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("WaterLog")
+        .description("Añade agua rápidamente sin abrir la app.")
+        .supportedFamilies([.systemSmall])
     }
 }
 
 #Preview(as: .systemSmall) {
     WaterLogWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
+    WaterLogWidgetEntry(date: .now)
 }

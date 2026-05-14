@@ -6,13 +6,11 @@ struct WaterLogApp: App {
     private let modelContainer: ModelContainer
 
     init() {
-        let schema = Schema([WaterIntakeEntry.self])
-        let storeURL = URL.applicationSupportDirectory.appending(path: "WaterLog.store")
-        let configuration = ModelConfiguration(schema: schema, url: storeURL)
+        WaterLogStore.migrateLegacyStoreIfNeeded()
 
         do {
-            modelContainer = try ModelContainer(for: schema, configurations: [configuration])
-			print("SwiftData store: \(storeURL.absoluteString)")
+            modelContainer = try WaterLogStore.makeModelContainer()
+            print("SwiftData store: \(WaterLogStore.storeURL.absoluteString)")
         } catch {
             fatalError("No se pudo crear el contenedor SwiftData: \(error.localizedDescription)")
         }

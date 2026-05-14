@@ -1,6 +1,5 @@
 import Foundation
 import SwiftData
-import Playgrounds
 
 @Model
 final class WaterIntakeEntry {
@@ -26,10 +25,10 @@ final class WaterIntakeEntry {
     @MainActor
     static func importFromCSV(modelContext: ModelContext) async throws -> (inserted: Int, failed: Int) {
         let filePath = "/Users/javirg/Developer/watercsv.csv"
-		let url = URL(fileURLWithPath: filePath)
+        let url = URL(fileURLWithPath: filePath)
         let content = try String(contentsOf: url, encoding: .utf8)
         let lines = content.components(separatedBy: .newlines).filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-		
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
