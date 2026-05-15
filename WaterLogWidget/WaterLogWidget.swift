@@ -11,23 +11,39 @@ import AppIntents
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> WaterLogWidgetEntry {
-        WaterLogWidgetEntry(date: .now)
+        WaterLogWidgetEntry(date: .now, showSuccess: false)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (WaterLogWidgetEntry) -> Void) {
-        let entry = WaterLogWidgetEntry(date: .now)
+        let entry = WaterLogWidgetEntry(date: .now, showSuccess: false)
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<WaterLogWidgetEntry>) -> Void) {
-        let entry = WaterLogWidgetEntry(date: .now)
-        let timeline = Timeline(entries: [entry], policy: .never)
-        completion(timeline)
+        let defaults = UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)
+		let lastSuccess = defaults?.object(forKey: WaterLogStore.keyForLastSuccessDate) as? Date
+        
+        // Si el último éxito ocurrió hace menos de 1.5 segundos, creamos la secuencia de feedback
+        if let lastSuccess, abs(lastSuccess.timeIntervalSince(.now)) < 1.5 {
+            let successEntry = WaterLogWidgetEntry(date: lastSuccess, showSuccess: true)
+            let normalEntry = WaterLogWidgetEntry(date: lastSuccess.addingTimeInterval(1), showSuccess: false)
+            
+            // Creamos una línea de tiempo con ambas entradas. 
+            // Al terminar la 'normalEntry', el sistema volverá a pedir un timeline según la política.
+            let timeline = Timeline(entries: [successEntry, normalEntry], policy: .atEnd)
+            completion(timeline)
+        } else {
+            // Estado normal: sin feedback de éxito activo.
+            let entry = WaterLogWidgetEntry(date: .now, showSuccess: false)
+            let timeline = Timeline(entries: [entry], policy: .never)
+            completion(timeline)
+        }
     }
 }
 
 struct WaterLogWidgetEntry: TimelineEntry {
     let date: Date
+    let showSuccess: Bool
 }
 
 struct WaterLogWidgetEntryView: View {
@@ -41,11 +57,20 @@ struct WaterLogWidgetEntryView: View {
 			
 			Spacer()
 			
-			Text("Añadir ahora")
-				.font(.caption)
-				.foregroundStyle(.secondary)
-			
-			WaterAmountButtons()
+            if entry.showSuccess {
+                // Feedback visual de éxito
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 40))
+                    .foregroundStyle(.green)
+					.frame(maxHeight: .infinity, alignment: .center)
+                    .transition(.scale.combined(with: .opacity))
+            } else {
+                Text("Añadir ahora")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                
+                WaterAmountButtons()
+            }
 		}
 	}
 }
@@ -99,5 +124,7 @@ struct WaterLogWidget: Widget {
 #Preview(as: .systemSmall) {
     WaterLogWidget()
 } timeline: {
-    WaterLogWidgetEntry(date: .now)
+    WaterLogWidgetEntry(date: .now, showSuccess: false)
+    WaterLogWidgetEntry(date: .now, showSuccess: true)
 }
+
