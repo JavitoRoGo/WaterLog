@@ -10,8 +10,7 @@
   ],
   "groups" : [
     {
-      "blur-material" : null,
-      "hidden" : false,
+      "blur-material" : 0.5,
       "layers" : [
         {
           "blend-mode" : "normal",
@@ -33,17 +32,112 @@
           },
           "glass" : true,
           "image-name" : "drop.fill 2.png",
-          "name" : "drop.fill 2"
+          "name" : "drop 13",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -136.9140625,
+              156.765625
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "blur-material" : 0.5,
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "linear-gradient" : [
+              "extended-srgb:0.38039,0.33333,0.96078,1.00000",
+              "extended-srgb:0.00000,0.53333,1.00000,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 0.5,
+                "y" : 0
+              },
+              "stop" : {
+                "x" : 0.5,
+                "y" : 0.7
+              }
+            }
+          },
+          "glass" : true,
+          "image-name" : "drop.fill 2.png",
+          "name" : "drop 23",
+          "opacity" : 0.5,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              35.0859375,
+              0
+            ]
+          }
         }
       ],
       "lighting" : "individual",
       "shadow" : {
-        "kind" : "layer-color",
+        "kind" : "neutral",
         "opacity" : 0.5
       },
       "specular" : true,
       "translucency" : {
         "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "blur-material" : null,
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "linear-gradient" : [
+              "extended-srgb:0.38039,0.33333,0.96078,1.00000",
+              "extended-srgb:0.00000,0.53333,1.00000,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 0.5,
+                "y" : 0
+              },
+              "stop" : {
+                "x" : 0.5,
+                "y" : 0.7
+              }
+            }
+          },
+          "glass" : true,
+          "image-name" : "drop.fill 2.png",
+          "name" : "drop 33",
+          "opacity" : 0.25,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              207.0859375,
+              -95.734375
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : false,
         "value" : 0.5
       }
     }
