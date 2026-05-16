@@ -55,6 +55,9 @@
 		444603762FB6529B00E3D43E /* Exceptions for "WaterLog" folder in "WaterLogWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Formatters.swift,
+				IntakeAnalytics.swift,
+				ProgressRingView.swift,
 				WaterIntakeEntry.swift,
 				WaterLogStore.swift,
 			);

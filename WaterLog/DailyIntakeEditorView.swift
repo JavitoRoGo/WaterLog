@@ -199,7 +199,7 @@ private struct DailyProgressSection: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            ProgressRingView(totalMilliliters: totalMilliliters, goalMilliliters: IntakeConstants.dailyGoalMilliliters)
+			ProgressRingView(totalMilliliters: totalMilliliters, goalMilliliters: IntakeConstants.dailyGoalMilliliters, lineWidth: 24, font: .largeTitle)
                 .frame(maxHeight: 280)
 
             Text("\(WaterLogFormatters.percentage(IntakeAnalytics.percentage(for: totalMilliliters))) del objetivo diario")
