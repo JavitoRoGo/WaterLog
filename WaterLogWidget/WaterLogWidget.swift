@@ -24,22 +24,29 @@ struct Provider: TimelineProvider {
         let defaults = UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)
         let lastSuccess = defaults?.object(forKey: WaterLogStore.keyForLastSuccessDate) as? Date
         let todayTotal = fetchTodayTotal()
+        let nextDay = nextDayBoundary()
         
-        // Si el último éxito ocurrió hace menos de 1.5 segundos, creamos la secuencia de feedback
+        // Si el último éxito ocurrió hace menos de 1.5 segundos, creamos la secuencia de feedback.
         if let lastSuccess, abs(lastSuccess.timeIntervalSince(.now)) < 1.5 {
             let successEntry = WaterLogWidgetEntry(date: lastSuccess, totalWater: todayTotal, showSuccess: true)
             let normalEntry = WaterLogWidgetEntry(date: lastSuccess.addingTimeInterval(1), totalWater: todayTotal, showSuccess: false)
             
-            // Creamos una línea de tiempo con ambas entradas. 
-            // Al terminar la 'normalEntry', el sistema volverá a pedir un timeline según la política.
-            let timeline = Timeline(entries: [successEntry, normalEntry], policy: .atEnd)
+            let timeline = Timeline(entries: [successEntry, normalEntry], policy: .after(nextDay))
             completion(timeline)
         } else {
-            // Estado normal: sin feedback de éxito activo.
+            // Estado normal: programamos una recarga para recalcular el total al cambiar de día.
             let entry = WaterLogWidgetEntry(date: .now, totalWater: todayTotal, showSuccess: false)
-            let timeline = Timeline(entries: [entry], policy: .never)
+            let timeline = Timeline(entries: [entry], policy: .after(nextDay))
             completion(timeline)
         }
+    }
+    
+    private func nextDayBoundary(calendar: Calendar = .current) -> Date {
+        calendar.nextDate(
+            after: .now,
+            matching: DateComponents(hour: 0, minute: 0, second: 0),
+            matchingPolicy: .nextTime
+        ) ?? .now.addingTimeInterval(60 * 60)
     }
     
     private func fetchTodayTotal() -> Int {
