@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import WidgetKit
 import Playgrounds
 
 struct DailyIntakeEditorContent: View {
@@ -78,17 +79,19 @@ struct DailyIntakeEditorContent: View {
     private func addEntry(amount: Int) {
         let entry = WaterIntakeEntry(date: entryDate(), amount: amount)
         modelContext.insert(entry)
-        saveChanges()
+        saveChanges(affecting: entry.date)
     }
 
     private func delete(_ entry: WaterIntakeEntry) {
+        let entryDate = entry.date
         modelContext.delete(entry)
-        saveChanges()
+        saveChanges(affecting: entryDate)
     }
 
-    private func saveChanges() {
+    private func saveChanges(affecting date: Date) {
         do {
             try modelContext.save()
+            reloadWidgetTimelineIfNeeded(for: date)
         } catch {
             saveError = error.localizedDescription
         }
@@ -109,13 +112,18 @@ struct DailyIntakeEditorContent: View {
     }
 }
 
+private func reloadWidgetTimelineIfNeeded(for date: Date, calendar: Calendar = .current) {
+    guard calendar.isDateInToday(date) else { return }
+    WidgetCenter.shared.reloadAllTimelines()
+}
+
 struct AddWaterEntryView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
     let initialDate: Date
     @State private var selectedDate: Date
-    @State private var selectedAmount: Int = 100
+    @State private var selectedAmount: Int = 250
 
     init(initialDate: Date) {
         self.initialDate = initialDate
@@ -172,6 +180,7 @@ struct AddWaterEntryView: View {
         
         do {
             try modelContext.save()
+            reloadWidgetTimelineIfNeeded(for: entry.date)
             dismiss()
         } catch {
             print("Error al guardar: \(error)")
