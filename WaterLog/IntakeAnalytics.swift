@@ -1,4 +1,5 @@
 import Foundation
+import WidgetKit
 
 enum IntakeConstants {
     static let dailyGoalMilliliters = 2_000
@@ -122,5 +123,10 @@ enum IntakeAnalytics {
         case .total:
             return nil
         }
+    }
+
+    static func reloadWidgetTimelineIfNeeded(for date: Date, calendar: Calendar = .current) {
+        guard calendar.isDateInToday(date) else { return }
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
