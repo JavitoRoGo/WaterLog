@@ -18,3 +18,7 @@ struct YearSummaryRow: View {
         .contentShape(.rect)
     }
 }
+#Preview {
+    YearSummaryRow(summary: YearIntakeSummary(yearStart: .now, totalMilliliters: 730000, averageDailyMilliliters: 2000))
+}
+

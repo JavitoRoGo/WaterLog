@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct DayDetailView: View {
     let date: Date
@@ -13,3 +14,13 @@ struct DayDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: WaterIntakeEntry.self, configurations: config)
+    
+    return NavigationStack {
+        DayDetailView(date: .now)
+    }
+    .modelContainer(container)
+}
+

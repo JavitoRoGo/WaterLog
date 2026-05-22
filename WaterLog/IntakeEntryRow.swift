@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct IntakeEntryRow: View {
     let entry: WaterIntakeEntry
@@ -11,4 +12,14 @@ struct IntakeEntryRow: View {
                 .bold()
         }
     }
+}
+
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: WaterIntakeEntry.self, configurations: config)
+    let entry = WaterIntakeEntry(date: .now, amount: 250)
+    container.mainContext.insert(entry)
+    
+    return IntakeEntryRow(entry: entry)
+        .modelContainer(container)
 }

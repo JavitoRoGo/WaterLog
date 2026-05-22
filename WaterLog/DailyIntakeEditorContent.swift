@@ -113,8 +113,20 @@ struct DailyIntakeEditorContent: View {
 }
 
 #Preview {
-	NavigationStack {
-		DayDetailView(date: .now)
-	}
-	.modelContainer(for: WaterIntakeEntry.self, inMemory: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: WaterIntakeEntry.self, configurations: config)
+    
+    // Añadimos una entrada para que no aparezca la vista de "Sin registros"
+    let entry = WaterIntakeEntry(date: .now, amount: 500)
+    container.mainContext.insert(entry)
+
+    return NavigationStack {
+        DailyIntakeEditorContent(
+            date: .now,
+            title: "Hoy",
+            emptyTitle: "Sin registros",
+            emptyDescription: "Añade agua"
+        )
+    }
+    .modelContainer(container)
 }

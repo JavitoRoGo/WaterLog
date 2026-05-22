@@ -18,3 +18,7 @@ struct DailyProgressSection: View {
         }
     }
 }
+#Preview {
+	DailyProgressSection(totalMilliliters: 1200, addEntry: {_ in })
+}
+

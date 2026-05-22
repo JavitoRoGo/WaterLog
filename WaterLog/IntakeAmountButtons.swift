@@ -19,3 +19,7 @@ struct IntakeAmountButtons: View {
         .padding(.horizontal)
     }
 }
+#Preview {
+	IntakeAmountButtons(addEntry: {_ in })
+}
+

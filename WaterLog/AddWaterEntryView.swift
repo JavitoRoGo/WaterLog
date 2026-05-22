@@ -72,3 +72,7 @@ struct AddWaterEntryView: View {
         }
     }
 }
+#Preview {
+    AddWaterEntryView(initialDate: .now)
+}
+

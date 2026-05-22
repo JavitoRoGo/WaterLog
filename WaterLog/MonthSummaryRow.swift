@@ -18,3 +18,7 @@ struct MonthSummaryRow: View {
         .contentShape(.rect)
     }
 }
+#Preview {
+    MonthSummaryRow(summary: MonthIntakeSummary(monthStart: .now, totalMilliliters: 45000, averageDailyMilliliters: 1500))
+}
+
