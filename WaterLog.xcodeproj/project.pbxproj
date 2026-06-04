@@ -58,6 +58,7 @@
 				Formatters.swift,
 				IntakeAnalytics.swift,
 				ProgressRingView.swift,
+				StatisticsChartData.swift,
 				WaterIntakeEntry.swift,
 				WaterLogStore.swift,
 			);
