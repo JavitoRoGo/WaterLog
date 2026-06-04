@@ -11,7 +11,7 @@ struct MonthSummaryRow: View {
             Text("\(WaterLogFormatters.milliliters(summary.averageDailyMilliliters)) ml/día")
                 .frame(maxWidth: .infinity, alignment: .center)
 
-            Text("\(WaterLogFormatters.milliliters(summary.totalMilliliters)) ml")
+            Text("\(WaterLogFormatters.liters(summary.totalMilliliters)) l")
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
@@ -21,4 +21,3 @@ struct MonthSummaryRow: View {
 #Preview {
     MonthSummaryRow(summary: MonthIntakeSummary(monthStart: .now, totalMilliliters: 45000, averageDailyMilliliters: 1500))
 }
-

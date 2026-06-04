@@ -5,6 +5,11 @@ enum WaterLogFormatters {
         value.formatted(.number.locale(IntakeConstants.spanishLocale))
     }
 
+    static func liters(_ value: Int) -> String {
+        let liters = Double(value) / 1000.0
+        return liters.formatted(.number.precision(.fractionLength(0...1)).locale(IntakeConstants.spanishLocale))
+    }
+
     static func percentage(_ value: Int) -> String {
         "\(value.formatted(.number.locale(IntakeConstants.spanishLocale))) %"
     }
