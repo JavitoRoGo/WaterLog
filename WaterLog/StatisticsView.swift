@@ -54,7 +54,7 @@ struct StatisticsView: View {
     @ViewBuilder
     private var periodList: some View {
         switch selectedPeriod {
-        case .sevenDays, .fourWeeks:
+        case .sevenDays:
             List(chartData.dailySummaries.reversed()) { summary in
                 Button {
                     selectedDay = summary

@@ -8,7 +8,6 @@ enum IntakeConstants {
 
 enum StatisticsPeriod: String, CaseIterable, Identifiable {
     case sevenDays = "7 días"
-    case fourWeeks = "4 semanas"
     case oneYear = "1 año"
     case total = "Total"
 
@@ -116,8 +115,6 @@ enum IntakeAnalytics {
         switch period {
         case .sevenDays:
             return calendar.date(byAdding: .day, value: -6, to: today)
-        case .fourWeeks:
-            return calendar.date(byAdding: .day, value: -27, to: today)
         case .oneYear:
             return calendar.date(byAdding: .year, value: -1, to: today).map { calendar.date(byAdding: .day, value: 1, to: $0) ?? $0 }
         case .total:

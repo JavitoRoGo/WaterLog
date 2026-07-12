@@ -30,15 +30,6 @@ struct StatisticsChartData {
             intervalLabel = StatisticsChartData.intervalLabel(from: start, through: today)
             maximumValue = daily.map(\.totalMilliliters).max() ?? 0
             visibleDomainLength = 60 * 60 * 24 * 7
-        case .fourWeeks:
-            let start = IntakeAnalytics.startDate(for: .fourWeeks, calendar: calendar) ?? today
-            let daily = IntakeAnalytics.dailySummaries(for: entries, from: start, through: today, calendar: calendar)
-            dailySummaries = daily
-            monthSummaries = []
-            yearSummaries = []
-            intervalLabel = StatisticsChartData.intervalLabel(from: start, through: today)
-            maximumValue = daily.map(\.totalMilliliters).max() ?? 0
-            visibleDomainLength = 60 * 60 * 24 * 14
         case .oneYear:
             let start = IntakeAnalytics.startDate(for: .oneYear, calendar: calendar) ?? today
             let months = IntakeAnalytics.monthSummaries(for: entries, from: start, through: today, calendar: calendar)

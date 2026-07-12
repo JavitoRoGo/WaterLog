@@ -14,7 +14,7 @@ struct IntakeChartView: View {
     var body: some View {
         Chart {
             switch data.period {
-            case .sevenDays, .fourWeeks:
+            case .sevenDays:
                 ForEach(data.dailySummaries) { summary in
                     BarMark(
                         x: .value("Fecha", summary.date, unit: .day),
@@ -43,7 +43,7 @@ struct IntakeChartView: View {
         .chartScrollableAxes(.horizontal)
         .chartXAxis {
             switch data.period {
-            case .sevenDays, .fourWeeks:
+            case .sevenDays:
                 AxisMarks(values: .stride(by: .day)) { value in
                     AxisGridLine()
                     AxisTick()
