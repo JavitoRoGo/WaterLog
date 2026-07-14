@@ -54,7 +54,7 @@ enum WaterLogStore {
                 try fileManager.copyItem(at: sourceURL, to: destinationFileURL)
             }
         } catch {
-            print("No se pudo migrar el store de SwiftData al App Group: \(error.localizedDescription)")
+            print("SwiftData store could not be migrated to App Group: \(error.localizedDescription)")
         }
     }
 	

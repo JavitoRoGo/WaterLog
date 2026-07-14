@@ -33,7 +33,7 @@ struct DailyIntakeEditorContent: View {
                 ForEach(dayEntries) { entry in
                     IntakeEntryRow(entry: entry)
                         .swipeActions(edge: .trailing) {
-                            Button("Eliminar", systemImage: "trash", role: .destructive) {
+                            Button("Delete", systemImage: "trash", role: .destructive) {
                                 delete(entry)
                             }
                         }
@@ -50,7 +50,7 @@ struct DailyIntakeEditorContent: View {
         .navigationTitle(title)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("Añadir", systemImage: "plus") {
+                Button("Add", systemImage: "plus") {
                     showingAddSheet = true
                 }
             }
@@ -58,8 +58,8 @@ struct DailyIntakeEditorContent: View {
         .sheet(isPresented: $showingAddSheet) {
             AddWaterEntryView(initialDate: date)
         }
-        .alert("No se pudo guardar", isPresented: errorBinding) {
-            Button("Aceptar", role: .cancel) { saveError = nil }
+        .alert("Error while saving", isPresented: errorBinding) {
+            Button("OK", role: .cancel) { saveError = nil }
         } message: {
             Text(saveError ?? "")
         }
@@ -123,9 +123,9 @@ struct DailyIntakeEditorContent: View {
     return NavigationStack {
         DailyIntakeEditorContent(
             date: .now,
-            title: "Hoy",
-            emptyTitle: "Sin registros",
-            emptyDescription: "Añade agua"
+            title: "Today",
+            emptyTitle: "No entries",
+            emptyDescription: "Add some water entries"
         )
     }
     .modelContainer(container)

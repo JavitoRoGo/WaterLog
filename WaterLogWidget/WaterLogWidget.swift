@@ -124,7 +124,7 @@ struct WaterLogWidgetEntryView: View {
 							.frame(maxHeight: .infinity, alignment: .center)
 							.transition(.scale.combined(with: .opacity))
 					} else {
-						Text("Añadir ahora")
+						Text("Add now")
 							.font(.caption)
 							.foregroundStyle(.secondary)
 						
@@ -146,8 +146,8 @@ struct WaterLogWidgetEntryView: View {
 				Chart {
 					ForEach(entry.weeklyEntries) { summary in
 						BarMark(
-							x: .value("Fecha", summary.date, unit: .day),
-							y: .value("Mililitros", summary.totalMilliliters)
+							x: .value("Date", summary.date, unit: .day),
+							y: .value("Milliliters", summary.totalMilliliters)
 						)
 						.foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
 					}
@@ -211,7 +211,7 @@ struct WaterLogWidget: Widget {
             }
         }
         .configurationDisplayName("WaterLog")
-        .description("Añade agua rápidamente sin abrir la app.")
+        .description("Add water intake with a quick tap.")
 		.supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
 	}
 }

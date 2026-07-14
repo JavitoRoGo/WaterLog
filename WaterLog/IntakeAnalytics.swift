@@ -7,8 +7,8 @@ enum IntakeConstants {
 }
 
 enum StatisticsPeriod: String, CaseIterable, Identifiable {
-    case sevenDays = "7 días"
-    case oneYear = "1 año"
+    case sevenDays = "7 days"
+    case oneYear = "1 year"
     case total = "Total"
 
     var id: Self { self }

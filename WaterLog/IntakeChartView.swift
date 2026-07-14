@@ -17,24 +17,24 @@ struct IntakeChartView: View {
             case .sevenDays:
                 ForEach(data.dailySummaries) { summary in
                     BarMark(
-                        x: .value("Fecha", summary.date, unit: .day),
-                        y: .value("Mililitros", summary.totalMilliliters)
+                        x: .value("Date", summary.date, unit: .day),
+                        y: .value("Milliliters", summary.totalMilliliters)
                     )
                     .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
                 }
             case .oneYear:
                 ForEach(data.monthSummaries) { summary in
                     BarMark(
-                        x: .value("Mes", summary.monthStart, unit: .month),
-                        y: .value("Media diaria", summary.averageDailyMilliliters)
+                        x: .value("Month", summary.monthStart, unit: .month),
+                        y: .value("Daily average", summary.averageDailyMilliliters)
                     )
                     .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
                 }
             case .total:
                 ForEach(data.yearSummaries) { summary in
                     BarMark(
-                        x: .value("Año", summary.yearStart, unit: .year),
-                        y: .value("Media diaria", summary.averageDailyMilliliters)
+                        x: .value("Year", summary.yearStart, unit: .year),
+                        y: .value("Daily average", summary.averageDailyMilliliters)
                     )
                     .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
                 }

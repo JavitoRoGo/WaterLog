@@ -10,8 +10,8 @@ struct TodayView: View {
             DailyIntakeEditorContent(
                 date: currentDate,
                 title: title,
-                emptyTitle: "Sin registros hoy",
-                emptyDescription: "Añade una cantidad para empezar el día."
+                emptyTitle: "No entries today",
+                emptyDescription: "Add some water to stay hydrated!"
             )
         }
         .task {
@@ -26,7 +26,7 @@ struct TodayView: View {
     private var title: String {
         let weekday = WaterLogFormatters.weekday(currentDate)
         let day = currentDate.formatted(.dateTime.day().locale(IntakeConstants.spanishLocale))
-        return "Hoy, \(weekday) \(day)"
+        return "Today, \(weekday) \(day)"
     }
 
     private func refreshDateAtDayBoundaries(calendar: Calendar = .current) async {

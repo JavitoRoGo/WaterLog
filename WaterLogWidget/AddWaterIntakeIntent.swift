@@ -2,11 +2,11 @@ import AppIntents
 import WidgetKit
 
 struct AddWaterIntakeIntent: AppIntent {
-    static var title: LocalizedStringResource { "Añadir agua" }
-    static var description: IntentDescription { IntentDescription("Registra una nueva toma de agua.") }
+    static var title: LocalizedStringResource { "Add water" }
+    static var description: IntentDescription { IntentDescription("Add new water intake.") }
     static var openAppWhenRun: Bool { false }
 
-    @Parameter(title: "Cantidad")
+    @Parameter(title: "Amount")
     var amount: Int
 
     init() {

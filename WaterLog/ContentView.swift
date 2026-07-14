@@ -3,11 +3,11 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            Tab("Hoy", systemImage: "drop.fill") {
+            Tab("Today", systemImage: "drop.fill") {
                 TodayView()
             }
 
-            Tab("Historial", systemImage: "chart.bar.xaxis") {
+            Tab("Historical", systemImage: "chart.bar.xaxis") {
                 StatisticsView()
             }
         }

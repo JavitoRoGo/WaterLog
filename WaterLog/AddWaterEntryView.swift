@@ -30,12 +30,12 @@ struct AddWaterEntryView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Fecha y hora") {
-                    DatePicker("Seleccionar fecha", selection: $selectedDate, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
+                Section("Date and hour") {
+                    DatePicker("Date selection", selection: $selectedDate, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
                 }
 
-                Section("Cantidad (ml)") {
-                    Picker("Cantidad", selection: $selectedAmount) {
+                Section("Quantity (ml)") {
+                    Picker("Quantity", selection: $selectedAmount) {
                         ForEach(amounts, id: \.self) { amount in
                             Text("\(amount) ml").tag(amount)
                         }
@@ -43,15 +43,15 @@ struct AddWaterEntryView: View {
                     .pickerStyle(.wheel)
                 }
             }
-            .navigationTitle("Nuevo registro")
+            .navigationTitle("New entry")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancelar") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Añadir") {
+                    Button("Add") {
                         save()
                     }
                 }
@@ -68,7 +68,7 @@ struct AddWaterEntryView: View {
             IntakeAnalytics.reloadWidgetTimelineIfNeeded(for: entry.date)
             dismiss()
         } catch {
-            print("Error al guardar: \(error)")
+            print("Error while saving: \(error)")
         }
     }
 }

@@ -16,7 +16,7 @@ struct StatisticsView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
-                Picker("Periodo", selection: $selectedPeriod) {
+                Picker("Period", selection: $selectedPeriod) {
                     ForEach(StatisticsPeriod.allCases) { period in
                         Text(period.rawValue).tag(period)
                     }
@@ -34,7 +34,7 @@ struct StatisticsView: View {
 
                 periodList
             }
-            .navigationTitle("Historial")
+            .navigationTitle("Historical")
         }
         .sheet(item: $selectedDay) { summary in
             NavigationStack {

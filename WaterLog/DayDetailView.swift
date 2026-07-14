@@ -8,8 +8,8 @@ struct DayDetailView: View {
         DailyIntakeEditorContent(
             date: date,
             title: WaterLogFormatters.shortDayAndMonth(date),
-            emptyTitle: "Sin registros",
-            emptyDescription: "Añade una cantidad para este día."
+            emptyTitle: "No entry",
+            emptyDescription: "Add some water entries"
         )
         .navigationBarTitleDisplayMode(.inline)
     }

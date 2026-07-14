@@ -9,7 +9,7 @@ struct DailyProgressSection: View {
             ProgressRingView(totalMilliliters: totalMilliliters, goalMilliliters: IntakeConstants.dailyGoalMilliliters, lineWidth: 24, font: .largeTitle)
                 .frame(maxHeight: 280)
 
-            Text("\(WaterLogFormatters.percentage(IntakeAnalytics.percentage(for: totalMilliliters))) del objetivo diario")
+            Text("\(WaterLogFormatters.percentage(IntakeAnalytics.percentage(for: totalMilliliters))) daily goal")
                 .font(.headline)
                 .foregroundStyle(.secondary)
                 .contentTransition(.numericText())
