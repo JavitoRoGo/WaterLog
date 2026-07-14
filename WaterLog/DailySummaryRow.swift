@@ -22,7 +22,7 @@ struct DailySummaryRow: View {
                     .foregroundStyle(.green)
             }
 			
-            Text("\(WaterLogFormatters.milliliters(summary.totalMilliliters)) ml")
+            Text(WaterLogFormatters.volumeFromMilliliters(summary.totalMilliliters))
                 .bold()
         }
         .contentShape(.rect)

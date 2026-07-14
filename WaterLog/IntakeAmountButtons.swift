@@ -8,7 +8,7 @@ struct IntakeAmountButtons: View {
     var body: some View {
         HStack(spacing: 12) {
             ForEach(amounts, id: \.self) { amount in
-                Button("\(WaterLogFormatters.milliliters(amount)) ml") {
+                Button(WaterLogFormatters.volumeFromMilliliters(amount)) {
                     addEntry(amount)
                 }
                 .buttonStyle(.borderedProminent)

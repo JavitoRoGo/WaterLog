@@ -8,7 +8,7 @@ struct IntakeEntryRow: View {
         HStack {
             Text(WaterLogFormatters.time(entry.date))
             Spacer()
-            Text("\(WaterLogFormatters.milliliters(Int(entry.amountMeasurement.converted(to: .milliliters).value))) ml")
+            Text(WaterLogFormatters.volumeFromMilliliters(entry.amount))
                 .bold()
         }
     }

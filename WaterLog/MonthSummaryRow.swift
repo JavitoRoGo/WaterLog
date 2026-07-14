@@ -8,10 +8,10 @@ struct MonthSummaryRow: View {
             Text(WaterLogFormatters.month(summary.monthStart).capitalized)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Text("\(WaterLogFormatters.milliliters(summary.averageDailyMilliliters)) ml/day")
+            Text("\(WaterLogFormatters.volumeFromMilliliters(summary.averageDailyMilliliters))/d")
                 .frame(maxWidth: .infinity, alignment: .center)
 
-            Text("\(WaterLogFormatters.liters(summary.totalMilliliters)) l")
+            Text(WaterLogFormatters.largeVolumeFromMilliliters(summary.totalMilliliters))
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }

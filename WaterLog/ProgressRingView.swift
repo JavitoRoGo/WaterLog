@@ -27,7 +27,7 @@ struct ProgressRingView: View {
                 .animation(.easeInOut(duration: 0.35), value: reachedGoal)
 
             VStack(spacing: 8) {
-                Text("\(WaterLogFormatters.milliliters(totalMilliliters)) ml")
+                Text(WaterLogFormatters.volumeFromMilliliters(totalMilliliters))
                     .font(font)
                     .bold()
                     .contentTransition(.numericText())

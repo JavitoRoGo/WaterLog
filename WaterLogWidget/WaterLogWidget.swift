@@ -147,7 +147,7 @@ struct WaterLogWidgetEntryView: View {
 					ForEach(entry.weeklyEntries) { summary in
 						BarMark(
 							x: .value(String(localized: "Date"), summary.date, unit: .day),
-							y: .value(String(localized: "Milliliters"), summary.totalMilliliters)
+							y: .value(String(localized: "Volume"), summary.totalMilliliters)
 						)
 						.foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
 					}
@@ -185,7 +185,7 @@ private struct WaterAmountButton: View {
 
     var body: some View {
         Button(intent: AddWaterIntakeIntent(amount: amount)) {
-            Text("\(amount) ml")
+            Text(WaterLogFormatters.volumeFromMilliliters(amount))
                 .font(.caption)
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)

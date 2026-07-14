@@ -1,13 +1,16 @@
 import Foundation
 
 enum WaterLogFormatters {
-    static func milliliters(_ value: Int) -> String {
-        value.formatted(.number.locale(IntakeConstants.appLocale))
+    static func volumeFromMilliliters(_ value: Int) -> String {
+        volumeFromMilliliters(Double(value))
     }
 
-    static func liters(_ value: Int) -> String {
-        let liters = Double(value) / 1000.0
-        return liters.formatted(.number.precision(.fractionLength(0...1)).locale(IntakeConstants.appLocale))
+    static func volumeFromMilliliters(_ value: Double) -> String {
+        volumeMeasurement(value).converted(to: preferredSmallVolumeUnit()).formatted(volumeFormatStyle)
+    }
+
+    static func largeVolumeFromMilliliters(_ value: Int) -> String {
+        volumeMeasurement(Double(value)).converted(to: preferredLargeVolumeUnit()).formatted(volumeFormatStyle)
     }
 
     static func percentage(_ value: Int) -> String {
@@ -33,5 +36,40 @@ enum WaterLogFormatters {
 
     static func time(_ date: Date) -> String {
         date.formatted(.dateTime.hour().minute().locale(IntakeConstants.appLocale))
+    }
+
+    private static var volumeFormatStyle: Measurement<UnitVolume>.FormatStyle {
+        .measurement(
+            width: .abbreviated,
+            usage: .asProvided,
+            numberFormatStyle: .number.precision(.fractionLength(0...2))
+        )
+        .locale(IntakeConstants.appLocale)
+    }
+
+    private static func volumeMeasurement(_ milliliters: Double) -> Measurement<UnitVolume> {
+        Measurement(value: milliliters, unit: .milliliters)
+    }
+
+    private static func preferredSmallVolumeUnit(locale: Locale = IntakeConstants.appLocale) -> UnitVolume {
+        switch locale.measurementSystem {
+        case .us:
+            .fluidOunces
+        case .uk:
+            .imperialFluidOunces
+        default:
+            .milliliters
+        }
+    }
+
+    private static func preferredLargeVolumeUnit(locale: Locale = IntakeConstants.appLocale) -> UnitVolume {
+        switch locale.measurementSystem {
+        case .us:
+            .gallons
+        case .uk:
+            .imperialGallons
+        default:
+            .liters
+        }
     }
 }

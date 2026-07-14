@@ -34,10 +34,10 @@ struct AddWaterEntryView: View {
                     DatePicker("Date selection", selection: $selectedDate, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
                 }
 
-                Section("Quantity (ml)") {
+                Section("Quantity") {
                     Picker("Quantity", selection: $selectedAmount) {
                         ForEach(amounts, id: \.self) { amount in
-                            Text("\(amount) ml").tag(amount)
+                            Text(WaterLogFormatters.volumeFromMilliliters(amount)).tag(amount)
                         }
                     }
                     .pickerStyle(.wheel)

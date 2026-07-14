@@ -18,7 +18,7 @@ struct IntakeChartView: View {
                 ForEach(data.dailySummaries) { summary in
                     BarMark(
                         x: .value(String(localized: "Date"), summary.date, unit: .day),
-                        y: .value(String(localized: "Milliliters"), summary.totalMilliliters)
+                        y: .value(String(localized: "Volume"), summary.totalMilliliters)
                     )
                     .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
                 }
@@ -40,7 +40,7 @@ struct IntakeChartView: View {
                 }
             }
         }
-        .chartScrollableAxes(.horizontal)
+//        .chartScrollableAxes(.horizontal)
         .chartXAxis {
             switch data.period {
             case .sevenDays:
@@ -63,6 +63,15 @@ struct IntakeChartView: View {
                 }
             }
         }
+		.chartYAxis {
+			AxisMarks() { value in
+				AxisValueLabel() {
+					if let intValue = value.as(Int.self) {
+						Text(WaterLogFormatters.volumeFromMilliliters(intValue))
+					}
+				}
+			}
+		}
         .chartYScale(domain: 0...max(data.maximumValue, IntakeConstants.dailyGoalMilliliters))
         .chartXVisibleDomain(length: data.visibleDomainLength)
     }
