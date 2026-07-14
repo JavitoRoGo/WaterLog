@@ -18,7 +18,7 @@ struct StatisticsView: View {
             VStack(spacing: 12) {
                 Picker("Period", selection: $selectedPeriod) {
                     ForEach(StatisticsPeriod.allCases) { period in
-                        Text(period.rawValue).tag(period)
+                        Text(period.title).tag(period)
                     }
                 }
                 .pickerStyle(.segmented)

@@ -3,15 +3,26 @@ import WidgetKit
 
 enum IntakeConstants {
     static let dailyGoalMilliliters = 2_000
-    static let spanishLocale = Locale(identifier: "es_ES")
+    static let appLocale = Locale.autoupdatingCurrent
 }
 
-enum StatisticsPeriod: String, CaseIterable, Identifiable {
-    case sevenDays = "7 days"
-    case oneYear = "1 year"
-    case total = "Total"
+enum StatisticsPeriod: CaseIterable, Identifiable {
+    case sevenDays
+    case oneYear
+    case total
 
     var id: Self { self }
+
+    var title: LocalizedStringResource {
+        switch self {
+        case .sevenDays:
+            "7 days"
+        case .oneYear:
+            "1 year"
+        case .total:
+            "Total"
+        }
+    }
 }
 
 struct DailyIntakeSummary: Identifiable, Hashable {

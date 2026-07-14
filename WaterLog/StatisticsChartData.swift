@@ -12,7 +12,7 @@ struct StatisticsChartData {
     let dailySummaries: [DailyIntakeSummary]
     let monthSummaries: [MonthIntakeSummary]
     let yearSummaries: [YearIntakeSummary]
-    let intervalLabel: String
+    let intervalLabel: LocalizedStringResource
     let maximumValue: Int
     let visibleDomainLength: TimeInterval
 
@@ -51,7 +51,9 @@ struct StatisticsChartData {
         }
     }
 
-    private static func intervalLabel(from startDate: Date, through endDate: Date) -> String {
-        "\(WaterLogFormatters.shortDayAndMonth(startDate)) - \(WaterLogFormatters.shortDayAndMonth(endDate))"
+    private static func intervalLabel(from startDate: Date, through endDate: Date) -> LocalizedStringResource {
+        let start = WaterLogFormatters.shortDayAndMonth(startDate)
+        let end = WaterLogFormatters.shortDayAndMonth(endDate)
+        return "\(start) - \(end)"
     }
 }

@@ -7,7 +7,7 @@ struct DayDetailView: View {
     var body: some View {
         DailyIntakeEditorContent(
             date: date,
-            title: WaterLogFormatters.shortDayAndMonth(date),
+            title: .formatted(WaterLogFormatters.shortDayAndMonth(date)),
             emptyTitle: "No entry",
             emptyDescription: "Add some water entries"
         )

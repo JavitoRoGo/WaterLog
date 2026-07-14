@@ -10,9 +10,9 @@ struct DailyIntakeEditorContent: View {
     @State private var showingAddSheet = false
 
     let date: Date
-    let title: String
-    let emptyTitle: String
-    let emptyDescription: String?
+    let title: DailyIntakeEditorTitle
+    let emptyTitle: LocalizedStringKey
+    let emptyDescription: LocalizedStringKey?
 
     private var dayEntries: [WaterIntakeEntry] {
         IntakeAnalytics.entries(entries, on: date)
@@ -43,11 +43,11 @@ struct DailyIntakeEditorContent: View {
         .listStyle(.plain)
         .overlay {
             if dayEntries.isEmpty {
-                ContentUnavailableView(emptyTitle, systemImage: "drop", description: emptyDescription.map(Text.init))
+                ContentUnavailableView(emptyTitle, systemImage: "drop", description: emptyDescription.map { Text($0) })
                     .offset(y: 180)
             }
         }
-        .navigationTitle(title)
+        .dailyIntakeNavigationTitle(title)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Add", systemImage: "plus") {
@@ -112,6 +112,30 @@ struct DailyIntakeEditorContent: View {
     }
 }
 
+enum DailyIntakeEditorTitle {
+    case localized(LocalizedStringResource)
+    case formatted(String)
+}
+
+private struct DailyIntakeNavigationTitleModifier: ViewModifier {
+    let title: DailyIntakeEditorTitle
+
+    func body(content: Content) -> some View {
+        switch title {
+        case .localized(let title):
+            content.navigationTitle(title)
+        case .formatted(let title):
+            content.navigationTitle(title)
+        }
+    }
+}
+
+private extension View {
+    func dailyIntakeNavigationTitle(_ title: DailyIntakeEditorTitle) -> some View {
+        modifier(DailyIntakeNavigationTitleModifier(title: title))
+    }
+}
+
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: WaterIntakeEntry.self, configurations: config)
@@ -123,7 +147,7 @@ struct DailyIntakeEditorContent: View {
     return NavigationStack {
         DailyIntakeEditorContent(
             date: .now,
-            title: "Today",
+            title: .localized("Today"),
             emptyTitle: "No entries",
             emptyDescription: "Add some water entries"
         )

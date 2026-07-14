@@ -9,7 +9,7 @@ struct TodayView: View {
         NavigationStack {
             DailyIntakeEditorContent(
                 date: currentDate,
-                title: title,
+                title: .localized(title),
                 emptyTitle: "No entries today",
                 emptyDescription: "Add some water to stay hydrated!"
             )
@@ -23,9 +23,9 @@ struct TodayView: View {
         }
     }
 
-    private var title: String {
+    private var title: LocalizedStringResource {
         let weekday = WaterLogFormatters.weekday(currentDate)
-        let day = currentDate.formatted(.dateTime.day().locale(IntakeConstants.spanishLocale))
+        let day = currentDate.formatted(.dateTime.day().locale(IntakeConstants.appLocale))
         return "Today, \(weekday) \(day)"
     }
 

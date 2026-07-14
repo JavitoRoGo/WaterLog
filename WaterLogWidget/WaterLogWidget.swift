@@ -146,8 +146,8 @@ struct WaterLogWidgetEntryView: View {
 				Chart {
 					ForEach(entry.weeklyEntries) { summary in
 						BarMark(
-							x: .value("Date", summary.date, unit: .day),
-							y: .value("Milliliters", summary.totalMilliliters)
+							x: .value(String(localized: "Date"), summary.date, unit: .day),
+							y: .value(String(localized: "Milliliters"), summary.totalMilliliters)
 						)
 						.foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
 					}
@@ -158,7 +158,7 @@ struct WaterLogWidgetEntryView: View {
 						AxisTick()
 						AxisValueLabel(
 							format: .dateTime.weekday().locale(
-								IntakeConstants.spanishLocale
+								IntakeConstants.appLocale
 							),
 							centered: true
 						)

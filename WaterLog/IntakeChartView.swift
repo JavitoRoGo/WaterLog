@@ -17,24 +17,24 @@ struct IntakeChartView: View {
             case .sevenDays:
                 ForEach(data.dailySummaries) { summary in
                     BarMark(
-                        x: .value("Date", summary.date, unit: .day),
-                        y: .value("Milliliters", summary.totalMilliliters)
+                        x: .value(String(localized: "Date"), summary.date, unit: .day),
+                        y: .value(String(localized: "Milliliters"), summary.totalMilliliters)
                     )
                     .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
                 }
             case .oneYear:
                 ForEach(data.monthSummaries) { summary in
                     BarMark(
-                        x: .value("Month", summary.monthStart, unit: .month),
-                        y: .value("Daily average", summary.averageDailyMilliliters)
+                        x: .value(String(localized: "Month"), summary.monthStart, unit: .month),
+                        y: .value(String(localized: "Daily average"), summary.averageDailyMilliliters)
                     )
                     .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
                 }
             case .total:
                 ForEach(data.yearSummaries) { summary in
                     BarMark(
-                        x: .value("Year", summary.yearStart, unit: .year),
-                        y: .value("Daily average", summary.averageDailyMilliliters)
+                        x: .value(String(localized: "Year"), summary.yearStart, unit: .year),
+                        y: .value(String(localized: "Daily average"), summary.averageDailyMilliliters)
                     )
                     .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
                 }
@@ -47,19 +47,19 @@ struct IntakeChartView: View {
                 AxisMarks(values: .stride(by: .day)) { value in
                     AxisGridLine()
                     AxisTick()
-                    AxisValueLabel(format: .dateTime.day().month(.abbreviated).locale(IntakeConstants.spanishLocale))
+                    AxisValueLabel(format: .dateTime.day().month(.abbreviated).locale(IntakeConstants.appLocale))
                 }
             case .oneYear:
                 AxisMarks(values: .stride(by: .month)) { value in
                     AxisGridLine()
                     AxisTick()
-                    AxisValueLabel(format: .dateTime.month(.abbreviated).locale(IntakeConstants.spanishLocale))
+                    AxisValueLabel(format: .dateTime.month(.abbreviated).locale(IntakeConstants.appLocale))
                 }
             case .total:
                 AxisMarks(values: .stride(by: .year)) { value in
                     AxisGridLine()
                     AxisTick()
-                    AxisValueLabel(format: .dateTime.year().locale(IntakeConstants.spanishLocale))
+                    AxisValueLabel(format: .dateTime.year().locale(IntakeConstants.appLocale))
                 }
             }
         }
