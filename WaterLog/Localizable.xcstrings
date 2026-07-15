@@ -43,6 +43,12 @@
             "state" : "translated",
             "value" : "obiettivo giornaliero di %@"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の1日の目標"
+          }
         }
       }
     },
@@ -64,6 +70,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@/d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/日"
           }
         }
       }
@@ -87,6 +99,12 @@
             "state" : "translated",
             "value" : "1 anno"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1年"
+          }
         }
       }
     },
@@ -108,6 +126,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "7 giorni"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7日間"
           }
         }
       }
@@ -131,6 +155,12 @@
             "state" : "translated",
             "value" : "Aggiungi"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加"
+          }
         }
       }
     },
@@ -152,6 +182,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi un nuovo apporto di acqua."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい水分摂取記録を追加します。"
           }
         }
       }
@@ -175,6 +211,12 @@
             "state" : "translated",
             "value" : "Aggiungi ora"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今すぐ追加"
+          }
         }
       }
     },
@@ -196,6 +238,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi alcune voci di acqua"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分補給の記録を追加しましょう"
           }
         }
       }
@@ -219,6 +267,12 @@
             "state" : "translated",
             "value" : "Aggiungi dell'acqua per rimanere idratato!"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分を補給して、健康を維持しましょう！"
+          }
         }
       }
     },
@@ -240,6 +294,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi acqua"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水を記録"
           }
         }
       }
@@ -263,6 +323,12 @@
             "state" : "translated",
             "value" : "Aggiungi l'apporto di acqua con un tocco rapido."
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タップして簡単に水分補給を記録"
+          }
         }
       }
     },
@@ -284,6 +350,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quantità"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "量"
           }
         }
       }
@@ -307,6 +379,12 @@
             "state" : "translated",
             "value" : "Annulla"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
         }
       }
     },
@@ -328,6 +406,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Media giornaliera"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1日の平均"
           }
         }
       }
@@ -351,6 +435,12 @@
             "state" : "translated",
             "value" : "Data"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日付"
+          }
         }
       }
     },
@@ -372,6 +462,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Data e ora"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日付と時刻"
           }
         }
       }
@@ -395,6 +491,12 @@
             "state" : "translated",
             "value" : "Seleziona una data"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日付の選択"
+          }
         }
       }
     },
@@ -416,6 +518,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elimina"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
           }
         }
       }
@@ -439,6 +547,12 @@
             "state" : "translated",
             "value" : "Errore durante il salvataggio"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存中にエラーが発生しました"
+          }
         }
       }
     },
@@ -460,6 +574,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cronologia"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "履歴"
           }
         }
       }
@@ -483,6 +603,12 @@
             "state" : "translated",
             "value" : "Mese"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月"
+          }
         }
       }
     },
@@ -504,6 +630,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nuova voce"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい記録"
           }
         }
       }
@@ -527,6 +659,12 @@
             "state" : "translated",
             "value" : "Nessun record oggi"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日の記録はありません"
+          }
         }
       }
     },
@@ -548,6 +686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessun record"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録なし"
           }
         }
       }
@@ -574,6 +718,12 @@
             "state" : "translated",
             "value" : "Periodo"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期間"
+          }
         }
       }
     },
@@ -596,6 +746,12 @@
             "state" : "translated",
             "value" : "Quantità"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数量"
+          }
         }
       }
     },
@@ -617,6 +773,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oggi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日"
           }
         }
       }
@@ -646,6 +808,12 @@
             "state" : "translated",
             "value" : "Oggi, %1$@ %2$@"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日、%1$@ %2$@"
+          }
         }
       }
     },
@@ -668,6 +836,12 @@
             "state" : "translated",
             "value" : "Totale"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合計"
+          }
         }
       }
     },
@@ -689,6 +863,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Volume"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "容量"
           }
         }
       }
@@ -714,6 +894,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anno"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "年"
           }
         }
       }
