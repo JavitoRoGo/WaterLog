@@ -3,7 +3,13 @@ import SwiftUI
 struct IntakeAmountButtons: View {
     let addEntry: (Int) -> Void
 
-    private let amounts = [125, 250, 500]
+    @AppStorage("buttonAmount1") private var amount1: Int = 125
+    @AppStorage("buttonAmount2") private var amount2: Int = 250
+    @AppStorage("buttonAmount3") private var amount3: Int = 500
+
+    private var amounts: [Int] {
+        [amount1, amount2, amount3]
+    }
 
     var body: some View {
         HStack(spacing: 12) {
@@ -22,4 +28,3 @@ struct IntakeAmountButtons: View {
 #Preview {
 	IntakeAmountButtons(addEntry: {_ in })
 }
-

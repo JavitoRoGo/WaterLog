@@ -8,6 +8,7 @@ struct DailyIntakeEditorContent: View {
     @Query(sort: \WaterIntakeEntry.date, order: .reverse) private var entries: [WaterIntakeEntry]
     @State private var saveError: String?
     @State private var showingAddSheet = false
+    @State private var showingSettingsSheet = false
 
     let date: Date
     let title: DailyIntakeEditorTitle
@@ -49,13 +50,21 @@ struct DailyIntakeEditorContent: View {
         }
         .dailyIntakeNavigationTitle(title)
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Settings", systemImage: "gearshape") {
+                    showingSettingsSheet = true
+                }
+            }
+			ToolbarItem(placement: .primaryAction) {
                 Button("Add", systemImage: "plus") {
                     showingAddSheet = true
                 }
             }
         }
-        .sheet(isPresented: $showingAddSheet) {
+        .sheet(isPresented: $showingSettingsSheet) {
+            SettingsView()
+        }
+		.sheet(isPresented: $showingAddSheet) {
             AddWaterEntryView(initialDate: date)
         }
         .alert("Error while saving", isPresented: errorBinding) {
