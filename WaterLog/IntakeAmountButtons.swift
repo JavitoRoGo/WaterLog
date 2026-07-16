@@ -3,9 +3,10 @@ import SwiftUI
 struct IntakeAmountButtons: View {
     let addEntry: (Int) -> Void
 
-    @AppStorage("buttonAmount1") private var amount1: Int = 125
-    @AppStorage("buttonAmount2") private var amount2: Int = 250
-    @AppStorage("buttonAmount3") private var amount3: Int = 500
+	// Usamos UserDefaults con el App Group para leer los mismos valores que la App
+	@AppStorage("buttonAmount1", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount1: Int = 125
+	@AppStorage("buttonAmount2", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount2: Int = 250
+	@AppStorage("buttonAmount3", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount3: Int = 500
 
     private var amounts: [Int] {
         [amount1, amount2, amount3]

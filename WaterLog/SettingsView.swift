@@ -1,9 +1,11 @@
 import SwiftUI
+import WidgetKit
 
 struct SettingsView: View {
-    @AppStorage("buttonAmount1") private var amount1: Int = 125
-    @AppStorage("buttonAmount2") private var amount2: Int = 250
-    @AppStorage("buttonAmount3") private var amount3: Int = 500
+	// Usamos UserDefaults con el App Group para leer los mismos valores que la App
+	@AppStorage("buttonAmount1", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount1: Int = 125
+	@AppStorage("buttonAmount2", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount2: Int = 250
+	@AppStorage("buttonAmount3", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount3: Int = 500
     
     // Local state for editing values
     @State private var row1Value: Double = 0
@@ -98,7 +100,7 @@ struct SettingsView: View {
         HStack {
             Text(title)
             
-            TextField("Amount", value: value, format: .number)
+			TextField("Amount", value: value, format: .number.precision(.fractionLength(unit.wrappedValue.unit == .milliliters ? 0 : 2)))
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.trailing)
             
@@ -115,7 +117,7 @@ struct SettingsView: View {
 					.font(.caption2)
             }
             .buttonStyle(.borderedProminent)
-            .disabled(!isDirty.wrappedValue)
+			.disabled(!isDirty.wrappedValue || value.wrappedValue <= 0)
         }
     }
 
@@ -154,9 +156,15 @@ struct SettingsView: View {
     }
 
     private func save(value: Double, unit: VolumeUnit, to storage: inout Int, rowIndex: Int) {
+		// Validación de seguridad para no permitir valores menores o iguales a cero
+		guard value > 0 else { return }
+		
         let measurement = Measurement(value: value, unit: unit.unit)
         let mlValue = measurement.converted(to: .milliliters)
         storage = Int(mlValue.value.rounded())
+        
+        // Actualizamos el timeline del widget para que refleje los nuevos valores inmediatamente
+        WidgetCenter.shared.reloadAllTimelines()
         
         // Reset dirty state and update last saved values
         switch rowIndex {

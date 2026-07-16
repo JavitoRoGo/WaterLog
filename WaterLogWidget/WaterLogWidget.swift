@@ -171,11 +171,16 @@ struct WaterLogWidgetEntryView: View {
 }
 
 private struct WaterAmountButtons: View {
+	// Usamos UserDefaults con el App Group para leer los mismos valores que la App
+	@AppStorage("buttonAmount1", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount1: Int = 125
+	@AppStorage("buttonAmount2", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount2: Int = 250
+	@AppStorage("buttonAmount3", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount3: Int = 500
+
 	var body: some View {
 		VStack {
-			WaterAmountButton(amount: 125)
-			WaterAmountButton(amount: 250)
-			WaterAmountButton(amount: 500)
+			WaterAmountButton(amount: amount1)
+			WaterAmountButton(amount: amount2)
+			WaterAmountButton(amount: amount3)
 		}
 	}
 }
