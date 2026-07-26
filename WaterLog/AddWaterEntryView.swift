@@ -8,14 +8,25 @@ struct AddWaterEntryView: View {
     
     let initialDate: Date
     @State private var selectedDate: Date
-    @State private var selectedAmount: Int = 250
+    @State private var selectedAmount: Int = 0
+    
+    // Nuevos estados para la entrada manual
+    @State private var customAmountText: String = ""
+    @State private var selectedUnit: UnitVolume = .milliliters
 
     init(initialDate: Date) {
         self.initialDate = initialDate
         _selectedDate = State(initialValue: Self.initialSelectedDate(for: initialDate))
     }
 
-    private let amounts = Array(stride(from: 250, through: 5000, by: 250))
+    private let amounts = Array(stride(from: 0, through: 5000, by: 250))
+    
+    // Unidades permitidas para el picker de la nueva funcionalidad
+    private let units: [(String, UnitVolume)] = [
+        ("ml", .milliliters),
+        ("fl oz", .fluidOunces),
+        ("imp fl oz", .imperialFluidOunces)
+    ]
 
     private static func initialSelectedDate(for date: Date, calendar: Calendar = .current) -> Date {
         let time = calendar.dateComponents([.hour, .minute, .second], from: .now)
@@ -26,6 +37,21 @@ struct AddWaterEntryView: View {
             of: date
         ) ?? date
     }
+	
+	private enum QuantitySource: CaseIterable, Identifiable {
+		case presets
+		case custom
+		
+		var id: Self { self }
+		
+		var title: LocalizedStringKey {
+			switch self {
+			case .presets: return "Presets"
+			case .custom: return "Custom"
+			}
+		}
+	}
+	@State private var quantitySource: QuantitySource = .presets
 
     var body: some View {
         NavigationStack {
@@ -34,14 +60,37 @@ struct AddWaterEntryView: View {
                     DatePicker("Date selection", selection: $selectedDate, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
                 }
 
-                Section("Quantity") {
-                    Picker("Quantity", selection: $selectedAmount) {
-                        ForEach(amounts, id: \.self) { amount in
-                            Text(WaterLogFormatters.volumeFromMilliliters(amount)).tag(amount)
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                }
+				Section("Quantity") {
+					Picker("Quantity source", selection: $quantitySource.animation()) {
+						ForEach(QuantitySource.allCases) { source in
+							Text(source.title).tag(source)
+						}
+					}
+					.pickerStyle(.segmented)
+					
+					if quantitySource == .presets {
+						Picker("Quantity", selection: $selectedAmount) {
+							ForEach(amounts, id: \.self) { amount in
+								Text(WaterLogFormatters.volumeFromMilliliters(amount)).tag(amount)
+							}
+						}
+						.pickerStyle(.wheel)
+					} else {
+						HStack {
+							TextField("Amount", text: $customAmountText)
+								.keyboardType(.decimalPad)
+							
+							Picker("Volume unit", selection: $selectedUnit) {
+								ForEach(units, id: \.1) { unitName, unit in
+									Text(unitName).tag(unit)
+								}
+							}
+							.pickerStyle(.menu)
+							.labelsHidden()
+							.disabled(customAmountText.isEmpty)
+						}
+					}
+				}
             }
             .navigationTitle("New entry")
             .toolbar {
@@ -54,13 +103,29 @@ struct AddWaterEntryView: View {
                     Button("Add") {
                         save()
                     }
+					.disabled((quantitySource == .presets && selectedAmount == 0) || (quantitySource == .custom && customAmountText.isEmpty))
                 }
             }
         }
     }
 
     private func save() {
-        let entry = WaterIntakeEntry(date: selectedDate, amount: selectedAmount)
+		var finalAmount: Int = quantitySource == .presets ? selectedAmount : 0
+		
+        // Si hay una entrada manual, calculamos su valor en ml
+		if quantitySource == .custom, !customAmountText.isEmpty, let customValue = Double(customAmountText) {
+            let measurement = Measurement(value: customValue, unit: selectedUnit)
+            let inMilliliters = measurement.converted(to: .milliliters)
+            finalAmount = Int(inMilliliters.value.rounded())
+        }
+		
+        // Comprobación: El valor debe ser mayor que cero
+        guard finalAmount > 0 else {
+            print("Error: Amount must be positive and greater than zero.")
+            return
+        }
+		
+        let entry = WaterIntakeEntry(date: selectedDate, amount: finalAmount)
         modelContext.insert(entry)
         
         do {
@@ -72,7 +137,7 @@ struct AddWaterEntryView: View {
         }
     }
 }
+
 #Preview {
     AddWaterEntryView(initialDate: .now)
 }
-
