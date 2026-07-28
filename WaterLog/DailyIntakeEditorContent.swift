@@ -6,11 +6,14 @@ import Playgrounds
 struct DailyIntakeEditorContent: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \WaterIntakeEntry.date, order: .reverse) private var entries: [WaterIntakeEntry]
+    @Query(sort: \DailyGoal.date, order: .forward) private var goals: [DailyGoal] // Añadido para obtener objetivos específicos
+    
     @State private var saveError: String?
     @State private var showingAddSheet = false
     @State private var showingSettingsSheet = false
 
     let date: Date
+    let defaultGoal: Int // El objetivo base que vendrá de AppStorage/Settings
     let title: DailyIntakeEditorTitle
     let emptyTitle: LocalizedStringKey
     let emptyDescription: LocalizedStringKey?
@@ -23,9 +26,19 @@ struct DailyIntakeEditorContent: View {
         dayEntries.reduce(0) { $0 + $1.amount }
     }
 
+    // Lógica para determinar el objetivo de este día concreto
+    private var goalForThisDay: Int {
+        let calendar = Calendar.current
+        if let specificGoal = goals.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
+            return specificGoal.amount
+        }
+        return defaultGoal
+    }
+
     var body: some View {
         List {
-            DailyProgressSection(totalMilliliters: totalMilliliters, addEntry: addEntry)
+            // Ahora pasamos el objetivo correcto (específico o por defecto)
+            DailyProgressSection(totalMilliliters: totalMilliliters, dailyGoalMilliliters: goalForThisDay, addEntry: addEntry)
                 .listRowInsets(EdgeInsets(top: 12, leading: 0, bottom: 16, trailing: 0))
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
@@ -147,15 +160,16 @@ private extension View {
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: WaterIntakeEntry.self, configurations: config)
+    // Incluimos DailyGoal en el contenedor del preview para que no falle
+    let container = try! ModelContainer(for: WaterIntakeEntry.self, DailyGoal.self, configurations: config)
     
-    // Añadimos una entrada para que no aparezca la vista de "Sin registros"
     let entry = WaterIntakeEntry(date: .now, amount: 500)
     container.mainContext.insert(entry)
 
     return NavigationStack {
         DailyIntakeEditorContent(
             date: .now,
+            defaultGoal: 2000, // Añadido para el preview
             title: .localized("Today"),
             emptyTitle: "No entries",
             emptyDescription: "Add some water entries"

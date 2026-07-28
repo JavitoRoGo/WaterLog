@@ -17,11 +17,11 @@ struct Provider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (WaterLogWidgetEntry) -> Void) {
-		let entries = fetchWeeklyEntries()
+		let (entries, goals, defaultGoal) = fetchData()
         let entry = WaterLogWidgetEntry(
             date: .now,
             totalWater: fetchTodayTotal(for: entries),
-            weeklyEntries: fetchWeeklySummaries(for: entries),
+            weeklyEntries: fetchWeeklySummaries(for: entries, goals: goals, defaultGoal: defaultGoal),
             showSuccess: false
         )
         completion(entry)
@@ -30,9 +30,10 @@ struct Provider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<WaterLogWidgetEntry>) -> Void) {
         let defaults = UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)
         let lastSuccess = defaults?.object(forKey: WaterLogStore.keyForLastSuccessDate) as? Date
-		let weeklyEntries = fetchWeeklyEntries()
+		
+        let (weeklyEntries, goals, defaultGoal) = fetchData()
         let todayTotal = fetchTodayTotal(for: weeklyEntries)
-        let weeklySummaries = fetchWeeklySummaries(for: weeklyEntries)
+        let weeklySummaries = fetchWeeklySummaries(for: weeklyEntries, goals: goals, defaultGoal: defaultGoal)
         let nextDay = nextDayBoundary()
         
         // Si el último éxito ocurrió hace menos de 1.5 segundos, creamos la secuencia de feedback.
@@ -57,42 +58,54 @@ struct Provider: TimelineProvider {
             matchingPolicy: .nextTime
         ) ?? .now.addingTimeInterval(60 * 60)
     }
-	
-	private func fetchWeeklyEntries() -> [WaterIntakeEntry] {
-		do {
-			let container = try WaterLogStore.makeModelContainer()
-			let context = ModelContext(container)
-			
-			let calendar = Calendar.current
-			let startOfToday = calendar.startOfDay(for: .now)
-			// Calculamos el inicio de la semana (hace 6 días para tener 7 días en total incluyendo hoy)
-			let startDate = calendar.date(byAdding: .day, value: -6, to: startOfToday) ?? startOfToday
 
-			let fetchDescriptor = FetchDescriptor<WaterIntakeEntry>(
-				predicate: #Predicate<WaterIntakeEntry> { $0.date >= startDate }
-			)
-			
-			return try context.fetch(fetchDescriptor)
-		} catch {
-			print("Error fetching today's total for widget: \(error)")
-			return []
-		}
-	}
-    
-    private func fetchTodayTotal(for entries: [WaterIntakeEntry]) -> Int {
+    // Helper para centralizar la obtención de datos necesarios del contenedor compartido
+    private func fetchData() -> (entries: [WaterIntakeEntry], goals: [DailyGoal], defaultGoal: Int) {
+        do {
+            let container = try WaterLogStore.makeModelContainer()
+            let context = ModelContext(container)
+            
+            // 1. Obtener Entradas
+            let calendar = Calendar.current
+            let startOfToday = calendar.startOfDay(for: .now)
+            let startDate = calendar.date(byAdding: .day, value: -6, to: startOfToday) ?? startOfToday
+            let entryFetch = FetchDescriptor<WaterIntakeEntry>(predicate: #Predicate<WaterIntakeEntry> { $0.date >= startDate })
+            let entries = try context.fetch(entryFetch)
+
+            // 2. Obtener Objetivos
+            let goalFetch = FetchDescriptor<DailyGoal>()
+            let goals = try context.fetch(goalFetch)
+
+            // 3. Obtener Objetivo por Defecto (de AppStorage en el grupo)
+            let appGroupDefaults = UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)
+            let defaultGoal = appGroupDefaults?.integer(forKey: "standardGoalMilliliters") ?? IntakeConstants.defaultGoalMilliliters
+
+            return (entries, goals, defaultGoal)
+        } catch {
+            print("Error fetching data for widget: \(error)")
+            return ([], [], IntakeConstants.defaultGoalMilliliters)
+        }
+    }
+	
+	private func fetchTodayTotal(for entries: [WaterIntakeEntry]) -> Int {
 		let startOfDay = Calendar.current.startOfDay(for: .now)
 		let todayEntries = entries.filter { $0.date >= startOfDay }
-		let todayTotal = todayEntries.reduce(0) { $0 + $1.amount }
-		return todayTotal
+		return todayEntries.reduce(0) { $0 + $1.amount }
     }
 
-	private func fetchWeeklySummaries(for entries: [WaterIntakeEntry]) -> [DailyIntakeSummary] {
+	private func fetchWeeklySummaries(for entries: [WaterIntakeEntry], goals: [DailyGoal], defaultGoal: Int) -> [DailyIntakeSummary] {
 		let calendar = Calendar.current
 		let startOfToday = calendar.startOfDay(for: .now)
-		// Calculamos el inicio de la semana (hace 6 días para tener 7 días en total incluyendo hoy)
 		let startDate = calendar.date(byAdding: .day, value: -6, to: startOfToday) ?? startOfToday
 
-		return IntakeAnalytics.dailySummaries(for: entries, from: startDate, through: startOfToday, calendar: calendar)
+		return IntakeAnalytics.dailySummaries(
+            for: entries, 
+            goals: goals, 
+            defaultGoal: defaultGoal, 
+            from: startDate, 
+            through: startOfToday, 
+            calendar: calendar
+        )
 	}
 }
 
@@ -133,9 +146,11 @@ struct WaterLogWidgetEntryView: View {
 				}
 				
 				if family == .systemMedium || family == .systemLarge {
+					// Usamos el objetivo del último día registrado en la entrada del widget para que sea dinámico
+					let goal = entry.weeklyEntries.last?.dailyGoal ?? IntakeConstants.defaultGoalMilliliters
 					ProgressRingView(
 						totalMilliliters: entry.totalWater,
-						goalMilliliters: IntakeConstants.dailyGoalMilliliters,
+						goalMilliliters: goal,
 						lineWidth: 10,
 						font: .title3
 					)
@@ -238,6 +253,6 @@ struct WaterLogWidget: Widget {
 #Preview(as: .systemLarge) {
     WaterLogWidget()
 } timeline: {
-	WaterLogWidgetEntry(date: .now, totalWater: 500, weeklyEntries: [.init(date: .now, totalMilliliters: 500), .init(date: .now.addingTimeInterval(-86400), totalMilliliters: 3200)], showSuccess: false)
-	WaterLogWidgetEntry(date: .now, totalWater: 1200, weeklyEntries: [.init(date: .now, totalMilliliters: 1200), .init(date: .now.addingTimeInterval(-86400), totalMilliliters: 3200)], showSuccess: true)
+	WaterLogWidgetEntry(date: .now, totalWater: 500, weeklyEntries: [.init(date: .now, totalMilliliters: 500, dailyGoal: 2000), .init(date: .now.addingTimeInterval(-86400), totalMilliliters: 3200, dailyGoal: 2000)], showSuccess: false)
+	WaterLogWidgetEntry(date: .now, totalWater: 1200, weeklyEntries: [.init(date: .now, totalMilliliters: 1200, dailyGoal: 2000), .init(date: .now.addingTimeInterval(-86400), totalMilliliters: 3200, dailyGoal: 2000)], showSuccess: true)
 }

@@ -4,14 +4,26 @@ import SwiftUI
 
 struct StatisticsView: View {
     @Query(sort: \WaterIntakeEntry.date, order: .reverse) private var entries: [WaterIntakeEntry]
+	@Query(sort: \DailyGoal.date, order: .forward) private var goals: [DailyGoal] // Añadido para obtener objetivos
+	
+	// Asumimos que esto vendrá de AppStorage en el futuro,
+	// por ahora usamos la constante como respaldo.
+	@AppStorage("standardGoalMilliliters") private var standardGoal: Int = IntakeConstants.defaultGoalMilliliters
+
     @State private var selectedPeriod: StatisticsPeriod = .sevenDays
     @State private var selectedDay: DailyIntakeSummary?
     @State private var selectedMonth: MonthIntakeSummary?
     @State private var selectedYear: YearIntakeSummary?
 
-    private var chartData: StatisticsChartData {
-        StatisticsChartData(period: selectedPeriod, entries: entries)
-    }
+	// Actualizado para pasar los nuevos parámetros necesarios a StatisticsChartData
+	private var chartData: StatisticsChartData {
+		StatisticsChartData(
+			period: selectedPeriod,
+			entries: entries,
+			goals: goals,
+			defaultGoal: standardGoal
+		)
+	}
 
     var body: some View {
         NavigationStack {
@@ -23,10 +35,10 @@ struct StatisticsView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
-
-                Label(chartData.intervalLabel, systemImage: "calendar")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
+				
+				Label(chartData.intervalLabel, systemImage: "calendar")
+					.font(.headline)
+					.foregroundStyle(.secondary)
 
                 IntakeChartView(data: chartData)
                     .frame(height: 240)
@@ -43,11 +55,11 @@ struct StatisticsView: View {
         }
         .sheet(item: $selectedMonth) { summary in
             NavigationStack {
-                MonthDetailView(month: summary, entries: entries)
+				MonthDetailView(month: summary, entries: entries, goals: goals, defaultGoal: standardGoal)
             }
         }
         .sheet(item: $selectedYear) { summary in
-            YearDetailView(year: summary, entries: entries)
+			YearDetailView(year: summary, entries: entries, goals: goals, defaultGoal: standardGoal)
         }
     }
 

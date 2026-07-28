@@ -40,7 +40,6 @@ struct IntakeChartView: View {
                 }
             }
         }
-//        .chartScrollableAxes(.horizontal)
         .chartXAxis {
             switch data.period {
             case .sevenDays:
@@ -72,11 +71,11 @@ struct IntakeChartView: View {
 				}
 			}
 		}
-        .chartYScale(domain: 0...max(data.maximumValue, IntakeConstants.dailyGoalMilliliters))
+        .chartYScale(domain: 0...max(data.maximumValue, IntakeConstants.defaultGoalMilliliters))
         .chartXVisibleDomain(length: data.visibleDomainLength)
     }
 }
 
 #Preview {
-	IntakeChartView(data: StatisticsChartData(period: .oneYear, entries: []))
+	IntakeChartView(data: StatisticsChartData(period: .oneYear, entries: [], goals: [], defaultGoal: 2000))
 }

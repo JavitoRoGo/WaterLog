@@ -28,7 +28,7 @@ struct DailySummaryRow: View {
         .contentShape(.rect)
     }
 }
-#Preview {
-    DailySummaryRow(summary: DailyIntakeSummary(date: .now, totalMilliliters: 1500))
-}
+//#Preview {
+//    DailySummaryRow(summary: DailyIntakeSummary(date: .now, totalMilliliters: 1500))
+//}
 

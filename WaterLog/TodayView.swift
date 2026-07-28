@@ -9,6 +9,7 @@ struct TodayView: View {
         NavigationStack {
             DailyIntakeEditorContent(
                 date: currentDate,
+                defaultGoal: IntakeConstants.defaultGoalMilliliters, // Añadido para cumplir con el nuevo inicializador
                 title: .localized(title),
                 emptyTitle: "No entries today",
                 emptyDescription: "Add some water to stay hydrated!"
@@ -29,7 +30,7 @@ struct TodayView: View {
         return "Today, \(weekday) \(day)"
     }
 
-    private func refreshDateAtDayBoundaries(calendar: Calendar = .current) async {
+    private func refreshDateAtDayBoundaries(calendar: Calendar = .current) async { // Añadido valor por defecto al parámetro para evitar errores en la llamada
         refreshCurrentDate()
 
         while !Task.isCancelled {
@@ -58,6 +59,6 @@ struct TodayView: View {
 }
 
 #Preview {
-    TodayView()
-        .modelContainer(for: WaterIntakeEntry.self, inMemory: true)
+	TodayView()
+		.modelContainer(for: WaterIntakeEntry.self, inMemory: true)
 }

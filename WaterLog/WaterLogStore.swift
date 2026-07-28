@@ -6,7 +6,7 @@ enum WaterLogStore {
     static let keyForLastSuccessDate = "lastSuccessDate"
 
     private static let storeFileName = "WaterLog.store"
-    private static let schema = Schema([WaterIntakeEntry.self])
+    private static let schema = Schema([WaterIntakeEntry.self, DailyGoal.self])
     private static let legacyStoreURL = URL.applicationSupportDirectory.appending(path: storeFileName)
 
     static var storeURL: URL {

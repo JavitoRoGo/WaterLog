@@ -7,7 +7,7 @@ struct ProgressRingView: View {
 	let font: Font
 
     private var progress: Double {
-        IntakeAnalytics.progress(for: totalMilliliters)
+        IntakeAnalytics.progress(for: totalMilliliters, goal: goalMilliliters)
     }
 
     private var reachedGoal: Bool {
@@ -47,6 +47,10 @@ struct ProgressRingView: View {
 }
 
 #Preview {
-	ProgressRingView(totalMilliliters: 1_250, goalMilliliters: IntakeConstants.dailyGoalMilliliters, lineWidth: 24, font: .largeTitle)
-        .padding()
+	ProgressRingView(
+		totalMilliliters: 1200,
+		goalMilliliters: 2000, // He usado un valor literal para evitar dependencias de constantes que cambian
+		lineWidth: 20,
+		font: .system(size: 24, weight: .bold)
+	)
 }
