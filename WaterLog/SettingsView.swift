@@ -11,6 +11,9 @@ struct SettingsView: View {
 	@AppStorage("buttonAmount2", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount2: Int = 250
 	@AppStorage("buttonAmount3", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount3: Int = 500
     
+	@AppStorage(WaterLogStore.keyForStandardGoalMilliliters, store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var standardGoal: Int = IntakeConstants.defaultGoalMilliliters
+	@State private var standardGoalUnit: VolumeUnit = .milliliters
+    
     @Environment(\.modelContext) private var modelContext
     @Query private var entries: [WaterIntakeEntry]
 	private var dtoHelper: DTOHelper {
@@ -42,6 +45,9 @@ struct SettingsView: View {
     @State private var importError: String?
     @State private var showImportAlert = false
     @State private var showImportError = false
+    
+    // Local state for Standard Goal editing
+    @State private var editingStandardGoal: Double = 0
 
     enum VolumeUnit: String, CaseIterable, Identifiable {
         case milliliters = "ml"
@@ -75,6 +81,36 @@ struct SettingsView: View {
                         .onChange(of: row3Value) { _, newValue in checkDirty(rowIndex: 3, value: newValue, unit: row3Unit) }
                         .onChange(of: row3Unit) { _, newValue in checkDirty(rowIndex: 3, value: row3Value, unit: newValue) }
                 }
+
+                Section("Daily Goal") {
+                    HStack {
+                        Text("Default value")
+                        Spacer()
+						TextField("Amount", value: $editingStandardGoal, format: .number.precision(.fractionLength(standardGoalUnit.unit == .milliliters ? 0 : 2)))
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+						Picker("Volume unit", selection: $standardGoalUnit) {
+							ForEach(VolumeUnit.allCases) { volumeUnit in
+								Text(volumeUnit.rawValue).tag(volumeUnit)
+							}
+						}
+						.pickerStyle(.menu)
+						.labelsHidden()
+						
+						Button {
+							if editingStandardGoal > 0 {
+								// Realizamos la conversión a mililitros antes de guardar
+								let measurement = Measurement(value: editingStandardGoal, unit: standardGoalUnit.unit)
+								let mlValue = measurement.converted(to: .milliliters)
+								standardGoal = Int(mlValue.value.rounded())
+							}
+						} label: {
+							Text("Save").font(.caption2)
+						}
+						.buttonStyle(.borderedProminent)
+						.disabled(editingStandardGoal <= 0)
+                    }
+                }
 				
 				Section("Data base") {
 					// Exportación mediante ShareLink (más versátil que fileExporter para JSONs pequeños)
@@ -95,6 +131,7 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 setupRows()
+                editingStandardGoal = Double(standardGoal)
             }
             .fileImporter(
                 isPresented: $isImporting,

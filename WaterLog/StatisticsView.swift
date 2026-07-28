@@ -6,9 +6,7 @@ struct StatisticsView: View {
     @Query(sort: \WaterIntakeEntry.date, order: .reverse) private var entries: [WaterIntakeEntry]
 	@Query(sort: \DailyGoal.date, order: .forward) private var goals: [DailyGoal] // Añadido para obtener objetivos
 	
-	// Asumimos que esto vendrá de AppStorage en el futuro,
-	// por ahora usamos la constante como respaldo.
-	@AppStorage("standardGoalMilliliters") private var standardGoal: Int = IntakeConstants.defaultGoalMilliliters
+	@AppStorage(WaterLogStore.keyForStandardGoalMilliliters, store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)) private var standardGoal: Int = IntakeConstants.defaultGoalMilliliters
 
     @State private var selectedPeriod: StatisticsPeriod = .sevenDays
     @State private var selectedDay: DailyIntakeSummary?

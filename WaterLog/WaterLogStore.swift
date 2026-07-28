@@ -4,6 +4,7 @@ import SwiftData
 enum WaterLogStore {
     static let appGroupIdentifier = "group.com.JRG79.WaterLog"
     static let keyForLastSuccessDate = "lastSuccessDate"
+    static let keyForStandardGoalMilliliters = "standardGoalMilliliters"
 
     private static let storeFileName = "WaterLog.store"
     private static let schema = Schema([WaterIntakeEntry.self, DailyGoal.self])
