@@ -82,7 +82,7 @@ struct SettingsView: View {
                         .onChange(of: row3Unit) { _, newValue in checkDirty(rowIndex: 3, value: row3Value, unit: newValue) }
                 }
 
-                Section("Daily Goal") {
+                Section {
                     HStack {
                         Text("Default value")
                         Spacer()
@@ -110,7 +110,11 @@ struct SettingsView: View {
 						.buttonStyle(.borderedProminent)
 						.disabled(editingStandardGoal <= 0)
                     }
-                }
+				} header: {
+					Text("Daily Goal")
+				} footer: {
+					Text("settings.dailyGoal.footer")
+				}
 				
 				Section("Data base") {
 					// Exportación mediante ShareLink (más versátil que fileExporter para JSONs pequeños)
