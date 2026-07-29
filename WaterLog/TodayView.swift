@@ -9,7 +9,6 @@ struct TodayView: View {
         NavigationStack {
             DailyIntakeEditorContent(
                 date: currentDate,
-                defaultGoal: IntakeConstants.defaultGoalMilliliters, // Añadido para cumplir con el nuevo inicializador
                 title: .localized(title),
                 emptyTitle: "No entries today",
                 emptyDescription: "Add some water to stay hydrated!"

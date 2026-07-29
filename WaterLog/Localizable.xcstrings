@@ -24,30 +24,36 @@
       },
       "shouldTranslate" : false
     },
-    "%@ daily goal" : {
+    "%@ daily goal (%@)" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ daily goal (%2$@)"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ del objetivo"
+            "value" : "%1$@ del objetivo (%2$@)"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ objectif quotidien"
+            "value" : "%1$@ objectif quotidien (%2$@)"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "obiettivo giornaliero di %@"
+            "value" : "obiettivo giornaliero di %1$@ (%2$@)"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@の1日の目標"
+            "value" : "%1$@の1日の目標 (%2$@)"
           }
         }
       }
@@ -557,7 +563,32 @@
       }
     },
     "Daily goal saved" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objetivo diario guardado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objectif quotidien enregistré"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obiettivo giornaliero salvato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1日の目標を保存しました"
+          }
+        }
+      }
     },
     "Data base" : {
       "localizations" : {
@@ -1330,8 +1361,33 @@
         }
       }
     },
-    "Update daily goal" : {
-
+    "Update your daily goal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualiza tu objetivo diario"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifiez votre objectif quotidien"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiorna il tuo obiettivo giornaliero"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1日の目標を更新する"
+          }
+        }
+      }
     },
     "Volume" : {
       "localizations" : {
@@ -1423,10 +1479,35 @@
         }
       }
     },
-    "Your daily goal has been updated successfully." : {
-
+    "Your daily goal has been successfully updated." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu objetivo diario se ha actualizado correctamente."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre objectif quotidien a été mis à jour avec succès."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il tuo obiettivo giornaliero è stato aggiornato con successo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1日の目標が正常に更新されました。"
+          }
+        }
+      }
     },
-    "Your data base has been successfully updated." : {
+    "Your database has been successfully updated." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {

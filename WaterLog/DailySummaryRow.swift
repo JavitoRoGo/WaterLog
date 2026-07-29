@@ -22,13 +22,19 @@ struct DailySummaryRow: View {
                     .foregroundStyle(.green)
             }
 			
-            Text(WaterLogFormatters.volumeFromMilliliters(summary.totalMilliliters))
-                .bold()
+            VStack {
+            	Text(WaterLogFormatters.volumeFromMilliliters(summary.totalMilliliters))
+					.bold()
+				Text(WaterLogFormatters.volumeFromMilliliters(summary.dailyGoal))
+					.font(.caption)
+					.foregroundStyle(.secondary)
+            }
         }
         .contentShape(.rect)
     }
 }
-//#Preview {
-//    DailySummaryRow(summary: DailyIntakeSummary(date: .now, totalMilliliters: 1500))
-//}
+
+#Preview {
+	DailySummaryRow(summary: DailyIntakeSummary(date: .now, totalMilliliters: 1500, dailyGoal: 2500))
+}
 

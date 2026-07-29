@@ -46,6 +46,7 @@ struct EditDailyGoalView: View {
                     HStack {
                         TextField("Amount", value: $goalAmount, format: .number.precision(.fractionLength(goalUnit.unit == .milliliters ? 0 : 2)))
                             .keyboardType(.decimalPad)
+							.textFieldStyle(.roundedBorder)
                         
                         Picker("Volume unit", selection: $goalUnit) {
                             ForEach(SettingsView.VolumeUnit.allCases) { unit in
@@ -73,7 +74,7 @@ struct EditDailyGoalView: View {
                     }
                 }
             }
-            .navigationTitle("Update daily goal")
+            .navigationTitle("Update your daily goal")
             .navigationBarTitleDisplayMode(.inline)
             .alert("Daily goal saved", isPresented: $showingConfirmationAlert) {
                 Button("OK") {
@@ -81,7 +82,7 @@ struct EditDailyGoalView: View {
                     dismiss()
                 }
             } message: {
-                Text("Your daily goal has been updated successfully.")
+                Text("Your daily goal has been successfully updated.")
             }
         }
     }

@@ -89,6 +89,7 @@ struct SettingsView: View {
 						TextField("Amount", value: $editingStandardGoal, format: .number.precision(.fractionLength(standardGoalUnit.unit == .milliliters ? 0 : 2)))
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
+							.textFieldStyle(.roundedBorder)
 						Picker("Volume unit", selection: $standardGoalUnit) {
 							ForEach(VolumeUnit.allCases) { volumeUnit in
 								Text(volumeUnit.rawValue).tag(volumeUnit)
@@ -164,7 +165,7 @@ struct SettingsView: View {
             .alert("Data imported.", isPresented: $showImportAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text("Your data base has been successfully updated.")
+                Text("Your database has been successfully updated.")
             }
             .alert("Import error", isPresented: $showImportError) {
                 Button("OK", role: .cancel) { importError = nil }
@@ -189,6 +190,7 @@ struct SettingsView: View {
             TextField("Amount", value: value, format: .number.precision(.fractionLength(unit.wrappedValue.unit == .milliliters ? 0 : 2)))
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.trailing)
+				.textFieldStyle(.roundedBorder)
             
             Picker("Volume unit", selection: unit) {
                 ForEach(VolumeUnit.allCases) { volumeUnit in

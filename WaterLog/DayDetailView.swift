@@ -7,7 +7,6 @@ struct DayDetailView: View {
     var body: some View {
         DailyIntakeEditorContent(
             date: date,
-            defaultGoal: IntakeConstants.defaultGoalMilliliters, // Añadido para cumplir con el nuevo inicializador
             title: .formatted(WaterLogFormatters.shortDayAndMonth(date)),
             emptyTitle: "No entry",
             emptyDescription: "Add some water entries"

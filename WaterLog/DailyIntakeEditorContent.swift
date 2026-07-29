@@ -7,6 +7,11 @@ struct DailyIntakeEditorContent: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \WaterIntakeEntry.date, order: .reverse) private var entries: [WaterIntakeEntry]
     @Query(sort: \DailyGoal.date, order: .forward) private var goals: [DailyGoal] // Añadido para obtener objetivos específicos
+	
+	@AppStorage(
+		WaterLogStore.keyForStandardGoalMilliliters,
+		store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)
+	) private var defaultGoal: Int = IntakeConstants.defaultGoalMilliliters
     
     @State private var saveError: String?
     @State private var showingAddSheet = false
@@ -14,7 +19,6 @@ struct DailyIntakeEditorContent: View {
     @State private var showingEditGoalSheet = false // Nuevo estado para la edición de objetivo
 
     let date: Date
-    let defaultGoal: Int // El objetivo base que vendrá de AppStorage/Settings
     let title: DailyIntakeEditorTitle
     let emptyTitle: LocalizedStringKey
     let emptyDescription: LocalizedStringKey?
@@ -184,7 +188,6 @@ private extension View {
     return NavigationStack {
         DailyIntakeEditorContent(
             date: .now,
-            defaultGoal: 2000, // Añadido para el preview
             title: .localized("Today"),
             emptyTitle: "No entries",
             emptyDescription: "Add some water entries"
