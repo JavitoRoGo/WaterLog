@@ -556,6 +556,9 @@
         }
       }
     },
+    "Daily goal saved" : {
+
+    },
     "Data base" : {
       "localizations" : {
         "es" : {
@@ -1327,6 +1330,9 @@
         }
       }
     },
+    "Update daily goal" : {
+
+    },
     "Volume" : {
       "localizations" : {
         "es" : {
@@ -1416,6 +1422,9 @@
           }
         }
       }
+    },
+    "Your daily goal has been updated successfully." : {
+
     },
     "Your data base has been successfully updated." : {
       "localizations" : {

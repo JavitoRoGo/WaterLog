@@ -11,6 +11,7 @@ struct DailyIntakeEditorContent: View {
     @State private var saveError: String?
     @State private var showingAddSheet = false
     @State private var showingSettingsSheet = false
+    @State private var showingEditGoalSheet = false // Nuevo estado para la edición de objetivo
 
     let date: Date
     let defaultGoal: Int // El objetivo base que vendrá de AppStorage/Settings
@@ -69,8 +70,16 @@ struct DailyIntakeEditorContent: View {
                 }
             }
 			ToolbarItem(placement: .primaryAction) {
-                Button("Add", systemImage: "plus") {
-                    showingAddSheet = true
+                HStack(spacing: 16) {
+                    Button {
+                        showingEditGoalSheet = true
+                    } label: {
+                        Image(systemName: "dot.scope")
+                    }
+
+                    Button("Add", systemImage: "plus") {
+                        showingAddSheet = true
+                    }
                 }
             }
         }
@@ -79,6 +88,10 @@ struct DailyIntakeEditorContent: View {
         }
 		.sheet(isPresented: $showingAddSheet) {
             AddWaterEntryView(initialDate: date)
+        }
+		.sheet(isPresented: $showingEditGoalSheet) {
+			EditDailyGoalView(date: date, existingGoal: goalForThisDay)
+				.presentationDetents([.medium])
         }
         .alert("Error while saving", isPresented: errorBinding) {
             Button("OK", role: .cancel) { saveError = nil }
@@ -160,11 +173,13 @@ private extension View {
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    // Incluimos DailyGoal en el contenedor del preview para que no falle
+    // Incluimos DailyGoal en el contenedor para que no falle el preview
     let container = try! ModelContainer(for: WaterIntakeEntry.self, DailyGoal.self, configurations: config)
     
     let entry = WaterIntakeEntry(date: .now, amount: 500)
     container.mainContext.insert(entry)
+	let goal = DailyGoal(date: .now, amount: 1000)
+	container.mainContext.insert(goal)
 
     return NavigationStack {
         DailyIntakeEditorContent(
