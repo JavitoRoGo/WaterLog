@@ -165,6 +165,12 @@ struct WaterLogWidgetEntryView: View {
 							y: .value(String(localized: "Volume"), summary.totalMilliliters)
 						)
 						.foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
+						PointMark(
+							x: .value(String(localized: "Date"), summary.date, unit: .day),
+							y: .value(String(localized: "Daily Goal"), summary.dailyGoal)
+						)
+						.symbol(.diamond)
+						.foregroundStyle(.orange)
 					}
 				}
 				.chartXAxis {
@@ -253,6 +259,6 @@ struct WaterLogWidget: Widget {
 #Preview(as: .systemLarge) {
     WaterLogWidget()
 } timeline: {
-	WaterLogWidgetEntry(date: .now, totalWater: 500, weeklyEntries: [.init(date: .now, totalMilliliters: 500, dailyGoal: 2000), .init(date: .now.addingTimeInterval(-86400), totalMilliliters: 3200, dailyGoal: 2000)], showSuccess: false)
-	WaterLogWidgetEntry(date: .now, totalWater: 1200, weeklyEntries: [.init(date: .now, totalMilliliters: 1200, dailyGoal: 2000), .init(date: .now.addingTimeInterval(-86400), totalMilliliters: 3200, dailyGoal: 2000)], showSuccess: true)
+	WaterLogWidgetEntry(date: .now, totalWater: 500, weeklyEntries: [.init(date: .now, totalMilliliters: 500, dailyGoal: 1500), .init(date: .now.addingTimeInterval(-86400), totalMilliliters: 3200, dailyGoal: 2000)], showSuccess: false)
+	WaterLogWidgetEntry(date: .now, totalWater: 1200, weeklyEntries: [.init(date: .now, totalMilliliters: 1200, dailyGoal: 1500), .init(date: .now.addingTimeInterval(-86400), totalMilliliters: 3200, dailyGoal: 2000)], showSuccess: true)
 }
