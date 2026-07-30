@@ -7,10 +7,11 @@ struct EditDailyGoalView: View {
     
     // La fecha inyectada para mostrar y guardar el objetivo
     let date: Date
+	let existingGoal: Int
     
     // Valor y unidad local para el editor
-    @State private var goalAmount: Double
-    @State private var goalUnit: SettingsView.VolumeUnit
+    @State private var goalAmount: Double = 0
+	@State private var goalUnit: SettingsView.VolumeUnit = .milliliters
     
     // Estado para la alerta de confirmación
     @State private var showingConfirmationAlert = false
@@ -18,22 +19,7 @@ struct EditDailyGoalView: View {
     // El objetivo que se va a guardar (ya convertido a ml)
     @State private var amountToSaveInML: Int = 0
 	
-	init(date: Date, existingGoal: Int? = nil) {
-		self.date = date
-		self.goalAmount = Double(existingGoal ?? 2000)
-		
-		let system = IntakeConstants.appLocale.measurementSystem
-		self.goalUnit = switch system {
-		case .uk:
-				.imperialFluidOunces
-			case .us:
-				.fluidOunces
-		default:
-				.milliliters
-		}
-	}
-
-    var body: some View {
+	var body: some View {
         NavigationStack {
             Form {
                 Section("Date") {
@@ -76,6 +62,9 @@ struct EditDailyGoalView: View {
             }
             .navigationTitle("Update your daily goal")
             .navigationBarTitleDisplayMode(.inline)
+			.onAppear {
+				setupGoal()
+			}
             .alert("Daily goal saved", isPresented: $showingConfirmationAlert) {
                 Button("OK") {
                     saveGoal()
@@ -86,6 +75,17 @@ struct EditDailyGoalView: View {
             }
         }
     }
+	
+	private func setupGoal() {
+		let units = IntakeConstants.appLocale.measurementSystem
+		goalUnit = switch units {
+		case .us: .fluidOunces
+		case .uk: .imperialFluidOunces
+		default: .milliliters
+		}
+		let measurement = Measurement(value: Double(existingGoal), unit: UnitVolume.milliliters)
+		goalAmount = measurement.converted(to: goalUnit.unit).value
+	}
 
     private func prepareSave() {
         // Convertimos la entrada del usuario a mililitros antes de mostrar la alerta/guardar

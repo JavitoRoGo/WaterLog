@@ -136,7 +136,7 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 setupRows()
-                editingStandardGoal = Double(standardGoal)
+                setupGoal()
             }
             .fileImporter(
                 isPresented: $isImporting,
@@ -207,6 +207,13 @@ struct SettingsView: View {
             .disabled(!isDirty.wrappedValue || value.wrappedValue <= 0)
         }
     }
+	
+	private func setupGoal() {
+		let measurement = Measurement(value: Double(standardGoal), unit: UnitVolume.milliliters)
+		standardGoalUnit = detectPreferredUnit()
+		let converted = measurement.converted(to: standardGoalUnit.unit)
+		editingStandardGoal = converted.value
+	}
 
     private func setupRows() {
         initializeRow(amount: amount1, value: &row1Value, unit: &row1Unit, lastSaved: &row1LastSaved, isDirty: &row1IsDirty)
