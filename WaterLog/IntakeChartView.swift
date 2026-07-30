@@ -16,19 +16,42 @@ struct IntakeChartView: View {
             switch data.period {
             case .sevenDays:
                 ForEach(data.dailySummaries) { summary in
+                    // Barra de ingesta
                     BarMark(
                         x: .value(String(localized: "Date"), summary.date, unit: .day),
                         y: .value(String(localized: "Volume"), summary.totalMilliliters)
                     )
                     .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
+                    
+                    let startOfDay = Calendar.current.startOfDay(for: summary.date)
+                    let midOfDay = Calendar.current.date(byAdding: .hour, value: 12, to: startOfDay)!
+
+//                    LineMark(
+//                        x: .value("End", midOfDay, unit: .second),
+//                        y: .value("Goal", summary.dailyGoal)
+//                    )
+//                    .lineStyle(StrokeStyle(lineWidth: 2, dash: [5]))
+//                    .foregroundStyle(.red.opacity(0.3))
+					
+					PointMark(
+						x: .value("Date", midOfDay, unit: .second),
+						y: .value("Daily Goal", summary.dailyGoal)
+					)
+					.symbol(.diamond)
+					.foregroundStyle(.orange)
+//					.annotation(position: .top) {
+//						Text("\(summary.dailyGoal)ml")
+//							.font(.caption2)
+//							.foregroundStyle(.secondary)
+//					}
                 }
             case .oneYear:
                 ForEach(data.monthSummaries) { summary in
                     BarMark(
                         x: .value(String(localized: "Month"), summary.monthStart, unit: .month),
                         y: .value(String(localized: "Daily average"), summary.averageDailyMilliliters)
-                    )
-                    .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
+					)
+					.foregroundStyle(.blue.gradient)
                 }
             case .total:
                 ForEach(data.yearSummaries) { summary in
@@ -36,7 +59,7 @@ struct IntakeChartView: View {
                         x: .value(String(localized: "Year"), summary.yearStart, unit: .year),
                         y: .value(String(localized: "Daily average"), summary.averageDailyMilliliters)
                     )
-                    .foregroundStyle(summary.reachedGoal ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.blue.gradient))
+					.foregroundStyle(.blue.gradient)
                 }
             }
         }
@@ -77,5 +100,29 @@ struct IntakeChartView: View {
 }
 
 #Preview {
-	IntakeChartView(data: StatisticsChartData(period: .oneYear, entries: [], goals: [], defaultGoal: 2000))
+    let calendar = Calendar.current
+    let today = Date()
+    let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
+    let dayBeforeYesterday = calendar.date(byAdding: .day, value: -2, to: today)!
+    
+    // Datos de entrada (consumo de agua)
+    let entries = [
+        WaterIntakeEntry(date: today, amount: 1250),
+        WaterIntakeEntry(date: yesterday, amount: 500),
+        WaterIntakeEntry(date: dayBeforeYesterday, amount: 3000)
+    ]
+    
+    // Objetivos diarios (DailyGoal)
+    let goals = [
+        DailyGoal(date: today, amount: 1500),
+        DailyGoal(date: yesterday, amount: 1000), // Objetivo alto para ver la diferencia
+        DailyGoal(date: dayBeforeYesterday, amount: 2500)
+    ]
+    
+    return IntakeChartView(data: StatisticsChartData(
+        period: .sevenDays,
+        entries: entries,
+        goals: goals,
+        defaultGoal: 2000
+    ))
 }

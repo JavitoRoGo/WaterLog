@@ -19,6 +19,7 @@ struct IntakeAmountButtons: View {
                     addEntry(amount)
                 }
                 .buttonStyle(.borderedProminent)
+				.tint(.indigo.opacity(0.8))
                 .controlSize(.large)
                 .frame(maxWidth: .infinity)
             }

@@ -43,10 +43,6 @@ struct MonthIntakeSummary: Identifiable, Hashable {
     let monthStart: Date
     let totalMilliliters: Int
     let averageDailyMilliliters: Int
-    // El "reachedGoal" a nivel mensual es ambiguo con objetivos variables, 
-    // pero lo mantendremos comparando contra el promedio o un valor base si fuera necesario.
-    // Por ahora, usaremos el objetivo por defecto para la métrica visual de la gráfica mensual.
-    var reachedGoal: Bool { averageDailyMilliliters >= IntakeConstants.defaultGoalMilliliters }
 	
 	var id: Date { monthStart }
 }
@@ -55,7 +51,6 @@ struct YearIntakeSummary: Identifiable, Hashable {
     let yearStart: Date
     let totalMilliliters: Int
     let averageDailyMilliliters: Int
-    var reachedGoal: Bool { averageDailyMilliliters >= IntakeConstants.defaultGoalMilliliters }
 	
 	var id: Date { yearStart }
 }
