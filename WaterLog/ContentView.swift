@@ -10,6 +10,10 @@ struct ContentView: View {
             Tab("Historical", systemImage: "chart.bar.xaxis") {
                 StatisticsView()
             }
+
+            Tab("Settings", systemImage: "gearshape") {
+                SettingsView()
+            }
         }
     }
 }

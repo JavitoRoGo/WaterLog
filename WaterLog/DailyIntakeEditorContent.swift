@@ -15,7 +15,6 @@ struct DailyIntakeEditorContent: View {
     
     @State private var saveError: String?
     @State private var showingAddSheet = false
-    @State private var showingSettingsSheet = false
     @State private var showingEditGoalSheet = false // Nuevo estado para la edición de objetivo
 
     let date: Date
@@ -68,11 +67,6 @@ struct DailyIntakeEditorContent: View {
         }
         .dailyIntakeNavigationTitle(title)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button("Settings", systemImage: "gearshape") {
-                    showingSettingsSheet = true
-                }
-            }
 			ToolbarItem(placement: .primaryAction) {
                 HStack(spacing: 16) {
                     Button {
@@ -87,12 +81,9 @@ struct DailyIntakeEditorContent: View {
                 }
             }
         }
-        .sheet(isPresented: $showingSettingsSheet) {
-            SettingsView()
-        }
 		.sheet(isPresented: $showingAddSheet) {
-            AddWaterEntryView(initialDate: date)
-        }
+			AddWaterEntryView(initialDate: date)
+		}
 		.sheet(isPresented: $showingEditGoalSheet) {
 			EditDailyGoalView(date: date, existingGoal: goalForThisDay)
 				.presentationDetents([.medium])
@@ -107,7 +98,7 @@ struct DailyIntakeEditorContent: View {
     private var errorBinding: Binding<Bool> {
         Binding(
             get: { saveError != nil },
-            set: { isPresented in
+			set: { isPresented in
                 if !isPresented {
                     saveError = nil
                 }
