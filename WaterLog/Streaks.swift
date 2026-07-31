@@ -4,6 +4,7 @@ import Foundation
 struct StreakResults {
     let currentStreak: Int
     let longestStreak: Int
+	let longestStreakRange: ClosedRange<Date>?
     let currentEvolution: ConsistencyEvolution // El estado "vivo" de la racha
 }
 
@@ -44,12 +45,20 @@ enum AchievementType: CaseIterable {
         case .waterMaster: return "Water Master"
         }
     }
+	
+	/// Descripción corta del requisito para dar contexto al usuario.
+	var requirementDescription: LocalizedStringResource {
+		switch self {
+		case .hydrationConstant: return "7-day streaks"
+		case .waterMaster: return "30-day streaks"
+		}
+	}
 
     /// Emoji que representa la medalla ganada en la galería.
     var emoji: String {
         switch self {
-        case .hydrationConstant: return "💧" // Una gota, constante y esencial
-        case .waterMaster: return "🌊"      // Un océano, para demostrar maestría
+        case .hydrationConstant: return "💧"
+        case .waterMaster: return "🌊"
         }
     }
 }
@@ -67,31 +76,32 @@ enum Streaks {
     
     /// Calcula todo lo relacionado con rachas y evolución actual.
     static func calculateStreaks(from dailySummaries: [DailyIntakeSummary]) -> StreakResults {
-        guard !dailySummaries.isEmpty else {
-            return StreakResults(currentStreak: 0, longestStreak: 0, currentEvolution: .none)
-        }
+		guard !dailySummaries.isEmpty else {
+	  return StreakResults(currentStreak: 0, longestStreak: 0, longestStreakRange: nil, currentEvolution: .none)
+  }
 
-        let sortedSummaries = dailySummaries.sorted { $0.date < $1.date }
-        let complianceHistory = sortedSummaries.map { $0.reachedGoal }
-        let datesHistory = sortedSummaries.map { $0.date }
+  let sortedSummaries = dailySummaries.sorted { $0.date < $1.date }
+  let complianceHistory = sortedSummaries.map { $0.reachedGoal }
+  let datesHistory = sortedSummaries.map { $0.date }
 
-        let current = calculateCurrentStreak(complianceHistory: complianceHistory, datesHistory: datesHistory)
-        let longest = calculateLongestStreak(complianceHistory: complianceHistory)
-        
-        // Determinamos la evolución actual basada en la racha viva
-        let evolution: ConsistencyEvolution = {
-            if current >= Thresholds.masterDays { return .master }
-            if current >= Thresholds.constantDays { return .constant }
-            if current >= Thresholds.initiatorDays { return .initiator }
-            return .none
-        }()
+  let current = calculateCurrentStreak(complianceHistory: complianceHistory, datesHistory: datesHistory)
+  // Ahora obtenemos tanto el número como el rango
+  let (longest, longestRange) = calculateLongestStreakWithDates(summaries: sortedSummaries)
+  
+  let evolution: ConsistencyEvolution = {
+	  if current >= Thresholds.masterDays { return .master }
+	  if current >= Thresholds.constantDays { return .constant }
+	  if current >= Thresholds.initiatorDays { return .initiator }
+	  return .none
+  }()
 
-        return StreakResults(
-            currentStreak: current,
-            longestStreak: longest,
-            currentEvolution: evolution
-        )
-    }
+  return StreakResults(
+	  currentStreak: current,
+	  longestStreak: longest,
+	  longestStreakRange: longestRange, // Pasamos el rango
+	  currentEvolution: evolution
+  )
+}
 
     /// Calcula los logros de la galería basados en el historial completo.
     static func calculateHistoricalAchievements(from dailySummaries: [DailyIntakeSummary]) -> [HistoricalAchievement] {
@@ -172,19 +182,33 @@ enum Streaks {
         return currentStreak
     }
 
-    private static func calculateLongestStreak(complianceHistory: [Bool]) -> Int {
-        var maxStreak = 0
-        var currentRunningStreak = 0
+	private static func calculateLongestStreakWithDates(summaries: [DailyIntakeSummary]) -> (Int, ClosedRange<Date>?) {
+		var maxStreak = 0
+		var longestRange: ClosedRange<Date>? = nil
+		
+		var currentRunningStreak = 0
+		var currentStartDate: Date? = nil
 
-        for isCompliant in complianceHistory {
-            if isCompliant {
-                currentRunningStreak += 1
-                maxStreak = max(maxStreak, currentRunningStreak)
-            } else {
-                currentRunningStreak = 0
-            }
-        }
+		for summary in summaries {
+			if summary.reachedGoal {
+				if currentRunningStreak == 0 {
+					currentStartDate = summary.date
+				}
+				currentRunningStreak += 1
+				
+				// Si acabamos de superar el récord anterior o igualarlo con una racha nueva
+				if currentRunningStreak > maxStreak {
+					maxStreak = currentRunningStreak
+					if let start = currentStartDate {
+						longestRange = start...summary.date
+					}
+				}
+			} else {
+				currentRunningStreak = 0
+				currentStartDate = nil
+			}
+		}
 
-        return maxStreak
-    }
+		return (maxStreak, longestRange)
+	}
 }

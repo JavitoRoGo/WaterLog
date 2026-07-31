@@ -56,22 +56,34 @@ struct StreaksView: View {
         )
     }
 
-    private var longestStreakSection: some View {
-        let streakInfo = Streaks.calculateStreaks(from: getDailySummaries())
-        
-        return HStack {
-            Image(systemName: "trophy.fill")
-                .foregroundStyle(.orange)
-            Text("Best streak: \(streakInfo.longestStreak) days")
-                .font(.title3)
-            Spacer()
-        }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .strokeBorder(.orange.opacity(0.3), lineWidth: 1)
-        )
-    }
+	private var longestStreakSection: some View {
+		let streakInfo = Streaks.calculateStreaks(from: getDailySummaries())
+		
+		return VStack(alignment: .leading, spacing: 4) {
+			HStack {
+				Image(systemName: "trophy.fill")
+					.foregroundStyle(.orange)
+				Text("Best streak: \(streakInfo.longestStreak) days")
+					.font(.title3)
+				Spacer()
+			}
+			
+			if let range = streakInfo.longestStreakRange {
+				let startStr = range.lowerBound.formatted(date: .numeric, time: .omitted)
+				let endStr = range.upperBound.formatted(date: .numeric, time: .omitted)
+				
+				Text("\(startStr) — \(endStr)")
+					.font(.footnote)
+					.foregroundStyle(.secondary)
+					.padding(.leading, 32)
+			}
+		}
+		.padding()
+		.background(
+			RoundedRectangle(cornerRadius: 16)
+				.strokeBorder(.orange.opacity(0.3), lineWidth: 1)
+		)
+	}
 
     private var achievementsGrid: some View {
         let achievements = Streaks.calculateHistoricalAchievements(from: getDailySummaries())
@@ -125,28 +137,35 @@ struct StreaksView: View {
 struct AchievementCard: View {
     let achievement: HistoricalAchievement
     
-    var body: some View {
-        VStack(spacing: 12) {
-            Text(achievement.type.emoji)
-                .font(.system(size: 40))
-            
-            Text(achievement.type.displayName)
-                .font(.caption.bold())
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-            
-            Text("x\(achievement.count)")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 16)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(uiColor: .tertiarySystemBackground))
-                .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
-        )
-    }
+	var body: some View {
+		VStack(spacing: 12) {
+			Text(achievement.type.emoji)
+				.font(.system(size: 40))
+			
+			VStack(spacing: 2) {
+				Text(achievement.type.displayName)
+					.font(.system(size: 14, weight: .bold))
+					.multilineTextAlignment(.center)
+					.lineLimit(2)
+				
+				Text(achievement.type.requirementDescription)
+					.font(.system(size: 10))
+					.foregroundStyle(.secondary)
+			}
+			
+			Text("x\(achievement.count)")
+//				.font(.caption)
+				.fontWeight(.semibold)
+				.foregroundStyle(.blue)
+		}
+		.frame(maxWidth: .infinity)
+		.padding(.vertical, 16)
+		.background(
+			RoundedRectangle(cornerRadius: 16)
+				.fill(Color(uiColor: .tertiarySystemBackground))
+				.shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
+		)
+	}
 }
 
 #Preview {

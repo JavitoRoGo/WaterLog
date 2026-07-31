@@ -11,7 +11,7 @@ struct ContentView: View {
                 StatisticsView()
             }
 			
-			Tab("Progress", systemImage: "chart.bar.fill") {
+			Tab("Achievements", systemImage: "chart.bar.fill") {
 				StreaksView()
 			}
 
