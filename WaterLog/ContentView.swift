@@ -10,6 +10,10 @@ struct ContentView: View {
             Tab("Historical", systemImage: "chart.bar.xaxis") {
                 StatisticsView()
             }
+			
+			Tab("Progress", systemImage: "chart.bar.fill") {
+				StreaksView()
+			}
 
             Tab("Settings", systemImage: "gearshape") {
                 SettingsView()
