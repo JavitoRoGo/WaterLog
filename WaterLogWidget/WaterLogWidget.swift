@@ -73,12 +73,12 @@ struct Provider: TimelineProvider {
             let entries = try context.fetch(entryFetch)
 
             // 2. Obtener Objetivos
-            let goalFetch = FetchDescriptor<DailyGoal>()
+			let goalFetch = FetchDescriptor<DailyGoal>(predicate: #Predicate<DailyGoal> { $0.date >= startDate })
             let goals = try context.fetch(goalFetch)
 
             // 3. Obtener Objetivo por Defecto (de AppStorage en el grupo)
             let appGroupDefaults = UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)
-            let defaultGoal = appGroupDefaults?.integer(forKey: "standardGoalMilliliters") ?? IntakeConstants.defaultGoalMilliliters
+			let defaultGoal = appGroupDefaults?.integer(forKey: WaterLogStore.keyForStandardGoalMilliliters) ?? IntakeConstants.defaultGoalMilliliters
 
             return (entries, goals, defaultGoal)
         } catch {
