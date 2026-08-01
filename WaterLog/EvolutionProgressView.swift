@@ -38,19 +38,21 @@ struct EvolutionProgressView: View {
                 // 3. Los Nodos (Hitos)
                 ForEach(milestones, id: \.days) { milestone in
                     let xPosition = calculateX(for: milestone.days, width: width)
-                    let isMilestoneReached = animatedProgress >= CGFloat(milestone.days)/CGFloat(maxThreshold)
+                    let threshold = CGFloat(milestone.days)/CGFloat(maxThreshold)
+                    
+                    // Calculamos un factor de "activación" basado en el progreso real
+                    // Esto nos permite una transición mucho más controlada
+                    let isReached = animatedProgress >= threshold
                     
                     VStack(spacing: 4) {
                         Text(milestone.emoji)
                             .font(.system(size: 16))
-                            .scaleEffect(isMilestoneReached ? 1.2 : 0.8)
-                            .opacity(isMilestoneReached ? 1.0 : 0.4)
-                            // Animación de movimiento vertical (el "brote")
-                            .offset(y: isMilestoneReached ? 0 : 10)
-                            .animation(.spring(response: 0.5, dampingFraction: 0.5).delay(0.1), value: isMilestoneReached)
+                            .scaleEffect(isReached ? 1.2 : 0.8)
+                            .opacity(isReached ? 1.0 : 0.4)
+                            .offset(y: isReached ? 0 : 10)
                         
                         Circle()
-                            .fill(isMilestoneReached ? Color.blue : Color.secondary.opacity(0.3))
+                            .fill(isReached ? Color.blue : Color.secondary.opacity(0.3))
                             .frame(width: 8, height: 8)
                     }
                     .position(x: xPosition, y: centerY - 15)
@@ -65,15 +67,12 @@ struct EvolutionProgressView: View {
             }
         }
         .frame(height: 40)
-        .onAppear {
-            animatedProgress = 0
-            
-            DispatchQueue.main.async {
-                withAnimation(.spring(response: 2.0, dampingFraction: 0.8).delay(0.2)) {
-                    animatedProgress = actualProgress
-                }
-            }
-        }
+		.onAppear {
+			animatedProgress = 0
+			withAnimation(.spring(response: 2.0, dampingFraction: 0.8).delay(0.2)) {
+				animatedProgress = actualProgress
+			}
+		}
         .onChange(of: currentStreak) { _, newValue in
             withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
                 animatedProgress = CGFloat(newValue) / CGFloat(maxThreshold)
