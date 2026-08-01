@@ -26,7 +26,7 @@ struct StreaksView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Progress")
+            .navigationTitle("Achievements")
         }
     }
 
@@ -35,7 +35,7 @@ struct StreaksView: View {
     private var currentStreakCard: some View {
         let streakInfo = Streaks.calculateStreaks(from: getDailySummaries())
         
-        return VStack(spacing: 12) {
+        return VStack(spacing: 20) {
             Text(streakInfo.currentEvolution.emoji)
                 .font(.system(size: 60))
                 .shadow(radius: 5)
@@ -47,6 +47,18 @@ struct StreaksView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+			
+			// --- NUEVA BARRA DE PROGRESO EVOLUTIVA ---
+			VStack(spacing: 8) {
+				EvolutionProgressView(currentStreak: streakInfo.currentStreak)
+				
+				// Texto de motivación opcional basado en la evolución
+				Text(streakInfo.currentEvolution.evolutionMotivation)
+					.font(.caption2.weight(.medium))
+					.foregroundStyle(.secondary)
+					.textCase(.uppercase)
+			}
+			.padding(.horizontal, 10)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 30)

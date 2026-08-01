@@ -9,11 +9,11 @@ struct StreakResults {
 }
 
 /// Define en qué etapa de crecimiento se encuentra la racha actual.
-enum ConsistencyEvolution {
-    case none        // 0-2 días
-    case initiator   // 3-6 días
-    case constant    // 7-29 días
-    case master      // 30+ días
+enum ConsistencyEvolution: Int, CaseIterable {
+    case none = 0        // 0-2 días
+    case initiator = 3   // 3-6 días
+    case constant = 7    // 7-29 días
+    case master = 30     // 30+ días
 
     /// Emoji que representa visualmente el estado de la racha.
     var emoji: String {
@@ -24,6 +24,15 @@ enum ConsistencyEvolution {
         case .master: return "🌳"     // Un árbol fuerte y establecido
         }
     }
+	
+	var evolutionMotivation: LocalizedStringResource {
+		switch self {
+		case .none: return "Start your journey"
+		case .initiator: return "Keep growing!"
+		case .constant: return "Almost a Master..."
+		case .master: return "Legendary status reached! 🌟"
+		}
+	}
 }
 
 /// Representa un logro histórico de la galería del usuario.

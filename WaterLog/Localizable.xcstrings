@@ -24,6 +24,16 @@
       },
       "shouldTranslate" : false
     },
+    "%@ — %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ — %2$@"
+          }
+        }
+      }
+    },
     "%@ daily goal (%@)" : {
       "localizations" : {
         "en" : {
@@ -86,6 +96,46 @@
         }
       }
     },
+    "%lld days" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld days"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld days"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld days"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "1 year" : {
       "localizations" : {
         "es" : {
@@ -141,6 +191,15 @@
           }
         }
       }
+    },
+    "7-day streaks" : {
+
+    },
+    "30-day streaks" : {
+
+    },
+    "Achievements" : {
+
     },
     "Add" : {
       "localizations" : {
@@ -338,6 +397,9 @@
         }
       }
     },
+    "Almost a Master..." : {
+
+    },
     "Amount" : {
       "localizations" : {
         "es" : {
@@ -365,6 +427,9 @@
           }
         }
       }
+    },
+    "Best streak: %lld days" : {
+
     },
     "Button 1" : {
       "localizations" : {
@@ -477,6 +542,9 @@
           }
         }
       }
+    },
+    "Current streak" : {
+
     },
     "Custom" : {
       "localizations" : {
@@ -870,6 +938,9 @@
         }
       }
     },
+    "Hydration Constant" : {
+
+    },
     "Import data" : {
       "localizations" : {
         "es" : {
@@ -926,6 +997,12 @@
         }
       }
     },
+    "Keep growing!" : {
+
+    },
+    "Legendary status reached! 🌟" : {
+
+    },
     "Month" : {
       "localizations" : {
         "es" : {
@@ -981,6 +1058,9 @@
           }
         }
       }
+    },
+    "No achievements yet" : {
+
     },
     "No entries today" : {
       "localizations" : {
@@ -1271,6 +1351,9 @@
         }
       }
     },
+    "Start your journey" : {
+
+    },
     "Today" : {
       "localizations" : {
         "es" : {
@@ -1445,11 +1528,17 @@
         }
       }
     },
+    "Water Master" : {
+
+    },
     "WaterLog" : {
       "shouldTranslate" : false
     },
     "WaterLog Backup" : {
       "shouldTranslate" : false
+    },
+    "x%lld" : {
+
     },
     "Year" : {
       "localizations" : {
@@ -1534,6 +1623,9 @@
           }
         }
       }
+    },
+    "Your Medals" : {
+
     }
   },
   "version" : "1.2"
