@@ -58,8 +58,8 @@ enum AchievementType: CaseIterable {
 	/// Descripción corta del requisito para dar contexto al usuario.
 	var requirementDescription: LocalizedStringResource {
 		switch self {
-		case .hydrationConstant: return "7-day streaks"
-		case .waterMaster: return "30-day streaks"
+		case .hydrationConstant: return "7-day streak"
+		case .waterMaster: return "30-day streak"
 		}
 	}
 

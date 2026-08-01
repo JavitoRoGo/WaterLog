@@ -84,7 +84,7 @@ struct StreaksView: View {
 				let startStr = range.lowerBound.formatted(date: .numeric, time: .omitted)
 				let endStr = range.upperBound.formatted(date: .numeric, time: .omitted)
 				
-				Text("\(startStr) — \(endStr)")
+				Text("\(startStr) - \(endStr)")
 					.font(.footnote)
 					.foregroundStyle(.secondary)
 					.padding(.leading, 32)

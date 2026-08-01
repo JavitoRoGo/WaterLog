@@ -65,13 +65,15 @@ struct EvolutionProgressView: View {
             }
         }
         .frame(height: 40)
-		.onAppear {
-			animatedProgress = 0
-			
-			withAnimation(.spring(response: 2.0, dampingFraction: 0.8).delay(0.2)) {
-				animatedProgress = actualProgress
-			}
-		}
+        .onAppear {
+            animatedProgress = 0
+            
+            DispatchQueue.main.async {
+                withAnimation(.spring(response: 2.0, dampingFraction: 0.8).delay(0.2)) {
+                    animatedProgress = actualProgress
+                }
+            }
+        }
         .onChange(of: currentStreak) { _, newValue in
             withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
                 animatedProgress = CGFloat(newValue) / CGFloat(maxThreshold)
