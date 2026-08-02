@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 struct EditDailyGoalView: View {
     @Environment(\.modelContext) private var modelContext
@@ -117,6 +118,7 @@ struct EditDailyGoalView: View {
         
         do {
             try modelContext.save()
+			WidgetKit.WidgetCenter.shared.reloadAllTimelines()
         } catch {
             print("Error saving goal: \(error)")
         }
