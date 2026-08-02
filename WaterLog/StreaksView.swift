@@ -41,14 +41,13 @@ struct StreaksView: View {
                 .shadow(radius: 5)
             
             VStack(spacing: 4) {
-                Text("\(streakInfo.currentStreak) days")
-                    .font(.title.bold())
+				AnimatedCounterView(targetValue: streakInfo.currentStreak)
+				
                 Text("Current streak")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
 			
-			// --- NUEVA BARRA DE PROGRESO EVOLUTIVA ---
 			VStack(spacing: 8) {
 				EvolutionProgressView(currentStreak: streakInfo.currentStreak)
 				
@@ -130,7 +129,6 @@ struct StreaksView: View {
     // MARK: - Helpers
 
     private func getDailySummaries() -> [DailyIntakeSummary] {
-        // Obtenemos un rango amplio para cubrir el historial de logros
         let calendar = Calendar.current
         let startDate = calendar.date(byAdding: .year, value: -1, to: .now) ?? .now
         
