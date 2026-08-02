@@ -12,17 +12,19 @@ struct StreaksView: View {
     ) private var defaultGoal: Int = IntakeConstants.defaultGoalMilliliters
 
     var body: some View {
+		let summaries = getDailySummaries()
+		
         NavigationStack {
             ScrollView {
                 VStack(spacing: 25) {
                     // 1. Card de Racha Actual (Evolución)
-                    currentStreakCard
+					currentStreakCard(summaries: summaries)
                     
                     // 2. Sección de Récord Histórico
-                    longestStreakSection
+					longestStreakSection(summaries: summaries)
                     
                     // 3. Galería de Logros
-                    achievementsGrid
+					achievementsGrid(summaries: summaries)
                 }
                 .padding()
             }
@@ -32,8 +34,8 @@ struct StreaksView: View {
 
     // MARK: - Subviews
 
-    private var currentStreakCard: some View {
-        let streakInfo = Streaks.calculateStreaks(from: getDailySummaries())
+    private func currentStreakCard(summaries: [DailyIntakeSummary]) -> some View {
+        let streakInfo = Streaks.calculateStreaks(from: summaries)
         
         return VStack(spacing: 20) {
             Text(streakInfo.currentEvolution.emoji)
@@ -67,26 +69,68 @@ struct StreaksView: View {
         )
     }
 
-	private var longestStreakSection: some View {
-		let streakInfo = Streaks.calculateStreaks(from: getDailySummaries())
+	private func longestStreakSection(summaries: [DailyIntakeSummary]) -> some View {
+		let streakInfo = Streaks.calculateStreaks(from: summaries)
+		let maxRecord = Streaks.calculateExtremeRecords(from: summaries)
+		let maxMonthly = Streaks.calculateMaxMonthlyIntake(from: summaries)
 		
-		return VStack(alignment: .leading, spacing: 4) {
-			HStack {
-				Image(systemName: "trophy.fill")
-					.foregroundStyle(.orange)
-				Text("Best streak: \(streakInfo.longestStreak) days")
-					.font(.title3)
-				Spacer()
+		return VStack(alignment: .leading, spacing: 12) {
+			// --- SUBSECCIÓN: MEJOR RACHA ---
+			VStack(alignment: .leading, spacing: 4) {
+				HStack {
+					Image(systemName: "trophy.fill")
+						.foregroundStyle(.orange)
+					Text("Best streak: \(streakInfo.longestStreak) days")
+						.font(.headline)
+				}
+				
+				if let range = streakInfo.longestStreakRange {
+					let startStr = range.lowerBound.formatted(date: .numeric, time: .omitted)
+					let endStr = range.upperBound.formatted(date: .numeric, time: .omitted)
+					Text("\(startStr) - \(endStr)")
+						.font(.footnote)
+						.foregroundStyle(.secondary)
+						.padding(.leading, 26)
+				}
 			}
 			
-			if let range = streakInfo.longestStreakRange {
-				let startStr = range.lowerBound.formatted(date: .numeric, time: .omitted)
-				let endStr = range.upperBound.formatted(date: .numeric, time: .omitted)
-				
-				Text("\(startStr) - \(endStr)")
-					.font(.footnote)
-					.foregroundStyle(.secondary)
-					.padding(.leading, 32)
+			Divider()
+			
+			// --- SUBSECCIÓN: MÁXIMA INGESTA ---
+			if let record = maxRecord {
+				VStack(alignment: .leading, spacing: 4) {
+					HStack {
+						Image(systemName: "drop.fill")
+							.foregroundStyle(.blue)
+						Text("Max daily intake: \(WaterLogFormatters.volumeFromMilliliters(record.totalMilliliters))")
+							.font(.headline)
+					}
+					
+					Text(record.date.formatted(date: .numeric, time: .omitted))
+						.font(.footnote)
+						.foregroundStyle(.secondary)
+						.padding(.leading, 26)
+				}
+			}
+			
+			Divider()
+
+			// --- SUBSECCIÓN: MÁXIMA INGESTA (MES) ---
+			if let monthly = maxMonthly {
+				VStack(alignment: .leading, spacing: 4) {
+					HStack {
+						Image(systemName: "calendar.badge.clock")
+							.foregroundStyle(.purple)
+						Text("Best month: \(WaterLogFormatters.largeVolumeFromMilliliters(monthly.totalMilliliters))")
+							.font(.headline)
+					}
+					
+					// Mostramos el nombre del mes (ej: "octubre 2023")
+					Text(monthly.month.formatted(.dateTime.month(.wide).year()))
+						.font(.footnote)
+						.foregroundStyle(.secondary)
+						.padding(.leading, 26)
+				}
 			}
 		}
 		.padding()
@@ -96,8 +140,8 @@ struct StreaksView: View {
 		)
 	}
 
-    private var achievementsGrid: some View {
-        let achievements = Streaks.calculateHistoricalAchievements(from: getDailySummaries())
+    private func achievementsGrid(summaries: [DailyIntakeSummary]) -> some View {
+        let achievements = Streaks.calculateHistoricalAchievements(from: summaries)
         
 		return VStack {
 			if achievements.isEmpty {
@@ -164,7 +208,6 @@ struct AchievementCard: View {
 			}
 			
 			Text("x\(achievement.count)")
-//				.font(.caption)
 				.fontWeight(.semibold)
 				.foregroundStyle(.blue)
 		}
