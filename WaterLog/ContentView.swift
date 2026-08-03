@@ -16,7 +16,7 @@ struct ContentView: View {
 			}
 
             Tab("Insights", systemImage: "chart.xyaxis.line") {
-                
+                InsightsView()
             }
         }
     }

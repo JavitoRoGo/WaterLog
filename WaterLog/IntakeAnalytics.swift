@@ -178,4 +178,47 @@ enum IntakeAnalytics {
         guard calendar.isDateInToday(date) else { return }
         WidgetKit.WidgetCenter.shared.reloadAllTimelines()
     }
+	
+	/// Cálculos para Insights
+	
+	struct TrendResult {
+		let isImproving: Bool
+		let message: LocalizedStringResource
+		let shortTermAverage: Int // 7d
+		let longTermAverage: Int  // 30d
+	}
+
+	static func calculateConsumptionTrend(from summaries: [DailyIntakeSummary]) -> TrendResult {
+		let calendar = Calendar.current
+		let now = Date()
+		
+		// Filtramos los últimos 7 días (incluyendo hoy)
+		let sevenDaysAgo = calendar.date(byAdding: .day, value: -6, to: now) ?? now
+		let last7Days = summaries.filter { $0.date >= sevenDaysAgo }
+		let avg7d = last7Days.isEmpty ? 0 : last7Days.reduce(0) { $0 + $1.totalMilliliters } / last7Days.count
+		
+		// Filtramos los últimos 30 días (incluyendo hoy)
+		let thirtyDaysAgo = calendar.date(byAdding: .day, value: -29, to: now) ?? now
+		let last30Days = summaries.filter { $0.date >= thirtyDaysAgo }
+		let avg30d = last30Days.isEmpty ? 0 : last30Days.reduce(0) { $0 + $1.totalMilliliters } / last30Days.count
+		
+		let isImproving = avg7d > avg30d
+		
+		// Generamos el mensaje según tu propuesta
+		let message: LocalizedStringResource
+		if avg7d == 0 && avg30d == 0 {
+			message = "Start logging to see trends"
+		} else if isImproving {
+			message = "Your hydration is on the rise 📈"
+		} else {
+			message = "Hydration is down compared to last month, keep it up! 📉"
+		}
+		
+		return TrendResult(
+			isImproving: isImproving,
+			message: message,
+			shortTermAverage: avg7d,
+			longTermAverage: avg30d
+		)
+	}
 }

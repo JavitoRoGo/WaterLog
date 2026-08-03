@@ -709,6 +709,9 @@
         }
       }
     },
+    "Consumption Trend" : {
+
+    },
     "Current streak" : {
       "localizations" : {
         "es" : {
@@ -1213,6 +1216,9 @@
           }
         }
       }
+    },
+    "Hydration is down compared to last month, keep it up! 📉" : {
+
     },
     "Import data" : {
       "localizations" : {
@@ -1755,6 +1761,9 @@
         }
       }
     },
+    "Start logging to see trends" : {
+
+    },
     "Start your journey" : {
       "localizations" : {
         "es" : {
@@ -2077,6 +2086,9 @@
           }
         }
       }
+    },
+    "Your hydration is on the rise 📈" : {
+
     },
     "Your Medals" : {
       "localizations" : {
