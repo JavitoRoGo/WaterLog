@@ -4,6 +4,7 @@ import SwiftUI
 struct TodayView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var currentDate = Date.now
+	@State private var showingSettingsView: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -13,6 +14,18 @@ struct TodayView: View {
                 emptyTitle: "No entries today",
                 emptyDescription: "Add some water to stay hydrated!"
             )
+			.toolbar {
+				ToolbarItem(placement: .navigationBarLeading) {
+					Button {
+						showingSettingsView.toggle()
+					} label: {
+						Image(systemName: "gearshape")
+					}
+				}
+			}
+			.sheet(isPresented: $showingSettingsView) {
+				SettingsView()
+			}
         }
         .task {
             await refreshDateAtDayBoundaries()
@@ -58,6 +71,8 @@ struct TodayView: View {
 }
 
 #Preview {
-	TodayView()
-		.modelContainer(for: WaterIntakeEntry.self, inMemory: true)
+	NavigationStack {
+		TodayView()
+			.modelContainer(for: WaterIntakeEntry.self, inMemory: true)
+	}
 }

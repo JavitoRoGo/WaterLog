@@ -11,12 +11,12 @@ struct ContentView: View {
                 StatisticsView()
             }
 			
-			Tab("Achievements", systemImage: "chart.bar.fill") {
+			Tab("Achievements", systemImage: "trophy") {
 				StreaksView()
 			}
 
-            Tab("Settings", systemImage: "gearshape") {
-                SettingsView()
+            Tab("Insights", systemImage: "chart.xyaxis.line") {
+                
             }
         }
     }
