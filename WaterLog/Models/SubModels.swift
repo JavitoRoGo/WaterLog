@@ -117,3 +117,13 @@ struct StatisticsChartData {
 		return "\(start) - \(end)"
 	}
 }
+
+struct WeeklyEvolutionResult {
+	let percentageChange: Double? // nil si no hay datos de la semana anterior para comparar
+	let currentWeekTotal: Int
+	let previousWeekTotal: Int
+	
+	var isPositive: Bool {
+		(percentageChange ?? 0) >= 0
+	}
+}

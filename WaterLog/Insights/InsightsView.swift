@@ -17,11 +17,11 @@ struct InsightsView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    // 1. Tendencia de Consumo (Implementada)
+                    // 1. Tendencia de Consumo
                     ConsumptionTrendSection(summaries: summaries)
                     
-                    // 2. Evolución Semanal (Placeholder)
-                    insightPlaceholder(title: "Weekly Evolution", subtitle: "Coming soon...")
+                    // 2. Evolución Semanal
+                    WeeklyEvolutionSection(summaries: summaries)
                     
                     // 3. Índice de Estabilidad (Placeholder)
                     insightPlaceholder(title: "Stability Index", subtitle: "Coming soon...")

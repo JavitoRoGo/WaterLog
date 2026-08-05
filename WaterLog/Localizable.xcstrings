@@ -89,6 +89,17 @@
         }
       }
     },
+    "%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
     "1 year" : {
       "localizations" : {
         "es" : {
@@ -1382,6 +1393,62 @@
         }
       }
     },
+    "Last 7d" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Últimos 7 días"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7 derniers j."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ultimi 7 gg."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "直近7日間"
+          }
+        }
+      }
+    },
+    "Last 30d" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Últimos 30 días"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 derniers j."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ultimi 30 gg."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "直近30日間"
+          }
+        }
+      }
+    },
     "Legendary status reached! 🌟" : {
       "localizations" : {
         "es" : {
@@ -1578,6 +1645,34 @@
         }
       }
     },
+    "Not enough data" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos insuficientes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Données insuffisantes"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dati insufficienti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "データ不足"
+          }
+        }
+      }
+    },
     "OK" : {
       "shouldTranslate" : false
     },
@@ -1633,6 +1728,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プリセット"
+          }
+        }
+      }
+    },
+    "Previous week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semana anterior"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semaine précédente"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settimana precedente"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前週"
           }
         }
       }
@@ -1867,6 +1990,34 @@
         }
       }
     },
+    "This week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semana actual"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette semaine"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa settimana"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今週"
+          }
+        }
+      }
+    },
     "Today" : {
       "localizations" : {
         "es" : {
@@ -2041,6 +2192,34 @@
         }
       }
     },
+    "vs last week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vs la semana pasada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vs la semaine dernière"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vs la scorsa settimana"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先週との比較"
+          }
+        }
+      }
+    },
     "Water Master" : {
       "localizations" : {
         "es" : {
@@ -2074,6 +2253,34 @@
     },
     "WaterLog Backup" : {
       "shouldTranslate" : false
+    },
+    "Weekly Evolution" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evolución semanal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Évolution hebdomadaire"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evoluzione settimanale"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "週間推移"
+          }
+        }
+      }
     },
     "x%lld" : {
       "shouldTranslate" : false

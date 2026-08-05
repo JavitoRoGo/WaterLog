@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TrendMetricView: View {
-    let label: String
+    let label: LocalizedStringResource
     let value: String
     
     var body: some View {

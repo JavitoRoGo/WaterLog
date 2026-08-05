@@ -185,4 +185,38 @@ enum IntakeAnalytics {
 			longTermAverage: avg30d
 		)
 	}
+
+	static func calculateWeeklyEvolution(from summaries: [DailyIntakeSummary]) -> WeeklyEvolutionResult {
+		let calendar = Calendar.current
+		let today = calendar.startOfDay(for: .now)
+		
+		// 1. Obtener los últimos 7 días (incluyendo hoy)
+		guard let sevenDaysAgo = calendar.date(byAdding: .day, value: -6, to: today) else {
+			return WeeklyEvolutionResult(percentageChange: nil, currentWeekTotal: 0, previousWeekTotal: 0)
+		}
+		
+		let currentWeekSummaries = summaries.filter { $0.date >= sevenDaysAgo && $0.date <= today }
+		let currentWeekTotal = currentWeekSummaries.reduce(0) { $0 + $1.totalMilliliters }
+		
+		// 2. Obtener los 7 días anteriores (del día -13 al día -7)
+		guard let fourteenDaysAgo = calendar.date(byAdding: .day, value: -13, to: today),
+			  let eightDaysAgo = calendar.date(byAdding: .day, value: -7, to: today) else {
+			return WeeklyEvolutionResult(percentageChange: nil, currentWeekTotal: currentWeekTotal, previousWeekTotal: 0)
+		}
+		
+		let previousWeekSummaries = summaries.filter { $0.date >= fourteenDaysAgo && $0.date < eightDaysAgo }
+		let previousWeekTotal = previousWeekSummaries.reduce(0) { $0 + $1.totalMilliliters }
+		
+		// 3. Calcular porcentaje
+		if previousWeekTotal == 0 {
+			return WeeklyEvolutionResult(percentageChange: nil, currentWeekTotal: currentWeekTotal, previousWeekTotal: previousWeekTotal)
+		}
+		
+		let change = (Double(currentWeekTotal - previousWeekTotal) / Double(previousWeekTotal))
+		return WeeklyEvolutionResult(
+			percentageChange: change,
+			currentWeekTotal: currentWeekTotal,
+			previousWeekTotal: previousWeekTotal
+		)
+	}
 }
