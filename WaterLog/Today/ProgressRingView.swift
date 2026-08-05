@@ -49,7 +49,7 @@ struct ProgressRingView: View {
 #Preview {
 	ProgressRingView(
 		totalMilliliters: 1200,
-		goalMilliliters: 2000, // He usado un valor literal para evitar dependencias de constantes que cambian
+		goalMilliliters: 2000,
 		lineWidth: 20,
 		font: .system(size: 24, weight: .bold)
 	)

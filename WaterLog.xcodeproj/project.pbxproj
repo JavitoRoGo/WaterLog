@@ -55,14 +55,14 @@
 		444603762FB6529B00E3D43E /* Exceptions for "WaterLog" folder in "WaterLogWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				DailyGoal.swift,
-				Formatters.swift,
-				IntakeAnalytics.swift,
+				Helpers/Formatters.swift,
+				Helpers/IntakeAnalytics.swift,
+				Helpers/WaterLogStore.swift,
 				Localizable.xcstrings,
-				ProgressRingView.swift,
-				StatisticsChartData.swift,
-				WaterIntakeEntry.swift,
-				WaterLogStore.swift,
+				Models/DailyGoal.swift,
+				Models/SubModels.swift,
+				Models/WaterIntakeEntry.swift,
+				Today/ProgressRingView.swift,
 			);
 			target = 444603262FB5E2FB00E3D43E /* WaterLogWidgetExtension */;
 		};

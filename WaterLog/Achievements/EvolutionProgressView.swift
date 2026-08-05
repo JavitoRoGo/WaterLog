@@ -40,8 +40,6 @@ struct EvolutionProgressView: View {
                     let xPosition = calculateX(for: milestone.days, width: width)
                     let threshold = CGFloat(milestone.days)/CGFloat(maxThreshold)
                     
-                    // Calculamos un factor de "activación" basado en el progreso real
-                    // Esto nos permite una transición mucho más controlada
                     let isReached = animatedProgress >= threshold
                     
                     VStack(spacing: 4) {

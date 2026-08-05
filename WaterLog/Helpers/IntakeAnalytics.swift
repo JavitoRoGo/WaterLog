@@ -2,8 +2,7 @@ import Foundation
 import WidgetKit
 
 enum IntakeConstants {
-    // Este valor se usará solo como respaldo extremo si no hay nada en AppStorage, 
-    // pero la lógica principal vendrá de los parámetros de las funciones.
+    // Este valor se usará solo como respaldo extremo si no hay nada en AppStorage,
     static let defaultGoalMilliliters = 2_000
     static let appLocale = Locale.autoupdatingCurrent
 }
@@ -25,34 +24,6 @@ enum StatisticsPeriod: CaseIterable, Identifiable {
             "Total"
         }
     }
-}
-
-struct DailyIntakeSummary: Identifiable, Hashable {
-    let date: Date
-    let totalMilliliters: Int
-    let dailyGoal: Int // Añadido para saber contra qué comparar en cada día
-
-    var id: Date { date }
-    var measurement: Measurement<UnitVolume> { Measurement(value: Double(totalMilliliters), unit: .milliliters) }
-    var progress: Double { IntakeAnalytics.progress(for: totalMilliliters, goal: dailyGoal) }
-    var percentage: Int { IntakeAnalytics.percentage(for: totalMilliliters, goal: dailyGoal) }
-    var reachedGoal: Bool { totalMilliliters >= dailyGoal }
-}
-
-struct MonthIntakeSummary: Identifiable, Hashable {
-    let monthStart: Date
-    let totalMilliliters: Int
-    let averageDailyMilliliters: Int
-	
-	var id: Date { monthStart }
-}
-
-struct YearIntakeSummary: Identifiable, Hashable {
-    let yearStart: Date
-    let totalMilliliters: Int
-    let averageDailyMilliliters: Int
-	
-	var id: Date { yearStart }
 }
 
 enum IntakeAnalytics {
@@ -180,13 +151,6 @@ enum IntakeAnalytics {
     }
 	
 	/// Cálculos para Insights
-	
-	struct TrendResult {
-		let isImproving: Bool
-		let message: LocalizedStringResource
-		let shortTermAverage: Int // 7d
-		let longTermAverage: Int  // 30d
-	}
 
 	static func calculateConsumptionTrend(from summaries: [DailyIntakeSummary]) -> TrendResult {
 		let calendar = Calendar.current

@@ -32,6 +32,5 @@ struct AnimatedCounterView: View {
 }
 
 #Preview {
-    // Probamos con una duración más larga para apreciar el efecto de subida
     AnimatedCounterView(targetValue: 10)
 }

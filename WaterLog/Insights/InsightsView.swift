@@ -18,7 +18,7 @@ struct InsightsView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     // 1. Tendencia de Consumo (Implementada)
-                    consumptionTrendSection(summaries: summaries)
+                    ConsumptionTrendSection(summaries: summaries)
                     
                     // 2. Evolución Semanal (Placeholder)
                     insightPlaceholder(title: "Weekly Evolution", subtitle: "Coming soon...")
@@ -36,41 +36,6 @@ struct InsightsView: View {
             }
             .navigationTitle("Insights")
         }
-    }
-
-    // MARK: - Section 1: Consumption Trend (Implemented)
-
-    @ViewBuilder
-    private func consumptionTrendSection(summaries: [DailyIntakeSummary]) -> some View {
-        let trend = IntakeAnalytics.calculateConsumptionTrend(from: summaries)
-        
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("Consumption Trend")
-                    .font(.headline)
-                Spacer()
-                Image(systemName: trend.isImproving ? "chart.line.uptrend.xyaxis.circle.fill" : "chart.line.downtrend.xyaxis.circle.fill")
-                    .foregroundStyle(trend.isImproving ? .green : .red)
-            }
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text(trend.message)
-                    .font(.subheadline)
-                    .foregroundStyle(.primary)
-                
-                HStack(spacing: 15) {
-					TrendMetricView(label: "Last 7d", value: WaterLogFormatters.volumeFromMilliliters(trend.shortTermAverage))
-                    Divider().frame(height: 30)
-					TrendMetricView(label: "Last 30d", value: WaterLogFormatters.volumeFromMilliliters(trend.longTermAverage))
-                }
-                .padding(.top, 5)
-            }
-        }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(uiColor: .secondarySystemBackground))
-        )
     }
 
     // MARK: - Placeholders & Helpers
@@ -107,23 +72,6 @@ struct InsightsView: View {
             through: .now,
             calendar: calendar
         )
-    }
-}
-
-// MARK: - Supporting Subviews
-
-struct TrendMetricView: View {
-    let label: String
-    let value: String
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(label)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-            Text(value)
-                .font(.callout.bold())
-        }
     }
 }
 
