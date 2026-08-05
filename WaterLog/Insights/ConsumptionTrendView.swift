@@ -17,11 +17,12 @@ struct ConsumptionTrendSection: View {
 	var body: some View {
 		VStack(alignment: .leading, spacing: 12) {
 			HStack {
-				Text("Consumption Trend")
+				Text("Hydration Trend")
 					.font(.headline)
 				Spacer()
 				Image(systemName: trend.isImproving ? "chart.line.uptrend.xyaxis.circle.fill" : "chart.line.downtrend.xyaxis.circle.fill")
 					.foregroundStyle(trend.isImproving ? .green : .red)
+					.font(.largeTitle)
 			}
 			
 			VStack(alignment: .leading, spacing: 8) {

@@ -709,9 +709,6 @@
         }
       }
     },
-    "Consumption Trend" : {
-
-    },
     "Current streak" : {
       "localizations" : {
         "es" : {
@@ -1218,7 +1215,60 @@
       }
     },
     "Hydration is down compared to last month, keep it up! 📉" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu hidratación ha bajado con respecto al mes pasado "
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'hydratation est en baisse par rapport au mois dernier 📉"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'idratazione è diminuita rispetto al mese scorso 📉"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先月より水分補給が減っています。この調子で頑張りましょう！ 📉"
+          }
+        }
+      }
+    },
+    "Hydration Trend" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendencia de hidratación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendances d'hydratation"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendenze di idratazione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分の傾向"
+          }
+        }
+      }
     },
     "Import data" : {
       "localizations" : {
@@ -1762,7 +1812,32 @@
       }
     },
     "Start logging to see trends" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empieza a registrar para ver tendencias"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencez à enregistrer pour voir les tendances"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inizia a registrare per vedere le tendenze"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "傾向を確認するために記録を始めましょう"
+          }
+        }
+      }
     },
     "Start your journey" : {
       "localizations" : {
@@ -2088,7 +2163,32 @@
       }
     },
     "Your hydration is on the rise 📈" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu hidratación va en aumento. ¡Sigue así! 📈"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre hydratation est en hausse, continue ! 📈"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tua idratazione è in aumento, continua così! 📈"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分補給が増えています！"
+          }
+        }
+      }
     },
     "Your Medals" : {
       "localizations" : {
