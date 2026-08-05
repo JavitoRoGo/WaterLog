@@ -76,24 +76,6 @@ struct InsightsView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: WaterIntakeEntry.self, DailyGoal.self, configurations: config)
-    
-    // Mock data para probar la tendencia (Mejorando)
-    let context = container.mainContext
-    let calendar = Calendar.current
-    let today = calendar.startOfDay(for: .now)
-
-    for i in 0..<40 {
-        if let date = calendar.date(byAdding: .day, value: -i, to: today) {
-            // Los últimos 7 días bebemos mucho (3000ml), el resto menos (1500ml)
-            let amount = i < 7 ? 3000 : 1500
-            context.insert(WaterIntakeEntry(date: date, amount: amount))
-        }
-    }
-
-    return NavigationStack {
-        InsightsView()
-            .modelContainer(container)
-    }
+    InsightsView()
+		.previewContainer(days: 20)
 }

@@ -167,22 +167,13 @@ private extension View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    // Incluimos DailyGoal en el contenedor para que no falle el preview
-    let container = try! ModelContainer(for: WaterIntakeEntry.self, DailyGoal.self, configurations: config)
-    
-    let entry = WaterIntakeEntry(date: .now, amount: 500)
-    container.mainContext.insert(entry)
-	let goal = DailyGoal(date: .now, amount: 1000)
-	container.mainContext.insert(goal)
-
-    return NavigationStack {
-        DailyIntakeEditorContent(
-            date: .now,
-            title: .localized("Today"),
-            emptyTitle: "No entries",
-            emptyDescription: "Add some water entries"
-        )
-    }
-    .modelContainer(container)
+	NavigationStack {
+		DailyIntakeEditorContent(
+			date: .now,
+			title: .localized("Today"),
+			emptyTitle: "No entries",
+			emptyDescription: "Add some water entries"
+		)
+	}
+	.previewContainer(days: 1)
 }

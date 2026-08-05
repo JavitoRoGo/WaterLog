@@ -46,5 +46,5 @@ struct ConsumptionTrendSection: View {
 }
 
 #Preview {
-	ConsumptionTrendSection(summaries: [])
+	ConsumptionTrendSection(summaries: MockData.dailySummaries(days: 30, streak: 10))
 }

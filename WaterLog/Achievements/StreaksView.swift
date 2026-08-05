@@ -50,28 +50,6 @@ struct StreaksView: View {
 }
 
 #Preview {
-	let config = ModelConfiguration(isStoredInMemoryOnly: true)
-	let container = try! ModelContainer(for: WaterIntakeEntry.self, DailyGoal.self, configurations: config)
-	
-	let context = container.mainContext
-	let calendar = Calendar.current
-	let today = calendar.startOfDay(for: .now)
-
-	// 1. Creamos un objetivo diario para los próximos 40 días para asegurar logros de largo plazo
-	for i in 0..<40 {
-		if let date = calendar.date(byAdding: .day, value: -i, to: today) {
-			let goal = DailyGoal(date: date, amount: 2000)
-			context.insert(goal)
-			
-			// 2. Registramos entradas de agua para cumplir el objetivo en cada uno de esos días
-			// Esto garantiza que se generen bloques de cumplimiento (rachas)
-			let entry = WaterIntakeEntry(date: date, amount: 2500)
-			context.insert(entry)
-		}
-	}
-
-	return NavigationStack {
-		StreaksView()
-			.modelContainer(container)
-	}
+	StreaksView()
+		.previewContainer(days: 30)
 }

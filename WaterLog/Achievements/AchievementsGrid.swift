@@ -44,5 +44,5 @@ struct AchievementsGrid: View {
 }
 
 #Preview {
-	AchievementsGrid(summaries: [])
+	AchievementsGrid(summaries: MockData.dailySummaries(days: 40, streak: 35))
 }

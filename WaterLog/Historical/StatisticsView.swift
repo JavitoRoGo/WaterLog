@@ -63,5 +63,5 @@ struct StatisticsView: View {
 
 #Preview {
     StatisticsView()
-        .modelContainer(for: WaterIntakeEntry.self, inMemory: true)
+        .previewContainer(days: 40)
 }

@@ -71,8 +71,6 @@ struct TodayView: View {
 }
 
 #Preview {
-	NavigationStack {
-		TodayView()
-			.modelContainer(for: WaterIntakeEntry.self, inMemory: true)
-	}
+	TodayView()
+		.previewContainer(days: 1)
 }

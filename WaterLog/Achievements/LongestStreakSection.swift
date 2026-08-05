@@ -87,5 +87,5 @@ struct LongestStreakSection: View {
 }
 
 #Preview {
-	LongestStreakSection(summaries: [])
+	LongestStreakSection(summaries: MockData.dailySummaries(days: 40, streak: 10))
 }

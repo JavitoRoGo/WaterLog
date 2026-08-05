@@ -35,6 +35,6 @@ struct DailySummaryRow: View {
 }
 
 #Preview {
-	DailySummaryRow(summary: DailyIntakeSummary(date: .now, totalMilliliters: 1500, dailyGoal: 2500))
+	DailySummaryRow(summary: MockData.dailySummaries(days: 2, streak: 1)[0])
 }
 

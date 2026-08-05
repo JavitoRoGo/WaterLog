@@ -49,5 +49,5 @@ struct CurrentStreakCard: View {
 }
 
 #Preview {
-	CurrentStreakCard(summaries: [])
+	CurrentStreakCard(summaries: MockData.dailySummaries(days: 40, streak: 20))
 }

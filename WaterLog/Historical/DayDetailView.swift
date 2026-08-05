@@ -16,11 +16,6 @@ struct DayDetailView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: WaterIntakeEntry.self, configurations: config)
-    
-    return NavigationStack {
-        DayDetailView(date: .now)
-    }
-    .modelContainer(container)
+    DayDetailView(date: .now)
+		.previewContainer(days: 1)
 }
