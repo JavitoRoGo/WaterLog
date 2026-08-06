@@ -26,7 +26,7 @@ struct WeeklyEvolutionSection: View {
             VStack(alignment: .leading, spacing: 8) {
                 if let change = result.percentageChange {
                     HStack(alignment: .firstTextBaseline) {
-						Text("\(result.isPositive ? "+" : "-")\(change.formatted(.percent.precision(.fractionLength(0...2))))")
+						Text("\(result.isPositive ? "+" : "")\(change.formatted(.percent.precision(.fractionLength(0...2))))")
                             .font(.title2.bold())
                             .foregroundStyle(result.isPositive ? .green : .red)
                         

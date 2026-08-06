@@ -219,4 +219,47 @@ enum IntakeAnalytics {
 			previousWeekTotal: previousWeekTotal
 		)
 	}
+	
+	static func calculateStability(from summaries: [DailyIntakeSummary], daysToAnalyze: Int = 14) -> StabilityResult {
+		// Tomamos los últimos N días de datos
+		let recentSummaries = Array(summaries.prefix(daysToAnalyze))
+		let counts = recentSummaries.count
+		
+		guard counts > 1 else {
+			return StabilityResult(stabilityScore: 0, variabilityValue: 0, message: "Not enough data", isStable: false, averageDailyIntake: 0)
+		}
+
+		let values = recentSummaries.map { Double($0.totalMilliliters) }
+		let mean = values.reduce(0, +) / Double(counts)
+		
+		// Calcular Desviación Estándar
+		let sumOfSquaredDifferences = values.map { pow($0 - mean, 2) }.reduce(0, +)
+		let standardDeviation = sqrt(sumOfSquaredDifferences / Double(counts))
+		
+		// El coeficiente de variación (CV) es la clave: CV = Desviación / Media
+		// Un CV bajo significa alta estabilidad.
+		let coefficientOfVariation = mean > 0 ? (standardDeviation / mean) : 1.0
+		
+		// Convertimos el CV a un score de 0 a 1 para mostrar al usuario
+		// Si el CV es < 0.15 (15% de variación), es muy estable.
+		let stabilityScore = max(0, min(1, 1.0 - coefficientOfVariation))
+		let isStable = coefficientOfVariation < 0.20 // Umbral del 20% para considerar "estable"
+
+		let message: LocalizedStringResource
+		if isStable {
+			message = "Your hydration is very consistent! 🏆"
+		} else if counts >= daysToAnalyze {
+			message = "Try to keep a more regular rhythm. ⚖️"
+		} else {
+			message = "Analyzing your patterns..."
+		}
+
+		return StabilityResult(
+			stabilityScore: stabilityScore,
+			variabilityValue: Int(standardDeviation),
+			message: message,
+			isStable: isStable,
+			averageDailyIntake: Int(mean)
+		)
+	}
 }

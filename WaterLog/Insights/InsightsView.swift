@@ -24,7 +24,7 @@ struct InsightsView: View {
                     WeeklyEvolutionSection(summaries: summaries)
                     
                     // 3. Índice de Estabilidad (Placeholder)
-                    insightPlaceholder(title: "Stability Index", subtitle: "Coming soon...")
+                    StabilitySection(summaries: summaries)
                     
                     // 4. Cumplimiento del Objetivo (Placeholder)
                     insightPlaceholder(title: "Goal Success Rate", subtitle: "Coming soon...")

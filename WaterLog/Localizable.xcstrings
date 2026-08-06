@@ -492,6 +492,62 @@
         }
       }
     },
+    "Analyzing your patterns..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizando tus hábitos…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse de vos habitudes..."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analisi delle tue abitudini..."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "傾向を分析中..."
+          }
+        }
+      }
+    },
+    "Avg. Intake" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingesta media"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apport moyen"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assunzione media"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "平均摂取量"
+          }
+        }
+      }
+    },
     "Best month: %@" : {
       "localizations" : {
         "es" : {
@@ -720,6 +776,34 @@
         }
       }
     },
+    "Consistent Habit" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hábito constante"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Habitude régulière\t"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abitudine costante"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "規則的な習慣"
+          }
+        }
+      }
+    },
     "Current streak" : {
       "localizations" : {
         "es" : {
@@ -856,6 +940,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1日の目標を保存しました"
+          }
+        }
+      }
+    },
+    "Daily Variation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variación diaria"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variation quotidienne"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variazione giornaliera"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日次変動"
           }
         }
       }
@@ -1230,7 +1342,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tu hidratación ha bajado con respecto al mes pasado "
+            "value" : "Tu hidratación ha bajado con respecto al mes pasado 📉"
           }
         },
         "fr" : {
@@ -1934,6 +2046,34 @@
         }
       }
     },
+    "Stability Index" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Índice de estabilidad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indice de stabilité"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indice di stabilità"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安定指数"
+          }
+        }
+      }
+    },
     "Start logging to see trends" : {
       "localizations" : {
         "es" : {
@@ -2108,6 +2248,34 @@
         }
       }
     },
+    "Try to keep a more regular rhythm. ⚖️" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intenta mantener un ritmo más regular ⚖️"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essayez de garder un rythme plus régulier ⚖️"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca di mantenere un ritmo più regolare ⚖️"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もっと規則的なリズムを心がけましょう ⚖️"
+          }
+        }
+      }
+    },
     "Update your daily goal" : {
       "localizations" : {
         "es" : {
@@ -2132,6 +2300,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1日の目標を更新する"
+          }
+        }
+      }
+    },
+    "Variable Pattern" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patrón variable"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rythme irrégulier"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Andamento variabile"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "変動のあるパターン"
           }
         }
       }
@@ -2392,7 +2588,35 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "水分補給が増えています！"
+            "value" : "水分補給が増えています！ 📈"
+          }
+        }
+      }
+    },
+    "Your hydration is very consistent! 🏆" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Tu hidratación es muy constante! 🏆"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre hydratation est très régulière ! 🏆"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tua idratazione è molto costante! 🏆"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分補給がとても安定しています！ 🏆"
           }
         }
       }

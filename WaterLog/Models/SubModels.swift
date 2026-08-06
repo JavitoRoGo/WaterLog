@@ -127,3 +127,15 @@ struct WeeklyEvolutionResult {
 		(percentageChange ?? 0) >= 0
 	}
 }
+
+struct StabilityResult {
+	let stabilityScore: Double // 0.0 a 1.0 (donde 1 es perfecto)
+	let variabilityValue: Int  // Desviación estándar en ml
+	let message: LocalizedStringResource
+	let isStable: Bool
+	let averageDailyIntake: Int
+	
+	var title: LocalizedStringResource {
+		isStable ? "Consistent Habit" : "Variable Pattern"
+	}
+}
