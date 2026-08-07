@@ -2,7 +2,7 @@ import SwiftUI
 
 struct GoalSuccessRateSection: View {
 	let summaries: [DailyIntakeSummary]
-	@State private var analysisPeriod: SuccessRateAnalysisPeriod = .lastMonth
+	@State private var analysisPeriod: AnalysisPeriod = .lastMonth
 	
 	var result: SuccessRateResult {
 		IntakeAnalytics.calculateSuccessRate(from: summaries, period: analysisPeriod)
@@ -58,7 +58,7 @@ struct GoalSuccessRateSection: View {
 						.font(.caption)
                     Spacer()
 					Menu {
-						ForEach(SuccessRateAnalysisPeriod.allCases) { period in
+						ForEach(AnalysisPeriod.allCases) { period in
 							Button(period.periodLabel) {
 								analysisPeriod = period
 							}

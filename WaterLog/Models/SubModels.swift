@@ -146,3 +146,9 @@ struct SuccessRateResult {
 	let totalDays: Int
 	let message: LocalizedStringResource
 }
+
+struct RiskPredictionResult {
+	let riskLevel: RiskLevel
+	let message: LocalizedStringResource
+	let confidenceScore: Double // 0.0 a 1.0
+}

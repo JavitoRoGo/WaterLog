@@ -30,7 +30,7 @@ struct InsightsView: View {
 					GoalSuccessRateSection(summaries: summaries)
                     
                     // 5. Predicción de Riesgo (Placeholder)
-                    insightPlaceholder(title: "Predictive Insights", subtitle: "Coming soon...")
+                    PredictiveInsightsSection(summaries: summaries)
                 }
                 .padding()
             }
@@ -38,28 +38,7 @@ struct InsightsView: View {
         }
     }
 
-    // MARK: - Placeholders & Helpers
-
-    @ViewBuilder
-    private func insightPlaceholder(title: String, subtitle: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.headline)
-                .foregroundStyle(.secondary)
-            
-            Text(subtitle)
-                .font(.subheadline)
-                .foregroundStyle(.tertiary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .strokeBorder(Color.secondary.opacity(0.2), lineWidth: 1)
-        )
-    }
-
-	private func getAllDailySummaries() -> [DailyIntakeSummary] {
+    private func getAllDailySummaries() -> [DailyIntakeSummary] {
 		let calendar = Calendar.current
 		// Buscamos la fecha más antigua de todas las entradas para no perder nada
 		let startDate = entries.map(\.date).min() ?? .now

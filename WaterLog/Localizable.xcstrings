@@ -1727,6 +1727,9 @@
         }
       }
     },
+    "It's hard to start, but every drop counts! 💧" : {
+
+    },
     "Keep growing!" : {
       "localizations" : {
         "es" : {
@@ -1754,6 +1757,9 @@
           }
         }
       }
+    },
+    "Keep logging to build your pattern" : {
+
     },
     "Last 7 days" : {
       "localizations" : {
@@ -2149,6 +2155,9 @@
           }
         }
       }
+    },
+    "Predictive Insights" : {
+
     },
     "Presets" : {
       "localizations" : {
@@ -2806,6 +2815,9 @@
         }
       }
     },
+    "Warning: Your pattern is becoming unstable. Focus on today! ⚠️" : {
+
+    },
     "Water Master" : {
       "localizations" : {
         "es" : {
@@ -2926,6 +2938,15 @@
           }
         }
       }
+    },
+    "You're building a solid habit. Keep it up! ✨" : {
+
+    },
+    "You're doing great! Stay steady." : {
+
+    },
+    "You've been strong lately! Don't let the momentum slip. 💪" : {
+
     },
     "Your daily goal has been successfully updated." : {
       "localizations" : {

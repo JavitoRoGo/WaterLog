@@ -26,7 +26,7 @@ enum StatisticsPeriod: CaseIterable, Identifiable {
     }
 }
 
-enum SuccessRateAnalysisPeriod: Int, CaseIterable, Identifiable {
+enum AnalysisPeriod: Int, CaseIterable, Identifiable {
 	case lastWeek = 7    // 7 días
 	case lastMonth = 30   // 30 días
 	case lastYear = 365    // 365 días
@@ -46,6 +46,10 @@ enum SuccessRateAnalysisPeriod: Int, CaseIterable, Identifiable {
 			"All time"
 		}
 	}
+}
+
+enum RiskLevel {
+	case low, medium, high
 }
 
 enum IntakeAnalytics {
@@ -285,7 +289,7 @@ enum IntakeAnalytics {
 		)
 	}
 	
-	static func calculateSuccessRate(from summaries: [DailyIntakeSummary], period: SuccessRateAnalysisPeriod = .lastMonth) -> SuccessRateResult {
+	static func calculateSuccessRate(from summaries: [DailyIntakeSummary], period: AnalysisPeriod = .lastMonth) -> SuccessRateResult {
 		let calendar = Calendar.current
 		let today = calendar.startOfDay(for: .now)
 		
@@ -338,6 +342,57 @@ enum IntakeAnalytics {
 			daysMet: daysMet,
 			totalDays: totalDays,
 			message: message
+		)
+	}
+	
+	static func calculateRiskPrediction(from summaries: [DailyIntakeSummary], analysisPeriod: AnalysisPeriod = .lastMonth) -> RiskPredictionResult {
+		// Tomamos los últimos N días para analizar el patrón reciente
+		let recentSummaries = analysisPeriod == .allTime ? summaries : Array(summaries.prefix(analysisPeriod.rawValue))
+		guard recentSummaries.count >= 3 else {
+			return RiskPredictionResult(riskLevel: .low, message: "Keep logging to build your pattern", confidenceScore: 0)
+		}
+
+		// 1. Analizar la racha actual (Streak)
+		var currentStreak = 0
+		for summary in recentSummaries {
+			if summary.reachedGoal {
+				currentStreak += 1
+			} else {
+				break
+			}
+		}
+
+		// 2. Calcular frecuencia de cumplimiento histórica en este periodo
+		let totalDaysInPeriod = recentSummaries.count
+		let daysMet = recentSummaries.filter { $0.reachedGoal }.count
+		let successRate = Double(daysMet) / Double(totalDaysInPeriod)
+
+		// 3. Lógica de predicción de riesgo (MEJORADA)
+		var risk: RiskLevel = .low
+		var message: LocalizedStringResource = "You're doing great! Stay steady."
+		
+		if successRate < 0.3 && currentStreak == 0 {
+			// CASO: Riesgo de abandono (sin racha y éxito muy bajo)
+			risk = .high
+			message = "It's hard to start, but every drop counts! 💧"
+		} else if currentStreak >= 5 && successRate < 0.7 {
+			// CASO: Riesgo de fatiga (racha alta pero éxito general bajo)
+			risk = .medium
+			message = "You've been strong lately! Don't let the momentum slip. 💪"
+		} else if currentStreak > 0 && successRate < 0.5 {
+			// CASO: Riesgo de ruptura (racha activa pero inestabilidad detectada)
+			risk = .high
+			message = "Warning: Your pattern is becoming unstable. Focus on today! ⚠️"
+		} else if currentStreak >= 3 {
+			// CASO: Racha positiva y estable
+			risk = .low
+			message = "You're building a solid habit. Keep it up! ✨"
+		}
+
+		return RiskPredictionResult(
+			riskLevel: risk,
+			message: message,
+			confidenceScore: successRate // Usamos el rate como medida de confianza del patrón
 		)
 	}
 }
