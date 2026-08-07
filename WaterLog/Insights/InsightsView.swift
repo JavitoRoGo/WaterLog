@@ -10,9 +10,9 @@ struct InsightsView: View {
         WaterLogStore.keyForStandardGoalMilliliters,
         store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)
     ) private var defaultGoal: Int = IntakeConstants.defaultGoalMilliliters
-
-    var body: some View {
-        let summaries = getDailySummaries()
+	
+	var body: some View {
+        let summaries = getAllDailySummaries()
         
         NavigationStack {
             ScrollView {
@@ -27,7 +27,7 @@ struct InsightsView: View {
                     StabilitySection(summaries: summaries)
                     
                     // 4. Cumplimiento del Objetivo (Placeholder)
-                    insightPlaceholder(title: "Goal Success Rate", subtitle: "Coming soon...")
+					GoalSuccessRateSection(summaries: summaries)
                     
                     // 5. Predicción de Riesgo (Placeholder)
                     insightPlaceholder(title: "Predictive Insights", subtitle: "Coming soon...")
@@ -59,20 +59,20 @@ struct InsightsView: View {
         )
     }
 
-    private func getDailySummaries() -> [DailyIntakeSummary] {
-        let calendar = Calendar.current
-        // Usamos un rango amplio para asegurar que tenemos los 30 días necesarios
-        let startDate = calendar.date(byAdding: .month, value: -2, to: .now) ?? .now
-        
-        return IntakeAnalytics.dailySummaries(
-            for: entries,
-            goals: goals,
-            defaultGoal: defaultGoal,
-            from: startDate,
-            through: .now,
-            calendar: calendar
-        )
-    }
+	private func getAllDailySummaries() -> [DailyIntakeSummary] {
+		let calendar = Calendar.current
+		// Buscamos la fecha más antigua de todas las entradas para no perder nada
+		let startDate = entries.map(\.date).min() ?? .now
+		
+		return IntakeAnalytics.dailySummaries(
+			for: entries,
+			goals: goals,
+			defaultGoal: defaultGoal,
+			from: startDate,
+			through: .now,
+			calendar: calendar
+		)
+	}
 }
 
 #Preview {

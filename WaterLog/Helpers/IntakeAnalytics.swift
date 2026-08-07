@@ -26,6 +26,28 @@ enum StatisticsPeriod: CaseIterable, Identifiable {
     }
 }
 
+enum SuccessRateAnalysisPeriod: Int, CaseIterable, Identifiable {
+	case lastWeek = 7    // 7 días
+	case lastMonth = 30   // 30 días
+	case lastYear = 365    // 365 días
+	case allTime = 0    // Todo el histórico
+	
+	var id: Self { self }
+	
+	var periodLabel: LocalizedStringResource {
+		switch self {
+		case .lastWeek:
+			"Last 7 days"
+		case .lastMonth:
+			"Last 30 days"
+		case .lastYear:
+			"Last year"
+		case .allTime:
+			"All time"
+		}
+	}
+}
+
 enum IntakeAnalytics {
     static func progress(for totalMilliliters: Int, goal: Int) -> Double {
         guard goal > 0 else { return 0 }
@@ -260,6 +282,62 @@ enum IntakeAnalytics {
 			message: message,
 			isStable: isStable,
 			averageDailyIntake: Int(mean)
+		)
+	}
+	
+	static func calculateSuccessRate(from summaries: [DailyIntakeSummary], period: SuccessRateAnalysisPeriod = .lastMonth) -> SuccessRateResult {
+		let calendar = Calendar.current
+		let today = calendar.startOfDay(for: .now)
+		
+		// 1. Determinamos la fecha de inicio según el periodo
+		let startDate: Date? = {
+			switch period {
+			case .allTime:
+				return nil // No filtramos por fecha
+			case .lastWeek:
+				return calendar.date(byAdding: .day, value: -6, to: today)
+			case .lastMonth:
+				return calendar.date(byAdding: .day, value: -29, to: today)
+			case .lastYear:
+				return calendar.date(byAdding: .day, value: -364, to: today)
+			}
+		}()
+		
+		// 2. Filtramos el array basándonos en la fecha real del resumen
+		let recentSummaries: [DailyIntakeSummary]
+		if let startDate {
+			// Solo incluimos días que sean iguales o posteriores a la fecha de inicio calculada
+			recentSummaries = summaries.filter { $0.date >= startDate }
+		} else {
+			recentSummaries = summaries
+		}
+		
+		let totalDays = recentSummaries.count
+		
+		guard totalDays > 0 else {
+			return SuccessRateResult(rate: 0, daysMet: 0, totalDays: 0, message: "Start logging to see your success rate")
+		}
+		
+		let daysMet = recentSummaries.filter { $0.reachedGoal }.count
+		let rate = Double(daysMet) / Double(totalDays)
+		
+		// ... (resto de la lógica de mensajes se mantiene igual)
+		let message: LocalizedStringResource
+		if rate >= 0.9 {
+			message = "You're a hydration champion! ⭐"
+		} else if rate >= 0.7 {
+			message = "Great consistency, keep it up! 👍"
+		} else if rate > 0 {
+			message = "Every day counts, stay hydrated! 💪"
+		} else {
+			message = "Ready to start your success streak? 💧"
+		}
+		
+		return SuccessRateResult(
+			rate: rate,
+			daysMet: daysMet,
+			totalDays: totalDays,
+			message: message
 		)
 	}
 }

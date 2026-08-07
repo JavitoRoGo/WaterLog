@@ -100,6 +100,16 @@
       },
       "shouldTranslate" : false
     },
+    "%lld out of %lld days met" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld out of %2$lld days met"
+          }
+        }
+      }
+    },
     "1 year" : {
       "localizations" : {
         "es" : {
@@ -435,6 +445,9 @@
           }
         }
       }
+    },
+    "All time" : {
+
     },
     "Almost a Master..." : {
       "localizations" : {
@@ -1253,6 +1266,9 @@
         }
       }
     },
+    "Every day counts, stay hydrated! 💪" : {
+
+    },
     "Export data" : {
       "localizations" : {
         "es" : {
@@ -1280,6 +1296,12 @@
           }
         }
       }
+    },
+    "Goal Success Rate" : {
+
+    },
+    "Great consistency, keep it up! 👍" : {
+
     },
     "Historical" : {
       "localizations" : {
@@ -1505,6 +1527,9 @@
         }
       }
     },
+    "Last 7 days" : {
+
+    },
     "Last 7d" : {
       "localizations" : {
         "es" : {
@@ -1533,6 +1558,9 @@
         }
       }
     },
+    "Last 30 days" : {
+
+    },
     "Last 30d" : {
       "localizations" : {
         "es" : {
@@ -1560,6 +1588,9 @@
           }
         }
       }
+    },
+    "Last year" : {
+
     },
     "Legendary status reached! 🌟" : {
       "localizations" : {
@@ -1956,6 +1987,9 @@
         }
       }
     },
+    "Ready to start your success streak? 💧" : {
+
+    },
     "Save" : {
       "localizations" : {
         "es" : {
@@ -2101,6 +2135,9 @@
           }
         }
       }
+    },
+    "Start logging to see your success rate" : {
+
     },
     "Start your journey" : {
       "localizations" : {
@@ -2508,6 +2545,9 @@
           }
         }
       }
+    },
+    "You're a hydration champion! ⭐" : {
+
     },
     "Your daily goal has been successfully updated." : {
       "localizations" : {

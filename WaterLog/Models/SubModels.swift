@@ -139,3 +139,10 @@ struct StabilityResult {
 		isStable ? "Consistent Habit" : "Variable Pattern"
 	}
 }
+
+struct SuccessRateResult {
+	let rate: Double // 0.0 a 1.0
+	let daysMet: Int
+	let totalDays: Int
+	let message: LocalizedStringResource
+}

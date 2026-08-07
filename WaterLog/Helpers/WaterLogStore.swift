@@ -5,6 +5,7 @@ enum WaterLogStore {
     static let appGroupIdentifier = "group.com.JRG79.WaterLog"
     static let keyForLastSuccessDate = "lastSuccessDate"
     static let keyForStandardGoalMilliliters = "standardGoalMilliliters"
+    static let keyForSuccessRateAnalysisPeriod = "keyForSuccessRateAnalysisPeriod"
 
     private static let storeFileName = "WaterLog.store"
     private static let schema = Schema([WaterIntakeEntry.self, DailyGoal.self])
