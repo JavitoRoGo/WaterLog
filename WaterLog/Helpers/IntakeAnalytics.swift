@@ -9,6 +9,7 @@ enum IntakeConstants {
 
 enum StatisticsPeriod: CaseIterable, Identifiable {
     case sevenDays
+	case oneMonth
     case oneYear
     case total
 
@@ -18,6 +19,8 @@ enum StatisticsPeriod: CaseIterable, Identifiable {
         switch self {
         case .sevenDays:
             "7 days"
+		case .oneMonth:
+			"1 month"
         case .oneYear:
             "1 year"
         case .total:
@@ -164,6 +167,8 @@ enum IntakeAnalytics {
         switch period {
         case .sevenDays:
             return calendar.date(byAdding: .day, value: -6, to: today)
+		case .oneMonth:
+			return calendar.date(byAdding: .month, value: -1, to: today).map { calendar.date(byAdding: .day, value: 1, to: $0) ?? $0 }
         case .oneYear:
             return calendar.date(byAdding: .year, value: -1, to: today).map { calendar.date(byAdding: .day, value: 1, to: $0) ?? $0 }
         case .total:
@@ -393,7 +398,7 @@ enum IntakeAnalytics {
 
 		// 1. Analizar la racha actual (Streak)
 		var currentStreak = 0
-		for summary in recentSummaries {
+		for summary in recentSummaries.reversed() {
 			if summary.reachedGoal {
 				currentStreak += 1
 			} else {

@@ -14,7 +14,7 @@ struct IntakeChartView: View {
     var body: some View {
         Chart {
             switch data.period {
-            case .sevenDays:
+			case .sevenDays, .oneMonth:
                 ForEach(data.dailySummaries) { summary in
                     // Barra de ingesta
                     BarMark(
@@ -71,6 +71,12 @@ struct IntakeChartView: View {
                     AxisTick()
                     AxisValueLabel(format: .dateTime.day().month(.abbreviated).locale(IntakeConstants.appLocale))
                 }
+			case .oneMonth:
+				AxisMarks(values: .stride(by: .day, count: 5)) { value in
+					AxisGridLine()
+					AxisTick()
+					AxisValueLabel(format: .dateTime.day().month(.defaultDigits).locale(IntakeConstants.appLocale))
+				}
             case .oneYear:
                 AxisMarks(values: .stride(by: .month)) { value in
                     AxisGridLine()

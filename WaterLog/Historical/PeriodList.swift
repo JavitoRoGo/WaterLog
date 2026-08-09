@@ -17,7 +17,7 @@ struct PeriodList: View {
 	
 	var body: some View {
 		switch selectedPeriod {
-		case .sevenDays:
+		case .sevenDays, .oneMonth:
 			List(chartData.dailySummaries.reversed()) { summary in
 				Button {
 					selectedDay = summary

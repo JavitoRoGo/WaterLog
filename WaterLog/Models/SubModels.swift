@@ -80,6 +80,24 @@ struct StatisticsChartData {
 			let maxIngest = daily.map(\.totalMilliliters).max() ?? 0
 			maximumValue = max(maxIngest, defaultGoal)
 			visibleDomainLength = 60 * 60 * 24 * 7
+			
+		case .oneMonth:
+			let start = IntakeAnalytics.startDate(for: .oneMonth, calendar: calendar) ?? today
+			let daily = IntakeAnalytics.dailySummaries(
+				for: entries,
+				goals: goals,
+				defaultGoal: defaultGoal,
+				from: start,
+				through: today,
+				calendar: calendar
+			)
+			dailySummaries = daily
+			monthSummaries = []
+			yearSummaries = []
+			intervalLabel = StatisticsChartData.intervalLabel(from: start, through: today)
+			let maxIngest = daily.map(\.totalMilliliters).max() ?? 0
+			maximumValue = max(maxIngest, defaultGoal)
+			visibleDomainLength = 60 * 60 * 24 * 31
 
 		case .oneYear:
 			let start = IntakeAnalytics.startDate(for: .oneYear, calendar: calendar) ?? today
