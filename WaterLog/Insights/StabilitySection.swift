@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct StabilitySection: View {
-    let result: StabilityResult
+    let summaries: [DailyIntakeSummary]
+	@State private var analysisPeriod: AnalysisPeriod = .lastMonth
     
-    init(summaries: [DailyIntakeSummary]) {
-        // Analizamos los últimos 14 días para tener una muestra representativa
-        self.result = IntakeAnalytics.calculateStability(from: summaries, daysToAnalyze: 14)
-    }
+    var result: StabilityResult {
+		IntakeAnalytics.calculateStability(from: summaries, daysToAnalyze: analysisPeriod)
+	}
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -58,6 +58,25 @@ struct StabilitySection: View {
 					
 					TrendMetricView(label: "Avg. Intake", value: WaterLogFormatters.volumeFromMilliliters(result.averageDailyIntake))
                 }
+				
+				HStack {
+					Spacer()
+					Menu {
+						ForEach(AnalysisPeriod.allCases) { period in
+							Button(period.periodLabel) {
+								analysisPeriod = period
+							}
+						}
+					} label: {
+						HStack(spacing: 2) {
+							Text(analysisPeriod.periodLabel)
+							Image(systemName: "chevron.down")
+								.foregroundStyle(.secondary)
+						}
+						.font(.caption2)
+					}
+				}
+				.foregroundStyle(.secondary)
             }
         }
         .padding()

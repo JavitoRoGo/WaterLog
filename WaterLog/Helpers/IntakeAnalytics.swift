@@ -246,40 +246,60 @@ enum IntakeAnalytics {
 		)
 	}
 	
-	static func calculateStability(from summaries: [DailyIntakeSummary], daysToAnalyze: Int = 14) -> StabilityResult {
-		// Tomamos los últimos N días de datos
-		let recentSummaries = Array(summaries.prefix(daysToAnalyze))
+	static func calculateStability(from summaries: [DailyIntakeSummary], daysToAnalyze: AnalysisPeriod = .lastMonth) -> StabilityResult {
+		let calendar = Calendar.current
+		let today = calendar.startOfDay(for: .now)
+		
+		// 1. Determinamos la fecha de inicio basándonos en el periodo real, NO en el índice del array
+		let startDate: Date? = {
+			switch daysToAnalyze {
+			case .allTime: return nil
+			case .lastWeek: return calendar.date(byAdding: .day, value: -6, to: today)
+			case .lastMonth: return calendar.date(byAdding: .day, value: -29, to: today)
+			case .lastYear: return calendar.date(byAdding: .day, value: -364, to: today)
+			}
+		}()
+		
+		// 2. Filtramos el array para obtener los días dentro de ese rango temporal exacto
+		let recentSummaries: [DailyIntakeSummary]
+		if let startDate {
+			recentSummaries = summaries.filter { $0.date >= startDate }
+		} else {
+			recentSummaries = summaries
+		}
+		
+		// Ahora 'counts' será el número real de días en ese periodo (ej: 7, 30, etc.)
 		let counts = recentSummaries.count
 		
 		guard counts > 1 else {
 			return StabilityResult(stabilityScore: 0, variabilityValue: 0, message: "Not enough data", isStable: false, averageDailyIntake: 0)
 		}
-
+		
+		// 3. Los valores incluirán los ceros que 'dailySummaries' ya generó correctamente
 		let values = recentSummaries.map { Double($0.totalMilliliters) }
 		let mean = values.reduce(0, +) / Double(counts)
 		
-		// Calcular Desviación Estándar
+		// Calcular Desviación Estándar sobre el periodo completo (incluyendo ceros)
 		let sumOfSquaredDifferences = values.map { pow($0 - mean, 2) }.reduce(0, +)
 		let standardDeviation = sqrt(sumOfSquaredDifferences / Double(counts))
 		
-		// El coeficiente de variación (CV) es la clave: CV = Desviación / Media
-		// Un CV bajo significa alta estabilidad.
+		// El coeficiente de variación (CV) mide la variabilidad relativa
 		let coefficientOfVariation = mean > 0 ? (standardDeviation / mean) : 1.0
 		
-		// Convertimos el CV a un score de 0 a 1 para mostrar al usuario
-		// Si el CV es < 0.15 (15% de variación), es muy estable.
+		// Si el CV es bajo, es estable.
 		let stabilityScore = max(0, min(1, 1.0 - coefficientOfVariation))
-		let isStable = coefficientOfVariation < 0.20 // Umbral del 20% para considerar "estable"
-
+		let isStable = coefficientOfVariation < 0.20
+		
 		let message: LocalizedStringResource
 		if isStable {
 			message = "Your hydration is very consistent! 🏆"
-		} else if counts >= daysToAnalyze {
-			message = "Try to keep a more regular rhythm. ⚖️"
-		} else {
+		} else if counts < (daysToAnalyze == .allTime ? Int.max : daysToAnalyze.rawValue) {
+			// Si tenemos menos días de los que el periodo requiere, estamos recolectando
 			message = "Analyzing your patterns..."
+		} else {
+			message = "Try to keep a more regular rhythm. ⚖️"
 		}
-
+		
 		return StabilityResult(
 			stabilityScore: stabilityScore,
 			variabilityValue: Int(standardDeviation),
@@ -289,13 +309,13 @@ enum IntakeAnalytics {
 		)
 	}
 	
-	static func calculateSuccessRate(from summaries: [DailyIntakeSummary], period: AnalysisPeriod = .lastMonth) -> SuccessRateResult {
+	static func calculateSuccessRate(from summaries: [DailyIntakeSummary], daysToAnalyze: AnalysisPeriod = .lastMonth) -> SuccessRateResult {
 		let calendar = Calendar.current
 		let today = calendar.startOfDay(for: .now)
 		
 		// 1. Determinamos la fecha de inicio según el periodo
 		let startDate: Date? = {
-			switch period {
+			switch daysToAnalyze {
 			case .allTime:
 				return nil // No filtramos por fecha
 			case .lastWeek:
@@ -345,9 +365,28 @@ enum IntakeAnalytics {
 		)
 	}
 	
-	static func calculateRiskPrediction(from summaries: [DailyIntakeSummary], analysisPeriod: AnalysisPeriod = .lastMonth) -> RiskPredictionResult {
-		// Tomamos los últimos N días para analizar el patrón reciente
-		let recentSummaries = analysisPeriod == .allTime ? summaries : Array(summaries.prefix(analysisPeriod.rawValue))
+	static func calculateRiskPrediction(from summaries: [DailyIntakeSummary], daysToAnalyze: AnalysisPeriod = .lastMonth) -> RiskPredictionResult {
+		let calendar = Calendar.current
+		let today = calendar.startOfDay(for: .now)
+		
+		// 1. Determinamos la fecha de inicio basándonos en el periodo real, NO en el índice del array
+		let startDate: Date? = {
+			switch daysToAnalyze {
+			case .allTime: return nil
+			case .lastWeek: return calendar.date(byAdding: .day, value: -6, to: today)
+			case .lastMonth: return calendar.date(byAdding: .day, value: -29, to: today)
+			case .lastYear: return calendar.date(byAdding: .day, value: -364, to: today)
+			}
+		}()
+		
+		// 2. Filtramos el array para obtener los días dentro de ese rango temporal exacto
+		let recentSummaries: [DailyIntakeSummary]
+		if let startDate {
+			recentSummaries = summaries.filter { $0.date >= startDate }
+		} else {
+			recentSummaries = summaries
+		}
+		
 		guard recentSummaries.count >= 3 else {
 			return RiskPredictionResult(riskLevel: .low, message: "Keep logging to build your pattern", confidenceScore: 0)
 		}

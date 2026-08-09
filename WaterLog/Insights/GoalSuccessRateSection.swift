@@ -5,7 +5,7 @@ struct GoalSuccessRateSection: View {
 	@State private var analysisPeriod: AnalysisPeriod = .lastMonth
 	
 	var result: SuccessRateResult {
-		IntakeAnalytics.calculateSuccessRate(from: summaries, period: analysisPeriod)
+		IntakeAnalytics.calculateSuccessRate(from: summaries, daysToAnalyze: analysisPeriod)
 	}
         
     var body: some View {

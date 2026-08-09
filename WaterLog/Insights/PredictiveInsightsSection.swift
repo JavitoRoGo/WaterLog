@@ -5,7 +5,7 @@ struct PredictiveInsightsSection: View {
 	@State private var analysisPeriod: AnalysisPeriod = .lastMonth
 	
 	var result: RiskPredictionResult {
-		IntakeAnalytics.calculateRiskPrediction(from: summaries, analysisPeriod: analysisPeriod)
+		IntakeAnalytics.calculateRiskPrediction(from: summaries, daysToAnalyze: analysisPeriod)
 	}
     
     var body: some View {
