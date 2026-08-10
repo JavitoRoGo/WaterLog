@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct CoachView: View {
+	@State private var manager = FMManager()
 	@Environment(\.modelContext) private var modelContext
 	@Query(sort: \WaterIntakeEntry.date, order: .reverse) private var entries: [WaterIntakeEntry]
 	@Query(sort: \DailyGoal.date, order: .forward) private var goals: [DailyGoal]
@@ -24,31 +25,36 @@ struct CoachView: View {
 
     var body: some View {
         NavigationStack {
-        	ScrollView {
-				VStack(spacing: 20) {
-					// Coach Hero Section
-					CoachHeroSection(motivationTag: coachingContext.summary.primaryMotivationTag)
-					
-					// Quick Stats Grid
-					StatsGrid(coachingContext: coachingContext)
-					
-					// Detailed Patterns
-					PatternsSection(coachingContext: coachingContext)
+			if manager.isModelAvailable {
+        		ScrollView {
+					VStack(spacing: 20) {
+						// Coach Hero Section
+						CoachHeroSection(motivationTag: coachingContext.summary.primaryMotivationTag)
+						
+						// Quick Stats Grid
+						StatsGrid(coachingContext: coachingContext)
+						
+						// Detailed Patterns
+						PatternsSection(coachingContext: coachingContext)
+					}
+					.padding()
 				}
-				.padding()
-			}
-			.toolbar {
-				ToolbarItem(placement: .navigationBarTrailing) {
-					Menu {
-						Picker("Period", selection: $analysisPeriod) {
-							ForEach(AnalysisPeriod.allCases) { period in
-								Text(period.periodLabel).tag(period)
+				.toolbar {
+					ToolbarItem(placement: .navigationBarTrailing) {
+						Menu {
+							Picker("Period", selection: $analysisPeriod) {
+								ForEach(AnalysisPeriod.allCases) { period in
+									Text(period.periodLabel).tag(period)
+								}
 							}
+						} label: {
+							Label("Period", systemImage: "calendar")
 						}
-					} label: {
-						Label("Period", systemImage: "calendar")
 					}
 				}
+			} else {
+				UnavailableAIView()
+					.environment(manager)
 			}
         }
     }
@@ -74,4 +80,5 @@ struct CoachView: View {
 #Preview {
 	CoachView()
 		.previewContainer(days: 20)
+		.environment(FMManager())
 }
