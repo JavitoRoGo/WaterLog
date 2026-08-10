@@ -41,11 +41,13 @@ extension View {
         return container
     }
 }
+
 // MARK: - Mock Data Generators
 
 struct MockData {
     /// Genera un array de resúmenes diarios artificiales para pruebas unitarias o vistas que no usen SwiftData directamente.
     /// - Parameter days: El número de días a generar.
+    /// - Parameter streak: La racha actual (usada en el cálculo de la lógica de error).
     /// - Returns: Un array de `DailyIntakeSummary`.
 	static func dailySummaries(days: Int, streak: Int) -> [DailyIntakeSummary] {
         let calendar = Calendar.current
@@ -68,5 +70,69 @@ struct MockData {
         
         return summaries.sorted { $0.date < $1.date }
     }
-}
 
+    // MARK: - Coaching Context Mocks
+
+    /// Crea un coaching context personalizado con los parámetros proporcionados.
+    static func coachingContext(
+        riskLevel: RiskLevel = .low,
+        motivationTag: CoachingContext.MotivationTag = .encouraging,
+        currentStreak: Int = 5,
+        successRate: Double = 0.8,
+        stabilityScore: Double = 0.7,
+        trend: CoachingContext.TrendDirection = .stable,
+        isImproving: Bool = true
+    ) -> CoachingContext {
+        let summary = CoachingContext.UserStatusSummary(
+            overallRiskLevel: riskLevel,
+            primaryMotivationTag: motivationTag
+        )
+        
+        let metrics = CoachingContext.DetailedMetrics(
+            currentStreak: currentStreak,
+            successRate: successRate,
+            stabilityScore: stabilityScore,
+            consumptionTrend: trend,
+            weeklyEvolutionChange: 0.05
+        )
+        
+        let patterns = CoachingContext.DetectedPatterns(
+            isImproving: isImproving,
+            isStable: true,
+            hasHighVolatility: false
+        )
+        
+        return CoachingContext(
+            summary: summary,
+            metrics: metrics,
+            patterns: patterns,
+            timestamp: .now
+        )
+    }
+
+    /// Un contexto de ejemplo con resultados excelentes.
+    static var coachingContextGood: CoachingContext {
+        coachingContext(
+            riskLevel: .low,
+            motivationTag: .celebratory,
+            currentStreak: 12,
+            successRate: 0.95,
+            stabilityScore: 0.9,
+            trend: .increasing,
+            isImproving: true
+        )
+    }
+
+    /// Un contexto de ejemplo con resultados preocupantes.
+    static var coachingContextWarning: CoachingContext {
+        coachingContext(
+            riskLevel: .high,
+            motivationTag: .urgent,
+            currentStreak: 1,
+            successRate: 0.3,
+            stabilityScore: 0.2,
+            trend: .decreasing,
+            isImproving: false
+        )
+    }
+}

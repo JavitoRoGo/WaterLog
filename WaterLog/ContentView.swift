@@ -7,16 +7,8 @@ struct ContentView: View {
                 TodayView()
             }
 
-            Tab("Historical", systemImage: "chart.bar.xaxis") {
-                StatisticsView()
-            }
-			
-			Tab("Achievements", systemImage: "trophy") {
-				StreaksView()
-			}
-
-            Tab("Insights", systemImage: "chart.xyaxis.line") {
-                InsightsView()
+            Tab("CoachAI", systemImage: "sparkles.2") {
+                CoachView()
             }
         }
     }

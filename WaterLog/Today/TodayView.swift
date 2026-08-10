@@ -2,9 +2,13 @@ import SwiftData
 import SwiftUI
 
 struct TodayView: View {
+	private enum TabToShow {
+		case historical, achievements, insights, settings
+	}
+	
     @Environment(\.scenePhase) private var scenePhase
     @State private var currentDate = Date.now
-	@State private var showingSettingsView: Bool = false
+	@State private var tabToShow: TabToShow?
 
     var body: some View {
         NavigationStack {
@@ -16,15 +20,31 @@ struct TodayView: View {
             )
 			.toolbar {
 				ToolbarItem(placement: .navigationBarLeading) {
-					Button {
-						showingSettingsView.toggle()
+					Menu {
+						Button("Historical", systemImage: "chart.bar.xaxis") {
+							tabToShow = .historical
+						}
+						Button("Achievements", systemImage: "trophy") {
+							tabToShow = .achievements
+						}
+						Button("Insights", systemImage: "chart.xyaxis.line") {
+							tabToShow = .insights
+						}
+						Button("Settings", systemImage: "gearshape") {
+							tabToShow = .settings
+						}
 					} label: {
-						Image(systemName: "gearshape")
+						Image(systemName: "list.bullet")
 					}
 				}
 			}
-			.sheet(isPresented: $showingSettingsView) {
-				SettingsView()
+			.navigationDestination(item: $tabToShow) { tab in
+				switch tab {
+				case .historical: StatisticsView()
+				case .achievements: StreaksView()
+				case .insights: InsightsView()
+				case .settings: SettingsView()
+				}
 			}
         }
         .task {

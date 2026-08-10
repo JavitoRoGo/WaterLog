@@ -970,6 +970,9 @@
         }
       }
     },
+    "CoachAI" : {
+      "shouldTranslate" : false
+    },
     "Consistent Habit" : {
       "localizations" : {
         "es" : {

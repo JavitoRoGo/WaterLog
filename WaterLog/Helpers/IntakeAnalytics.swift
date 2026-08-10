@@ -51,7 +51,7 @@ enum AnalysisPeriod: Int, CaseIterable, Identifiable {
 	}
 }
 
-enum RiskLevel {
+enum RiskLevel: Codable {
 	case low, medium, high
 }
 
@@ -259,16 +259,16 @@ enum IntakeAnalytics {
 		let startDate: Date? = {
 			switch daysToAnalyze {
 			case .allTime: return nil
-			case .lastWeek: return calendar.date(byAdding: .day, value: -6, to: today)
-			case .lastMonth: return calendar.date(byAdding: .day, value: -29, to: today)
-			case .lastYear: return calendar.date(byAdding: .day, value: -364, to: today)
+			case .lastWeek: return calendar.date(byAdding: .day, value: -7, to: today)
+			case .lastMonth: return calendar.date(byAdding: .day, value: -30, to: today)
+			case .lastYear: return calendar.date(byAdding: .day, value: -365, to: today)
 			}
 		}()
 		
 		// 2. Filtramos el array para obtener los días dentro de ese rango temporal exacto
 		let recentSummaries: [DailyIntakeSummary]
 		if let startDate {
-			recentSummaries = summaries.filter { $0.date >= startDate }
+			recentSummaries = summaries.filter { $0.date >= startDate && $0.date < today }
 		} else {
 			recentSummaries = summaries
 		}
@@ -324,11 +324,11 @@ enum IntakeAnalytics {
 			case .allTime:
 				return nil // No filtramos por fecha
 			case .lastWeek:
-				return calendar.date(byAdding: .day, value: -6, to: today)
+				return calendar.date(byAdding: .day, value: -7, to: today)
 			case .lastMonth:
-				return calendar.date(byAdding: .day, value: -29, to: today)
+				return calendar.date(byAdding: .day, value: -30, to: today)
 			case .lastYear:
-				return calendar.date(byAdding: .day, value: -364, to: today)
+				return calendar.date(byAdding: .day, value: -365, to: today)
 			}
 		}()
 		
@@ -336,7 +336,7 @@ enum IntakeAnalytics {
 		let recentSummaries: [DailyIntakeSummary]
 		if let startDate {
 			// Solo incluimos días que sean iguales o posteriores a la fecha de inicio calculada
-			recentSummaries = summaries.filter { $0.date >= startDate }
+			recentSummaries = summaries.filter { $0.date >= startDate && $0.date < today }
 		} else {
 			recentSummaries = summaries
 		}

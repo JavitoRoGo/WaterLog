@@ -170,3 +170,43 @@ struct RiskPredictionResult {
 	let message: LocalizedStringResource
 	let confidenceScore: Double // 0.0 a 1.0
 }
+
+
+/// El "Paquete de Contexto" que se enviará al LLM.
+/// Es una representación semántica del estado de salud del usuario.
+struct CoachingContext: Codable {
+	let summary: UserStatusSummary
+	let metrics: DetailedMetrics
+	let patterns: DetectedPatterns
+	let timestamp: Date
+	
+	struct UserStatusSummary: Codable {
+		let overallRiskLevel: RiskLevel
+		let primaryMotivationTag: MotivationTag // Para que el LLM sepa qué tono usar
+	}
+	
+	struct DetailedMetrics: Codable {
+		let currentStreak: Int
+		let successRate: Double
+		let stabilityScore: Double
+		let consumptionTrend: TrendDirection
+		let weeklyEvolutionChange: Double? // Porcentaje de cambio vs semana pasada
+	}
+	
+	struct DetectedPatterns: Codable {
+		let isImproving: Bool
+		let isStable: Bool
+		let hasHighVolatility: Bool
+	}
+	
+	enum MotivationTag: String, Codable, CaseIterable {
+		case celebratory   // "¡Lo estás haciendo genial!" -> Tono positivo/recompensa
+		case encouraging   // "Vas por buen camino..." -> Tono motivador suave
+		case urgent        // "¡Atención! Necesitas recuperar el ritmo" -> Tono de alerta/acción
+		case neutral       // "Aquí tienes tus datos" -> Tono informativo
+	}
+	
+	enum TrendDirection: String, Codable {
+		case increasing, decreasing, stable, unknown
+	}
+}
