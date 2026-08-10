@@ -12,9 +12,7 @@ struct CoachView: View {
 	) private var defaultGoal: Int = IntakeConstants.defaultGoalMilliliters
 	
     @State private var analysisPeriod: AnalysisPeriod = .lastMonth
-    @State private var isGeneratingAdvice = false
-    @State private var coachMessage: String = ""
-    
+	
     // El contexto que alimenta la inteligencia de la vista
     private var coachingContext: CoachingContext {
         CoachAnalytics.generateCoachingContext(from: summaries, daysToAnalyze: analysisPeriod)
@@ -29,10 +27,10 @@ struct CoachView: View {
         	ScrollView {
 				VStack(spacing: 20) {
 					// Coach Hero Section
-					CoachHeroSection(coachColor: coachColor, coachIcon: coachIcon, coachMessage: coachMessage, isGeneratingAdvice: isGeneratingAdvice)
+					CoachHeroSection(motivationTag: coachingContext.summary.primaryMotivationTag)
 					
 					// Quick Stats Grid
-					StatsGrid(coachingContext: coachingContext, coachIconText: coachIconText)
+					StatsGrid(coachingContext: coachingContext)
 					
 					// Detailed Patterns
 					PatternsSection(coachingContext: coachingContext)
@@ -53,10 +51,6 @@ struct CoachView: View {
 				}
 			}
         }
-        .task {
-            // Simulamos la llamada al LLM local al cargar la vista
-            await fetchCoachAdvice()
-        }
     }
 
     // MARK: - Helpers
@@ -75,55 +69,6 @@ struct CoachView: View {
 			calendar: calendar
 		)
 	}
-
-    private func fetchCoachAdvice() async {
-        isGeneratingAdvice = true
-        
-        // Simulamos el tiempo de respuesta de un LLM local (Foundation Models)
-        // En la implementación real, aquí llamarías al modelo pasándole coachingContext
-        try? await Task.sleep(for: .seconds(1.5))
-        
-        // Ejemplo de cómo el mensaje cambiaría según el contexto generado
-        switch coachingContext.summary.primaryMotivationTag {
-        case .celebratory:
-            coachMessage = "You're on fire! Your hydration streak is growing beautifully. Keep this momentum!"
-        case .urgent:
-            coachMessage = "Warning: We've noticed a drop in your consistency. Let's try to hit your goal today!"
-        case .encouraging:
-            coachMessage = "You're doing well, but let's try to make your drinking habits even more regular."
-        case .neutral:
-            coachMessage = "Ready for today? Your hydration levels are looking steady."
-        }
-        
-        isGeneratingAdvice = false
-    }
-
-    private var coachColor: Color {
-        switch coachingContext.summary.primaryMotivationTag {
-        case .celebratory: return .orange
-        case .urgent: return .red
-        case .encouraging: return .blue
-        case .neutral: return .secondary
-        }
-    }
-
-	private var coachIcon: String {
-        switch coachingContext.summary.primaryMotivationTag {
-        case .celebratory: return "sparkles"
-        case .urgent: return "exclamationmark.triangle.fill"
-        case .encouraging: return "leaf.fill"
-        case .neutral: return "person.fill"
-        }
-    }
-
-	private var coachIconText: String {
-        switch coachingContext.metrics.consumptionTrend {
-        case .increasing: return "Up"
-        case .decreasing: return "Down"
-        case .stable: return "Steady"
-        case .unknown: return "--"
-        }
-    }
 }
 
 #Preview {

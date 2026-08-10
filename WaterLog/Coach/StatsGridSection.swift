@@ -9,7 +9,6 @@ import SwiftUI
 
 struct StatsGrid: View {
 	let coachingContext: CoachingContext
-	let coachIconText: String
 	
 	var body: some View {
 		LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
@@ -22,14 +21,14 @@ struct StatsGrid: View {
 			
 			StatCard(
 				title: "Success",
-				value: coachingContext.metrics.successRate.formatted(.percent.precision(.fractionLength(0))),
+				value: "\(coachingContext.metrics.successRate.formatted(.percent.precision(.fractionLength(0))))",
 				icon: "checkmark.circle.fill",
 				color: .blue
 			)
 			
 			StatCard(
 				title: "Stability",
-				value: coachingContext.metrics.stabilityScore.formatted(.percent.precision(.fractionLength(0))),
+				value: "\(coachingContext.metrics.stabilityScore.formatted(.percent.precision(.fractionLength(0))))",
 				icon: "shield.fill",
 				color: .green
 			)
@@ -42,11 +41,17 @@ struct StatsGrid: View {
 			)
 		}
 	}
+	
+	private var coachIconText: LocalizedStringResource {
+		switch coachingContext.metrics.consumptionTrend {
+		case .increasing: return "Up"
+		case .decreasing: return "Down"
+		case .stable: return "Steady"
+		case .unknown: return "--"
+		}
+	}
 }
 
 #Preview {
-	StatsGrid(
-		coachingContext: MockData.coachingContextWarning,
-		coachIconText: "🚀"
-	)
+	StatsGrid(coachingContext: MockData.coachingContextWarning)
 }

@@ -2,8 +2,37 @@ import SwiftData
 import SwiftUI
 
 struct TodayView: View {
-	private enum TabToShow {
+	private enum TabToShow: Identifiable, CaseIterable, View {
 		case historical, achievements, insights, settings
+		
+		var id: Self { self }
+		
+		var title: LocalizedStringResource {
+			switch self {
+			case .historical: "Historical"
+			case .achievements: "Achievements"
+			case .insights: "Insights"
+			case .settings: "Settings"
+			}
+		}
+		
+		var icon: String {
+			switch self {
+			case .historical: "chart.bar.xaxis"
+			case .achievements: "trophy"
+			case .insights: "chart.xyaxis.line"
+			case .settings: "gearshape"
+			}
+		}
+		
+		var body: some View {
+			switch self {
+			case .historical: StatisticsView()
+			case .achievements: StreaksView()
+			case .insights: InsightsView()
+			case .settings: SettingsView()
+			}
+		}
 	}
 	
     @Environment(\.scenePhase) private var scenePhase
@@ -21,17 +50,12 @@ struct TodayView: View {
 			.toolbar {
 				ToolbarItem(placement: .navigationBarLeading) {
 					Menu {
-						Button("Historical", systemImage: "chart.bar.xaxis") {
-							tabToShow = .historical
-						}
-						Button("Achievements", systemImage: "trophy") {
-							tabToShow = .achievements
-						}
-						Button("Insights", systemImage: "chart.xyaxis.line") {
-							tabToShow = .insights
-						}
-						Button("Settings", systemImage: "gearshape") {
-							tabToShow = .settings
+						ForEach(TabToShow.allCases) { tab in
+							Button {
+								tabToShow = tab
+							} label: {
+								Label(tab.title, systemImage: tab.icon)
+							}
 						}
 					} label: {
 						Image(systemName: "list.bullet")
@@ -39,12 +63,7 @@ struct TodayView: View {
 				}
 			}
 			.navigationDestination(item: $tabToShow) { tab in
-				switch tab {
-				case .historical: StatisticsView()
-				case .achievements: StreaksView()
-				case .insights: InsightsView()
-				case .settings: SettingsView()
-				}
+				tab
 			}
         }
         .task {

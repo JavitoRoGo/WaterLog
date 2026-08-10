@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PatternRow: View {
-    let label: String
-    let value: String
+    let label: LocalizedStringResource
+    let value: LocalizedStringResource
     let icon: String
 
     var body: some View {

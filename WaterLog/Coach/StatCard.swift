@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct StatCard: View {
-    let title: String
-    let value: String
+    let title: LocalizedStringResource
+    let value: LocalizedStringResource
     let icon: String
     let color: Color
 
