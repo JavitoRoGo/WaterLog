@@ -33,22 +33,31 @@ struct CoachHeroSection:  View {
 			List {
 				ForEach(coachService.coachResponse) { response in
 					if let message = response.adviceMessage {
-						Text(message)
-							.font(.headline)
-							.fontWeight(.medium)
+						VStack {
+							Text("\(response.toneEmoji ?? "") \(message)")
+							Text(response.actionableStep ?? "sin mensaje")
+								.font(.headline)
+						}
 							.multilineTextAlignment(.center)
 							.contentTransition(.opacity)
 							.animation(.easeInOut, value: message)
+					} else {
+						Text("")
 					}
 				}
 				.listRowBackground(Color.clear)
 			}
 			.listStyle(.plain)
-			.frame(minHeight: 150)
+			.frame(minHeight: 200)
 			.overlay {
 				if coachService.session.isResponding {
 					ProgressView()
 						.tint(coachColor)
+				}
+			}
+			.overlay {
+				if let error = coachService.errorString {
+					Text(error)
 				}
 			}
 		}
