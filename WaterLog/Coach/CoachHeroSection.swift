@@ -6,40 +6,51 @@
 //
 
 import SwiftUI
+import FoundationModels
 
 struct CoachHeroSection:  View {
-	let motivationTag: CoachingContext.MotivationTag
+	let coachingContext: CoachingContext
 	
-	@State private var isGeneratingAdvice: Bool = false
-	@State private var coachMessage: String = ""
+	@Environment(FMManager.self) var fmManager
+	@State private var coachService: FMCoachService
+	
+	init(coachingContext: CoachingContext) {
+		self.coachingContext = coachingContext
+		self.coachService = FMCoachService(context: coachingContext)
+	}
 	
 	var body: some View {
 		VStack(spacing: 16) {
 			ZStack {
 				Circle()
 					.fill(coachColor.opacity(0.1))
-					.frame(width: 120, height: 120)
+					.frame(width: 100, height: 100)
 				
 				Image(systemName: coachIcon)
 					.font(.system(size: 50))
 					.foregroundStyle(coachColor)
 			}
-			
-			VStack(spacing: 8) {
-				if isGeneratingAdvice {
+			List {
+				ForEach(coachService.coachResponse) { response in
+					if let message = response.adviceMessage {
+						Text(message)
+							.font(.headline)
+							.fontWeight(.medium)
+							.multilineTextAlignment(.center)
+							.contentTransition(.opacity)
+							.animation(.easeInOut, value: message)
+					}
+				}
+				.listRowBackground(Color.clear)
+			}
+			.listStyle(.plain)
+			.frame(minHeight: 150)
+			.overlay {
+				if coachService.session.isResponding {
 					ProgressView()
-						.controlSize(.large)
 						.tint(coachColor)
-				} else {
-					Text(coachMessage)
-						.font(.title3)
-						.fontWeight(.medium)
-						.multilineTextAlignment(.center)
-						.contentTransition(.opacity)
-						.animation(.easeInOut, value: coachMessage)
 				}
 			}
-			.frame(minHeight: 100) // Evita saltos de layout mientras carga
 		}
 		.frame(maxWidth: .infinity)
 		.padding()
@@ -47,36 +58,23 @@ struct CoachHeroSection:  View {
 			RoundedRectangle(cornerRadius: 24)
 				.fill(coachColor.opacity(0.05))
 		)
-		.task {
-			// Simulamos la llamada al LLM local al cargar la vista
-			await fetchCoachAdvice()
+		.onChange(of: coachingContext, initial: true) {
+			fetchCoachAdvice()
 		}
 	}
 	
-	private func fetchCoachAdvice() async {
-		isGeneratingAdvice = true
-		
-		// Simulamos el tiempo de respuesta de un LLM local (Foundation Models)
-		// En la implementación real, aquí llamarías al modelo pasándole coachingContext
-		try? await Task.sleep(for: .seconds(1.5))
-		
-		// Ejemplo de cómo el mensaje cambiaría según el contexto generado
-		switch motivationTag {
-		case .celebratory:
-			coachMessage = "You're on fire! Your hydration streak is growing beautifully. Keep this momentum!"
-		case .urgent:
-			coachMessage = "Warning: We've noticed a drop in your consistency. Let's try to hit your goal today!"
-		case .encouraging:
-			coachMessage = "You're doing well, but let's try to make your drinking habits even more regular."
-		case .neutral:
-			coachMessage = "Ready for today? Your hydration levels are looking steady."
-		}
-		
-		isGeneratingAdvice = false
-	}
+	private func fetchCoachAdvice() {
+        // 1. Verificar si Apple Intelligence está disponible
+        guard fmManager.isModelAvailable else {
+            return
+        }
+
+        // 2. Consumir el stream del servicio
+		coachService.streamAdvice()
+    }
 	
 	private var coachColor: Color {
-		switch motivationTag {
+		switch coachingContext.summary.primaryMotivationTag {
 		case .celebratory: return .orange
 		case .urgent: return .red
 		case .encouraging: return .blue
@@ -85,7 +83,7 @@ struct CoachHeroSection:  View {
 	}
 
 	private var coachIcon: String {
-		switch motivationTag {
+		switch coachingContext.summary.primaryMotivationTag {
 		case .celebratory: return "sparkles"
 		case .urgent: return "exclamationmark.triangle.fill"
 		case .encouraging: return "leaf.fill"
@@ -95,5 +93,6 @@ struct CoachHeroSection:  View {
 }
 
 #Preview {
-	CoachHeroSection(motivationTag: .urgent)
+	CoachHeroSection(coachingContext: MockData.coachingContextWarning)
+		.environment(FMManager())
 }

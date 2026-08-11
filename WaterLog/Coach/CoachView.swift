@@ -29,7 +29,8 @@ struct CoachView: View {
         		ScrollView {
 					VStack(spacing: 20) {
 						// Coach Hero Section
-						CoachHeroSection(motivationTag: coachingContext.summary.primaryMotivationTag)
+						CoachHeroSection(coachingContext: coachingContext)
+							.environment(manager)
 						
 						// Quick Stats Grid
 						StatsGrid(coachingContext: coachingContext)

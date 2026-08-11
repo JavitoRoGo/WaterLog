@@ -174,18 +174,18 @@ struct RiskPredictionResult {
 
 /// El "Paquete de Contexto" que se enviará al LLM.
 /// Es una representación semántica del estado de salud del usuario.
-struct CoachingContext: Codable {
+struct CoachingContext: Codable, Equatable {
 	let summary: UserStatusSummary
 	let metrics: DetailedMetrics
 	let patterns: DetectedPatterns
 	let timestamp: Date
 	
-	struct UserStatusSummary: Codable {
+	struct UserStatusSummary: Codable, Equatable {
 		let overallRiskLevel: RiskLevel
 		let primaryMotivationTag: MotivationTag // Para que el LLM sepa qué tono usar
 	}
 	
-	struct DetailedMetrics: Codable {
+	struct DetailedMetrics: Codable, Equatable {
 		let currentStreak: Int
 		let successRate: Double
 		let stabilityScore: Double
@@ -193,7 +193,7 @@ struct CoachingContext: Codable {
 		let weeklyEvolutionChange: Double? // Porcentaje de cambio vs semana pasada
 	}
 	
-	struct DetectedPatterns: Codable {
+	struct DetectedPatterns: Codable, Equatable {
 		let isImproving: Bool
 		let isStable: Bool
 		let hasHighVolatility: Bool
