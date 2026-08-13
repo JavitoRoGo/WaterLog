@@ -13,6 +13,7 @@ struct CoachHeroSection:  View {
 	
 	@Environment(FMManager.self) var fmManager
 	@State private var coachService: FMCoachService
+	@State private var showChatView: Bool = false
 	
 	init(coachingContext: CoachingContext) {
 		self.coachingContext = coachingContext
@@ -30,6 +31,15 @@ struct CoachHeroSection:  View {
 					.font(.system(size: 50))
 					.foregroundStyle(coachColor)
 			}
+			.overlay(alignment: .topTrailing) {
+				Button {
+					showChatView.toggle()
+				} label: {
+					Image(systemName: "bubbles.and.sparkles")
+						.foregroundStyle(.green)
+				}
+			}
+			
 			List {
 				ForEach(coachService.coachResponse) { response in
 					if let message = response.adviceMessage {
@@ -49,7 +59,7 @@ struct CoachHeroSection:  View {
 			.listStyle(.plain)
 			.frame(minHeight: 200)
 			.overlay {
-				if coachService.session?.isResponding ?? false {
+				if coachService.isResponding {
 					ProgressView()
 						.tint(coachColor)
 				}
@@ -68,6 +78,10 @@ struct CoachHeroSection:  View {
 		)
 		.onChange(of: coachingContext, initial: true) {
 			fetchCoachAdvice()
+		}
+		.sheet(isPresented: $showChatView) {
+			CoachChatView()
+				.environment(coachService)
 		}
 	}
 	

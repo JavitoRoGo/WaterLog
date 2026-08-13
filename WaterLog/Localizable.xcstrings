@@ -791,6 +791,16 @@
         }
       }
     },
+    "Ask me about hydration..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pregúntame sobre hidratación…"
+          }
+        }
+      }
+    },
     "Avg. Intake" : {
       "localizations" : {
         "es" : {
@@ -1059,6 +1069,19 @@
     },
     "CoachAI" : {
       "shouldTranslate" : false
+    },
+    "CoachAI Chat" : {
+      "shouldTranslate" : false
+    },
+    "CoachAI is thinking..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CoachAI está pensando…"
+          }
+        }
+      }
     },
     "Consistency" : {
       "localizations" : {

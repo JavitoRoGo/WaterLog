@@ -15,6 +15,13 @@ final class FMCoachService {
     var session: LanguageModelSession?
     var coachResponse: [CoachResponse].PartiallyGenerated = []
     var errorString: String?
+	
+	var isResponding: Bool {
+		session?.isResponding ?? false
+	}
+	
+	/// Historial de mensajes para la interfaz del chat
+	var chatMessages: [ChatMessage] = []
     
     /// Referencia al Task en curso, para poder cancelarlo si se lanza una nueva petición
 	/// o si el servicio se destruye antes de que termine.
@@ -126,4 +133,47 @@ final class FMCoachService {
             errorString = "Unexpected error: \(error.localizedDescription)"
         }
     }
+	
+	/// Envía un mensaje al chat y gestiona la respuesta del modelo
+	func sendMessage(_ text: String) async {
+		streamingTask?.cancel()
+		
+		errorString = nil
+		let userMsg = ChatMessage(text: text, isUser: true, timestamp: Date())
+		chatMessages.append(userMsg)
+		
+		// 1. Definir el System Prompt para restringir el comportamiento
+		let systemPrompt = """
+		You are a specialized Hydration and Health Coach. 
+		Your sole purpose is to provide advice, answer questions, and motivate the user regarding water intake, hydration, and related health topics (e.g., electrolytes, benefits of water).
+		
+		STRICT RULES:
+		1. If the user asks about anything unrelated to hydration or water-related health (e.g., politics, sports, general cooking, coding, etc.), you must politely decline and state that your expertise is strictly limited to hydration and water consumption.
+		2. Keep answers concise, encouraging, and professional.
+		3. Use emojis occasionally to maintain a friendly tone.
+		4. Always prioritize scientific accuracy regarding hydration.
+		"""
+
+		// 2. Preparar el prompt completo (System Prompt + Historial)
+		let activeSession = LanguageModelSession(instructions: systemPrompt)
+		session = activeSession
+		let stream = activeSession.streamResponse(to: text)
+		var response: String = ""
+
+		streamingTask = Task {
+			do {
+				for try await message in stream {
+					response = message.content
+				}
+				let botMsg = ChatMessage(text: response, isUser: false, timestamp: Date())
+				chatMessages.append(botMsg)
+			} catch is CancellationError {
+				
+			} catch {
+				handleError(error)
+			}
+		}
+		
+		streamingTask = nil
+	}
 }
