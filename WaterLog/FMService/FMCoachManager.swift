@@ -9,61 +9,99 @@ import SwiftUI
 import FoundationModels
 
 @Observable
+@MainActor
 final class FMCoachService {
     let context: CoachingContext
-    var session: LanguageModelSession = .init()
+    var session: LanguageModelSession?
     var coachResponse: [CoachResponse].PartiallyGenerated = []
     var errorString: String?
     
-    init(context: CoachingContext) {
-        self.context = context
-    }
+    /// Referencia al Task en curso, para poder cancelarlo si se lanza una nueva petición
+	/// o si el servicio se destruye antes de que termine.
+	private var streamingTask: Task<Void, Never>?
+	
+	init(context: CoachingContext) {
+		self.context = context
+	}
+	
+	isolated deinit {
+		streamingTask?.cancel()
+	}
     
-    func streamAdvice() {
-        // 1. Limpieza inicial en el hilo principal
-        coachResponse.removeAll()
-        errorString = nil
-        
-        let systemPrompt = """
-        You are an expert Health & Hydration Coach. Your goal is to analyze user data and provide short, empathetic, and highly motivating guidance.
-
-        TONE GUIDELINES:
-        Your tone must strictly follow the provided 'primaryMotivationTag':
-        - celebratory: Enthusiastic, rewarding, and joyful. Use exclamation marks! Celebrate streaks and successes.
-        - encouraging: Calm, supportive, and steady. Focus on gradual progress and gentle motivation.
-        - urgent: Direct, alert, and high-energy. Emphasize the importance of immediate action to correct trends or risks.
-        - neutral: Professional, objective, and informative. Provide facts without excessive emotion.
-
-        CONSTRAINTS:
-        - DO NOT invent numerical data. Use only the provided context.
-        - Be concise. The 'adviceMessage' should be maximum 3 sentences.
-        - Always respond in valid JSON format matching the CoachResponse schema.
-        - Ensure the 'actionableStep' is a very short, direct command (e.g., "Drink a glass now", "Keep it up!").
-        """
-        
-		session = LanguageModelSession(instructions: systemPrompt)
-		let contextJSON = try? JSONEncoder().encode(context)
-		let contextString = contextJSON.flatMap { String(data: $0, encoding: .utf8) } ?? "{}"
-        let prompt = """
+	func streamAdvice() {
+		streamingTask?.cancel()
+		
+		let userLanguage = IntakeConstants.appLocale.identifier
+		
+		// 1. Limpieza inicial en el hilo principal
+		coachResponse.removeAll()
+		errorString = nil
+		
+		let contextString: String
+		do {
+			let contextData = try JSONEncoder().encode(context)
+			guard let encoded = String(data: contextData, encoding: .utf8) else {
+				errorString = "Could not convert the encoded context to text."
+				return
+			}
+			contextString = encoded
+		} catch {
+			errorString = "Could not encode the hydration context: \(error.localizedDescription)"
+			return
+		}
+		
+		let systemPrompt = """
+		You are an expert Health & Hydration Coach. Your goal is to analyze user data and provide short, empathetic, and highly motivating guidance.
+		
+		### MANDATORY LANGUAGE RULE ###
+		- YOU MUST RESPOND EXCLUSIVELY IN THE FOLLOWING LANGUAGE: \(userLanguage).
+		###############################
+		
+		TONE GUIDELINES:
+		Your tone must strictly follow the provided 'primaryMotivationTag':
+		- celebratory: Enthusiastic, rewarding, and joyful. Use exclamation marks! Celebrate streaks and successes.
+		- encouraging: Calm, supportive, and steady. Focus on gradual progress and gentle motivation.
+		- urgent: Direct, alert, and high-energy. Emphasize the importance of immediate action to correct trends or risks.
+		- neutral: Professional, objective, and informative. Provide facts without excessive emotion.
+		
+		CONSTRAINTS:
+		- DO NOT invent numerical data. Use only the provided context.
+		- Be concise. The 'adviceMessage' should be maximum 3 sentences.
+		- Ensure the 'actionableStep' is a very short, direct command (e.g., "Drink a glass now", "Keep it up!").
+		"""
+		
+		let activeSession = LanguageModelSession(instructions: systemPrompt)
+		session = activeSession
+		
+		let prompt = """
   USER DATA CONTEXT (JSON):
   \(contextString)
-
-  TASK: Analyze this hydration data and provide only one personalized coaching message and one actionable step.
+  
+  TASK: Analyze this hydration data and provide a personalized coaching message and an actionable step.
+  REMINDER: The response MUST be in \(userLanguage).
   """
-		let stream = session.streamResponse(to: prompt, generating: [CoachResponse].self)
-
-        Task {
-            do {
-                for try await chunk in stream {
-                    withAnimation {
+		let stream = activeSession.streamResponse(to: prompt, generating: [CoachResponse].self)
+		
+		streamingTask = Task {
+			do {
+				for try await chunk in stream {
+					// Al estar la clase completa aislada a @MainActor, esta asignación
+					// ya se ejecuta siempre en el hilo principal, sin necesidad de
+					// saltos explícitos de actor.
+					withAnimation {
 						coachResponse = chunk.content
-                    }
-                }
-            } catch {
+					}
+				}
+			} catch is CancellationError {
+				// Cancelación esperada (nueva petición o servicio destruido):
+				// no es un error de cara al usuario, no tocamos errorString.
+			} catch {
 				handleError(error)
-            }
-        }
-    }
+			}
+			
+			streamingTask = nil
+		}
+	}
 
     private func handleError(_ error: Error) {
         if let genError = error as? LanguageModelSession.GenerationError {

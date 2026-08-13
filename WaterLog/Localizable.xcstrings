@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+      "shouldTranslate" : false
+    },
+    "--" : {
+      "shouldTranslate" : false
+    },
     "%@" : {
       "shouldTranslate" : false
     },
@@ -22,6 +28,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ - %2$@"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
           }
         }
       },
@@ -99,6 +116,46 @@
         }
       },
       "shouldTranslate" : false
+    },
+    "%lld days" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld days"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld día"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld días"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld out of %lld days met" : {
       "localizations" : {
@@ -714,6 +771,26 @@
         }
       }
     },
+    "Apple Intelligence is not available on this device." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence no está disponible en este dispositivo."
+          }
+        }
+      }
+    },
+    "Apple Intelligence is unavailable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence no está disponible"
+          }
+        }
+      }
+    },
     "Avg. Intake" : {
       "localizations" : {
         "es" : {
@@ -970,8 +1047,28 @@
         }
       }
     },
+    "Checking for model availability..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprobando la disponibilidad del modelo…"
+          }
+        }
+      }
+    },
     "CoachAI" : {
       "shouldTranslate" : false
+    },
+    "Consistency" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consistencia"
+          }
+        }
+      }
     },
     "Consistent Habit" : {
       "localizations" : {
@@ -1366,6 +1463,16 @@
         }
       }
     },
+    "Declining" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decayendo"
+          }
+        }
+      }
+    },
     "Default value" : {
       "localizations" : {
         "es" : {
@@ -1418,6 +1525,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "削除"
+          }
+        }
+      }
+    },
+    "Down" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hacia abajo"
+          }
+        }
+      }
+    },
+    "Enable Apple Intelligence in System Settings." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activa Apple Intelligence en Ajustes del sistema."
           }
         }
       }
@@ -1502,6 +1629,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "データをエクスポート"
+          }
+        }
+      }
+    },
+    "Foundation Model unavailable: %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foundation Model no disponible: %@"
           }
         }
       }
@@ -1726,6 +1863,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "インポートエラー"
+          }
+        }
+      }
+    },
+    "Improving" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejorando"
           }
         }
       }
@@ -2034,6 +2181,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1日の最大摂取量 : %@"
+          }
+        }
+      }
+    },
+    "Momentum" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu momento"
           }
         }
       }
@@ -2523,6 +2680,16 @@
         }
       }
     },
+    "Stability" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variabilidad"
+          }
+        }
+      }
+    },
     "Stability Index" : {
       "localizations" : {
         "es" : {
@@ -2547,6 +2714,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "安定指数"
+          }
+        }
+      }
+    },
+    "Stable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estable"
           }
         }
       }
@@ -2631,6 +2808,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "旅を始めよう"
+          }
+        }
+      }
+    },
+    "Steady" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenido"
+          }
+        }
+      }
+    },
+    "Streak" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Racha"
+          }
+        }
+      }
+    },
+    "Success" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cumplimiento"
+          }
+        }
+      }
+    },
+    "The model is not ready yet." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo no está listo todavía."
           }
         }
       }
@@ -2753,6 +2970,26 @@
         }
       }
     },
+    "Trend" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendencia"
+          }
+        }
+      }
+    },
+    "Try again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intentar de nuevo"
+          }
+        }
+      }
+    },
     "Try to keep a more regular rhythm. ⚖️" : {
       "localizations" : {
         "es" : {
@@ -2781,6 +3018,16 @@
         }
       }
     },
+    "Up" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hacia arriba"
+          }
+        }
+      }
+    },
     "Update your daily goal" : {
       "localizations" : {
         "es" : {
@@ -2805,6 +3052,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1日の目標を更新する"
+          }
+        }
+      }
+    },
+    "Variable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variable"
           }
         }
       }

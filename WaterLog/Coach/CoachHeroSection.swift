@@ -35,14 +35,13 @@ struct CoachHeroSection:  View {
 					if let message = response.adviceMessage {
 						VStack {
 							Text("\(response.toneEmoji ?? "") \(message)")
-							Text(response.actionableStep ?? "sin mensaje")
+							Text(response.actionableStep ?? "No action needed")
 								.font(.headline)
 						}
-							.multilineTextAlignment(.center)
-							.contentTransition(.opacity)
-							.animation(.easeInOut, value: message)
-					} else {
-						Text("")
+						.multilineTextAlignment(.center)
+						.contentTransition(.opacity)
+						.animation(.easeInOut, value: message)
+						.opacity(coachService.errorString == nil ? 1 : 0)
 					}
 				}
 				.listRowBackground(Color.clear)
@@ -50,7 +49,7 @@ struct CoachHeroSection:  View {
 			.listStyle(.plain)
 			.frame(minHeight: 200)
 			.overlay {
-				if coachService.session.isResponding {
+				if coachService.session?.isResponding ?? false {
 					ProgressView()
 						.tint(coachColor)
 				}
