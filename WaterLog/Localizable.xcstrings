@@ -1073,16 +1073,6 @@
     "CoachAI Chat" : {
       "shouldTranslate" : false
     },
-    "CoachAI is thinking..." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CoachAI está pensando…"
-          }
-        }
-      }
-    },
     "Consistency" : {
       "localizations" : {
         "es" : {

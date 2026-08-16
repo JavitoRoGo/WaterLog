@@ -31,14 +31,6 @@ struct CoachHeroSection:  View {
 					.font(.system(size: 50))
 					.foregroundStyle(coachColor)
 			}
-			.overlay(alignment: .topTrailing) {
-				Button {
-					showChatView.toggle()
-				} label: {
-					Image(systemName: "bubbles.and.sparkles")
-						.foregroundStyle(.green)
-				}
-			}
 			
 			List {
 				ForEach(coachService.coachResponse) { response in
@@ -76,6 +68,17 @@ struct CoachHeroSection:  View {
 			RoundedRectangle(cornerRadius: 24)
 				.fill(coachColor.opacity(0.05))
 		)
+		.overlay(alignment: .topTrailing) {
+			Button {
+				showChatView.toggle()
+			} label: {
+				Text("CoachAI")
+					.font(.caption)
+					.foregroundStyle(.secondary)
+			}
+			.buttonStyle(.glass)
+			.padding(5)
+		}
 		.onChange(of: coachingContext, initial: true) {
 			fetchCoachAdvice()
 		}

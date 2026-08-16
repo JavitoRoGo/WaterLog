@@ -1,5 +1,5 @@
 //
-//  FMCoachManager.swift
+//  FMCoachService.swift
 //  WaterLog
 //
 //  Created by Javier Rodríguez Gómez on 11/08/2026.
@@ -13,22 +13,33 @@ import FoundationModels
 final class FMCoachService {
     let context: CoachingContext
     var session: LanguageModelSession?
+    var sessionForChat: LanguageModelSession
     var coachResponse: [CoachResponse].PartiallyGenerated = []
     var errorString: String?
+	
+	private let systemPromptForChat = """
+  You are a specialized Hydration and Health Coach. 
+  Your sole purpose is to provide advice, answer questions, and motivate the user regarding water intake, hydration, and related health topics (e.g., electrolytes, benefits of water).
+  
+  STRICT RULES:
+  1. If the user asks about anything unrelated to hydration or water-related health (e.g., politics, sports, general cooking, coding, etc.), you must politely decline and state that your expertise is strictly limited to hydration and water consumption.
+  2. Keep answers concise, encouraging, and professional.
+  3. Use emojis occasionally to maintain a friendly tone.
+  4. Always prioritize scientific accuracy regarding hydration.
+  5. ALWAYS USE THE SAME LANGUAGE AS THE USER IN YOUR ANSWERS.
+  """
 	
 	var isResponding: Bool {
 		session?.isResponding ?? false
 	}
 	
-	/// Historial de mensajes para la interfaz del chat
-	var chatMessages: [ChatMessage] = []
-    
-    /// Referencia al Task en curso, para poder cancelarlo si se lanza una nueva petición
+	/// Referencia al Task en curso, para poder cancelarlo si se lanza una nueva petición
 	/// o si el servicio se destruye antes de que termine.
 	private var streamingTask: Task<Void, Never>?
 	
 	init(context: CoachingContext) {
 		self.context = context
+		self.sessionForChat = LanguageModelSession(instructions: systemPromptForChat)
 	}
 	
 	isolated deinit {
@@ -135,45 +146,26 @@ final class FMCoachService {
     }
 	
 	/// Envía un mensaje al chat y gestiona la respuesta del modelo
-	func sendMessage(_ text: String) async {
+	func sendMessage(_ text: String) {
 		streamingTask?.cancel()
-		
 		errorString = nil
-		let userMsg = ChatMessage(text: text, isUser: true, timestamp: Date())
-		chatMessages.append(userMsg)
-		
-		// 1. Definir el System Prompt para restringir el comportamiento
-		let systemPrompt = """
-		You are a specialized Hydration and Health Coach. 
-		Your sole purpose is to provide advice, answer questions, and motivate the user regarding water intake, hydration, and related health topics (e.g., electrolytes, benefits of water).
-		
-		STRICT RULES:
-		1. If the user asks about anything unrelated to hydration or water-related health (e.g., politics, sports, general cooking, coding, etc.), you must politely decline and state that your expertise is strictly limited to hydration and water consumption.
-		2. Keep answers concise, encouraging, and professional.
-		3. Use emojis occasionally to maintain a friendly tone.
-		4. Always prioritize scientific accuracy regarding hydration.
-		"""
 
-		// 2. Preparar el prompt completo (System Prompt + Historial)
-		let activeSession = LanguageModelSession(instructions: systemPrompt)
-		session = activeSession
-		let stream = activeSession.streamResponse(to: text)
-		var response: String = ""
+		let stream = sessionForChat.streamResponse(to: text)
 
-		streamingTask = Task {
+		Task {
 			do {
-				for try await message in stream {
-					response = message.content
+				for try await _ in stream {
+					
 				}
-				let botMsg = ChatMessage(text: response, isUser: false, timestamp: Date())
-				chatMessages.append(botMsg)
 			} catch is CancellationError {
-				
+				// Cancelación esperada
 			} catch {
 				handleError(error)
 			}
 		}
-		
-		streamingTask = nil
+	}
+	
+	func newChat() {
+		sessionForChat = LanguageModelSession(instructions: systemPromptForChat)
 	}
 }

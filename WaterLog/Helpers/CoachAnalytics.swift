@@ -26,7 +26,7 @@ enum CoachAnalytics {
 		
 		// 2. Calcular la racha actual (usando tu lógica de Streaks o una simplificada aquí)
 		// Para consistencia con el resto de la app, idealmente usaríamos Streaks.calculateStreaks
-		let currentStreak = calculateCurrentStreak(from: summaries)
+		let currentStreak = Streaks.calculateStreaks(from: summaries).currentStreak
 		
 		// 3. Determinar la dirección de la tendencia para el LLM
 		let trendDirection: CoachingContext.TrendDirection = {
@@ -71,22 +71,4 @@ enum CoachAnalytics {
 			timestamp: today
 		)
 	}
-	
-	/// Helper privado para calcular la racha actual sin depender de todo el módulo Streaks
-	private static func calculateCurrentStreak(from summaries: [DailyIntakeSummary]) -> Int {
-		let sorted = summaries.sorted { $0.date > $1.date }
-		var streak = 0
-		for summary in sorted {
-			if summary.reachedGoal {
-				streak += 1
-			} else {
-				// Si el último registro no es hoy y no se cumplió, la racha se rompió ayer.
-				// Pero si el último registro ES hoy y no se ha cumplido, la racha sigue viva
-				// (se evaluará al final del día). Decidimos ser conservadores.
-				break
-			}
-		}
-		return streak
-	}
-	
 }
