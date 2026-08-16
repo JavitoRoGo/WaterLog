@@ -8,14 +8,26 @@
 import SwiftUI
 
 struct ChatBubble: View {
-	let message: String
 	let isUser: Bool
+	
+	init(message: String, isUser: Bool) {
+		self.isUser = isUser
+		self.formattedMessage = {
+			do {
+				return try AttributedString(markdown: message)
+			} catch {
+				return AttributedString(message)
+			}
+		}()
+	}
+	
+	private var formattedMessage: AttributedString
 	
 	var body: some View {
 		HStack {
 			if isUser { Spacer(minLength: 50) }
 			
-			Text(message)
+			Text(formattedMessage)
 				.foregroundStyle(isUser ? .white : .primary)
 				.padding(.horizontal, 12)
 				.padding(.vertical, 8)
