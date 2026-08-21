@@ -69,7 +69,7 @@ struct IntakeChartView: View {
                 AxisMarks(values: .stride(by: .day)) { value in
                     AxisGridLine()
                     AxisTick()
-                    AxisValueLabel(format: .dateTime.day().month(.abbreviated).locale(IntakeConstants.appLocale))
+					AxisValueLabel(format: .dateTime.weekday().locale(IntakeConstants.appLocale))
                 }
 			case .oneMonth:
 				AxisMarks(values: .stride(by: .day, count: 5)) { value in

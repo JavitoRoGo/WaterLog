@@ -2,13 +2,14 @@ import SwiftData
 import SwiftUI
 
 struct TodayView: View {
-	private enum TabToShow: Identifiable, CaseIterable, View {
-		case historical, achievements, insights, settings
+	private enum TabToShow: Identifiable, CaseIterable {
+		case today, historical, achievements, insights, settings
 		
 		var id: Self { self }
 		
-		var title: LocalizedStringResource {
+		var text: LocalizedStringResource {
 			switch self {
+			case .today: "Today"
 			case .historical: "Historical"
 			case .achievements: "Achievements"
 			case .insights: "Insights"
@@ -18,6 +19,7 @@ struct TodayView: View {
 		
 		var icon: String {
 			switch self {
+				case .today: "drop"
 			case .historical: "chart.bar.xaxis"
 			case .achievements: "trophy"
 			case .insights: "chart.xyaxis.line"
@@ -25,8 +27,15 @@ struct TodayView: View {
 			}
 		}
 		
-		var body: some View {
+		@ViewBuilder
+		func makeView(title: LocalizedStringResource) -> some View {
 			switch self {
+			case .today: DailyIntakeEditorContent(
+				date: Date.now,
+				title: .localized(title),
+				emptyTitle: "No entries today",
+				emptyDescription: "Add some water to stay hydrated!"
+			)
 			case .historical: StatisticsView()
 			case .achievements: StreaksView()
 			case .insights: InsightsView()
@@ -37,16 +46,11 @@ struct TodayView: View {
 	
     @Environment(\.scenePhase) private var scenePhase
     @State private var currentDate = Date.now
-	@State private var tabToShow: TabToShow?
+	@State private var tabToShow: TabToShow = .today
 
     var body: some View {
         NavigationStack {
-            DailyIntakeEditorContent(
-                date: currentDate,
-                title: .localized(title),
-                emptyTitle: "No entries today",
-                emptyDescription: "Add some water to stay hydrated!"
-            )
+			tabToShow.makeView(title: title)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarLeading) {
 					Menu {
@@ -54,16 +58,13 @@ struct TodayView: View {
 							Button {
 								tabToShow = tab
 							} label: {
-								Label(tab.title, systemImage: tab.icon)
+								Label(tab.text, systemImage: tab.icon)
 							}
 						}
 					} label: {
 						Image(systemName: "list.bullet")
 					}
 				}
-			}
-			.navigationDestination(item: $tabToShow) { tab in
-				tab
 			}
         }
         .task {
