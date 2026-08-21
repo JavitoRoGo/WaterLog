@@ -2,7 +2,7 @@ import Testing
 import Foundation
 @testable import WaterLog
 
-@Suite("Pruebas de la lógica analítica en IntakeAnalytics")
+@Suite("Fase 1: Pruebas de la lógica analítica en IntakeAnalytics")
 struct IntakeAnalyticsTests {
 	
 	// MARK: - Helpers para generación de datos (Mocks)

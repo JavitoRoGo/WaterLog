@@ -74,6 +74,13 @@
 			);
 			target = 444603262FB5E2FB00E3D43E /* WaterLogWidgetExtension */;
 		};
+		44F419FE3038ADC10032CBE1 /* Exceptions for "WaterLogTests" folder in "WaterLogTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				WaterLogTestPlan.xctestplan,
+			);
+			target = 44AD815430375EFA008B4D4F /* WaterLogTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -95,6 +102,9 @@
 		};
 		44AD815630375EFA008B4D4F /* WaterLogTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				44F419FE3038ADC10032CBE1 /* Exceptions for "WaterLogTests" folder in "WaterLogTests" target */,
+			);
 			path = WaterLogTests;
 			sourceTree = "<group>";
 		};
