@@ -414,21 +414,22 @@ enum IntakeAnalytics {
 		// 3. Lógica de predicción de riesgo (MEJORADA)
 		var risk: RiskLevel = .low
 		var message: LocalizedStringResource = "You're doing great! Stay steady."
-		
+
 		if successRate < 0.3 && currentStreak == 0 {
-			// CASO: Riesgo de abandono (sin racha y éxito muy bajo)
+			// CASO: Riesgo de abandono (Prioridad máxima)
 			risk = .high
 			message = "It's hard to start, but every drop counts! 💧"
-		} else if currentStreak >= 5 && successRate < 0.7 {
-			// CASO: Riesgo de fatiga (racha alta pero éxito general bajo)
-			risk = .medium
-			message = "You've been strong lately! Don't let the momentum slip. 💪"
-		} else if currentStreak > 0 && successRate < 0.5 {
-			// CASO: Riesgo de ruptura (racha activa pero inestabilidad detectada)
+		} else if successRate < 0.5 && currentStreak > 0 {
+			// CASO: Riesgo de ruptura/inestabilidad (Prioridad media-alta)
+			// Si el éxito es bajo pero hay racha, es inestable.
 			risk = .high
 			message = "Warning: Your pattern is becoming unstable. Focus on today! ⚠️"
+		} else if currentStreak >= 5 && successRate < 0.7 {
+			// CASO: Riesgo de fatiga (Prioridad media)
+			risk = .medium
+			message = "You've been strong lately! Don't let the momentum slip. 💪"
 		} else if currentStreak >= 3 {
-			// CASO: Racha positiva y estable
+			// CASO: Racha positiva
 			risk = .low
 			message = "You're building a solid habit. Keep it up! ✨"
 		}
