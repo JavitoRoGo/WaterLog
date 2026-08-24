@@ -52,6 +52,9 @@ struct CoachChatView: View {
 					.disabled(coachService.sessionForChat.transcript.count <= 1 || coachService.sessionForChat.isResponding)
 				}
 			}
+			.onAppear {
+				coachService.newChat()
+			}
 			.onChange(of: coachService.sessionForChat.transcript) {
 				withAnimation {
 					scrollPosition.scrollTo(edge: .bottom)

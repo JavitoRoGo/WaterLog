@@ -10,6 +10,7 @@
 		4446032A2FB5E2FB00E3D43E /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444603292FB5E2FB00E3D43E /* WidgetKit.framework */; };
 		4446032C2FB5E2FB00E3D43E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4446032B2FB5E2FB00E3D43E /* SwiftUI.framework */; };
 		444603372FB5E2FB00E3D43E /* WaterLogWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 444603272FB5E2FB00E3D43E /* WaterLogWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		44F41BD03038BAB20032CBE1 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 44F41BCF3038BAB20032CBE1 /* MarkdownUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44F41BD03038BAB20032CBE1 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,6 +192,7 @@
 			);
 			name = WaterLog;
 			packageProductDependencies = (
+				44F41BCF3038BAB20032CBE1 /* MarkdownUI */,
 			);
 			productName = WaterLog;
 			productReference = 443297FE2FB1E812009248A5 /* WaterLog.app */;
@@ -275,6 +278,9 @@
 			);
 			mainGroup = 443297F52FB1E812009248A5;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				44F41BCE3038BA920032CBE1 /* XCLocalSwiftPackageReference "../MarkdownUI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 443297FF2FB1E812009248A5 /* Products */;
 			projectDirPath = "";
@@ -690,6 +696,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		44F41BCE3038BA920032CBE1 /* XCLocalSwiftPackageReference "../MarkdownUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../MarkdownUI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		44F41BCF3038BAB20032CBE1 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MarkdownUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 443297F62FB1E812009248A5 /* Project object */;
 }
