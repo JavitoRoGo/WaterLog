@@ -51,6 +51,7 @@
 		4446032B2FB5E2FB00E3D43E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		444603782FB65CE300E3D43E /* WaterLogWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WaterLogWidgetExtension.entitlements; sourceTree = "<group>"; };
 		44AD815530375EFA008B4D4F /* WaterLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WaterLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		44FE60CA303CA7CD00BA9E10 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -148,6 +149,7 @@
 				44AD815630375EFA008B4D4F /* WaterLogTests */,
 				444603282FB5E2FB00E3D43E /* Frameworks */,
 				443297FF2FB1E812009248A5 /* Products */,
+				44FE60CA303CA7CD00BA9E10 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};

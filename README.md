@@ -6,6 +6,8 @@ WaterLog is a minimalist and elegant water intake tracker designed for iOS. It h
 
 - **Daily Tracking:** Quickly log water entries with custom amounts or use quick-tap buttons for common volumes.
 - **Visual Progress:** Stay motivated with a beautiful, real-time progress ring that shows how close you are to your daily goal (default: 2000ml).
+- **AI Hydration Coach - CoachAI:** Get personalized, real-time guidance and motivational tips from your very own AI coach to keep you on track with your hydration goals.
+- **Deep Data Insights:** Unlock meaningful patterns in your drinking habits with advanced analytics that transform your daily logs into actionable health intelligence.
 - **In-depth Analytics:** Gain insights into your hydration habits with detailed summaries:
   - **Daily view** for immediate tracking.
   - **Historical trends** covering the last 7 days, 4 weeks, or a full year.
@@ -40,6 +42,8 @@ WaterLog es un rastreador de ingesta de agua minimalista y elegante diseñado pa
 
 - **Seguimiento Diario:** Registra rápidamente tu consumo de agua con cantidades personalizadas o utiliza botones de acceso rápido para volúmenes comunes.
 - **Progreso Visual:** Mantente motivado con un elegante anillo de progreso en tiempo real que muestra qué tan cerca estás de tu objetivo diario (por defecto: 2000ml).
+- **Entrenador de Hidratación con IA - CoachAI:** Recibe orientación personalizada y consejos motivadores en tiempo real gracias a tu propio entrenador de IA, diseñado para ayudarte a cumplir tus objetivos.
+- **Análisis Inteligente de Datos (Insights):** Descubre patrones significativos en tus hábitos de consumo mediante analíticas avanzadas que transforman tus registros diarios en información útil para tu salud.
 - **Analíticas Detalladas:** Obtén información sobre tus hábitos de hidratación con resúmenes detallados:
   - **Vista diaria** para un seguimiento inmediato.
   - **Tendencias históricas** que cubren los últimos 7 días, 4 semanas o un año completo.
