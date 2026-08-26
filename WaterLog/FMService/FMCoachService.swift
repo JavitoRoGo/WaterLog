@@ -12,10 +12,19 @@ import FoundationModels
 @MainActor
 final class FMCoachService {
     let context: CoachingContext
-    var session: LanguageModelSession?
-    var sessionForChat: LanguageModelSession
+    var adviceSession: LanguageModelSession?
+    var chatSession: LanguageModelSession
     var coachResponse: [CoachResponse].PartiallyGenerated = []
     var errorString: String?
+	
+	var showErrorAlert: Bool {
+		get {
+			errorString != nil
+		}
+		set {
+			errorString = nil
+		}
+	}
 	
 	private let systemPromptForChat = """
   You are the WaterLog AI Coach, a specialized assistant for hydration and water-related health.
@@ -48,8 +57,11 @@ final class FMCoachService {
   - Use emojis (💧, 🌊) occasionally to maintain a coach persona.
   """
 	
-	var isResponding: Bool {
-		session?.isResponding ?? false
+	var isAdviceResponding: Bool {
+		adviceSession?.isResponding ?? false
+	}
+	var isChatResponding: Bool {
+		chatSession.isResponding
 	}
 	
 	/// Referencia al Task en curso, para poder cancelarlo si se lanza una nueva petición
@@ -58,7 +70,7 @@ final class FMCoachService {
 	
 	init(context: CoachingContext) {
 		self.context = context
-		self.sessionForChat = LanguageModelSession(instructions: systemPromptForChat)
+		self.chatSession = LanguageModelSession(instructions: systemPromptForChat)
 	}
 	
 	isolated deinit {
@@ -108,7 +120,7 @@ final class FMCoachService {
 		"""
 		
 		let activeSession = LanguageModelSession(instructions: systemPrompt)
-		session = activeSession
+		adviceSession = activeSession
 		
 		let prompt = """
   USER DATA CONTEXT (JSON):
@@ -122,9 +134,6 @@ final class FMCoachService {
 		streamingTask = Task {
 			do {
 				for try await chunk in stream {
-					// Al estar la clase completa aislada a @MainActor, esta asignación
-					// ya se ejecuta siempre en el hilo principal, sin necesidad de
-					// saltos explícitos de actor.
 					withAnimation {
 						coachResponse = chunk.content
 					}
@@ -159,23 +168,29 @@ final class FMCoachService {
 			if let recoverySuggestion = genError.recoverySuggestion {
 				errorString! += "\nRecovery suggestion: \(recoverySuggestion)"
 			}
-        } else {
+		} else if let tagError = error as? PromptValidationError {
+			switch tagError {
+			case .topicNotAllowed(let detected):
+				errorString = "🚫 I'm here to help you with your hydration! I can't assist with this topics: \(detected)."
+			case .validationServiceUnavailable:
+				errorString = "⚠️ Validation service is not available. Try again later."
+			}
+		} else {
             errorString = "Unexpected error: \(error.localizedDescription)"
         }
 	}
 	
 	/// Envía un mensaje al chat y gestiona la respuesta del modelo
-	func sendMessage(_ text: String) {
+	func sendMessage(_ text: String) async {
 		streamingTask?.cancel()
 		errorString = nil
-
-		let stream = sessionForChat.streamResponse(to: text)
-
-		Task {
+		
+		let isPromptValid = await checkPrompt(text)
+		if isPromptValid {
+			let stream = chatSession.streamResponse(to: text)
+			
 			do {
-				for try await _ in stream {
-					
-				}
+				for try await _ in stream { }
 			} catch is CancellationError {
 				// Cancelación esperada
 			} catch {
@@ -184,7 +199,19 @@ final class FMCoachService {
 		}
 	}
 	
+	private func checkPrompt(_ text: String) async -> Bool {
+		let promptService = FMPromptService()
+		
+		do {
+			let isValid = try await promptService.processUserIntent(text)
+			return isValid
+		} catch {
+			handleError(error)
+			return false
+		}
+	}
+	
 	func newChat() {
-		sessionForChat = LanguageModelSession(instructions: systemPromptForChat)
+		chatSession = LanguageModelSession(instructions: systemPromptForChat)
 	}
 }

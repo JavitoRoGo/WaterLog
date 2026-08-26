@@ -1562,6 +1562,16 @@
         }
       }
     },
+    "Error" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
     "Error while saving" : {
       "localizations" : {
         "es" : {

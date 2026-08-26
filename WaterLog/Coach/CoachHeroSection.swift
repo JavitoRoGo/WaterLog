@@ -51,7 +51,7 @@ struct CoachHeroSection:  View {
 			.listStyle(.plain)
 			.frame(minHeight: 200)
 			.overlay {
-				if coachService.isResponding {
+				if coachService.isAdviceResponding {
 					ProgressView()
 						.tint(coachColor)
 				}

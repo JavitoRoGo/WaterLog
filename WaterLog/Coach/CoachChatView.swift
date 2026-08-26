@@ -8,22 +8,18 @@ struct CoachChatView: View {
 	@State private var scrollPosition = ScrollPosition()
 	
 	var body: some View {
+		@Bindable var bvm = coachService
 		NavigationStack {
 			VStack(spacing: 0) {
 				ScrollView {
-					ForEach(coachService.sessionForChat.transcript) { entry in
+					ForEach(coachService.chatSession.transcript) { entry in
 						if let interaction = getInteraction(for: entry) {
 							interaction
 						}
 					}
-					.overlay {
-						if let error = coachService.errorString {
-							Text(error)
-						}
-					}
 					
 					// Indicador de carga si el bot está pensando
-					if coachService.sessionForChat.isResponding {
+					if coachService.isChatResponding {
 						ThinkingBubble()
 					}
 				}
@@ -49,13 +45,20 @@ struct CoachChatView: View {
 					} label: {
 						Image(systemName: "square.and.pencil")
 					}
-					.disabled(coachService.sessionForChat.transcript.count <= 1 || coachService.sessionForChat.isResponding)
+					.disabled(coachService.chatSession.transcript.count <= 1 || coachService.isChatResponding)
 				}
+			}
+			.alert("Error", isPresented: $bvm.showErrorAlert) {
+				Button("OK") {
+					bvm.showErrorAlert = false
+				}
+			} message: {
+				Text(bvm.errorString ?? "Unknown error")
 			}
 			.onAppear {
 				coachService.newChat()
 			}
-			.onChange(of: coachService.sessionForChat.transcript) {
+			.onChange(of: coachService.chatSession.transcript) {
 				withAnimation {
 					scrollPosition.scrollTo(edge: .bottom)
 				}
@@ -73,17 +76,19 @@ struct CoachChatView: View {
 					.background(Color(.systemGray6))
 					.clipShape(RoundedRectangle(cornerRadius: 20))
 					.lineLimit(1...5)
-					.disabled(coachService.sessionForChat.isResponding)
+					.disabled(coachService.isChatResponding)
 				
 				Button {
-					coachService.sendMessage(inputText)
-					inputText = ""
+					Task {
+						await coachService.sendMessage(inputText)
+						inputText = ""
+					}
 				} label: {
 					Image(systemName: "arrow.up.circle.fill")
 						.font(.system(size: 32))
-						.foregroundStyle(inputText.isEmpty || coachService.isResponding ? .gray : .blue)
+						.foregroundStyle(inputText.isEmpty || coachService.isChatResponding ? .gray : .blue)
 				}
-				.disabled(inputText.isEmpty || coachService.sessionForChat.isResponding)
+				.disabled(inputText.isEmpty || coachService.isChatResponding)
 			}
 			.background(.ultraThinMaterial)
 		}
