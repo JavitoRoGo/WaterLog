@@ -11,6 +11,7 @@
 		4446032C2FB5E2FB00E3D43E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4446032B2FB5E2FB00E3D43E /* SwiftUI.framework */; };
 		444603372FB5E2FB00E3D43E /* WaterLogWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 444603272FB5E2FB00E3D43E /* WaterLogWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		44F41BD03038BAB20032CBE1 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 44F41BCF3038BAB20032CBE1 /* MarkdownUI */; };
+		44FAE87A303F123100687A8F /* TestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 44FAE879303F123100687A8F /* TestPlan.xctestplan */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		4446032B2FB5E2FB00E3D43E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		444603782FB65CE300E3D43E /* WaterLogWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WaterLogWidgetExtension.entitlements; sourceTree = "<group>"; };
 		44AD815530375EFA008B4D4F /* WaterLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WaterLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		44FAE879303F123100687A8F /* TestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = TestPlan.xctestplan; path = WaterLogTests/TestPlan.xctestplan; sourceTree = "<group>"; };
 		44FE60CA303CA7CD00BA9E10 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -76,13 +78,6 @@
 			);
 			target = 444603262FB5E2FB00E3D43E /* WaterLogWidgetExtension */;
 		};
-		44F419FE3038ADC10032CBE1 /* Exceptions for "WaterLogTests" folder in "WaterLogTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				WaterLogTestPlan.xctestplan,
-			);
-			target = 44AD815430375EFA008B4D4F /* WaterLogTests */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -104,9 +99,6 @@
 		};
 		44AD815630375EFA008B4D4F /* WaterLogTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				44F419FE3038ADC10032CBE1 /* Exceptions for "WaterLogTests" folder in "WaterLogTests" target */,
-			);
 			path = WaterLogTests;
 			sourceTree = "<group>";
 		};
@@ -143,6 +135,7 @@
 		443297F52FB1E812009248A5 = {
 			isa = PBXGroup;
 			children = (
+				44FAE879303F123100687A8F /* TestPlan.xctestplan */,
 				444603782FB65CE300E3D43E /* WaterLogWidgetExtension.entitlements */,
 				443298002FB1E812009248A5 /* WaterLog */,
 				4446032D2FB5E2FB00E3D43E /* WaterLogWidget */,
@@ -300,6 +293,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44FAE87A303F123100687A8F /* TestPlan.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

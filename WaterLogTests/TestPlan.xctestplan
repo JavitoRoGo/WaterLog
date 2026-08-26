@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "6DF4729E-8F10-4DA0-A78B-D91CE9122C77",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:WaterLog.xcodeproj",
+        "identifier" : "44AD815430375EFA008B4D4F",
+        "name" : "WaterLogTests"
+      }
+    }
+  ],
+  "version" : 1
+}
