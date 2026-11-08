@@ -77,7 +77,7 @@ final class FMCoachService {
 		streamingTask?.cancel()
 	}
     
-	func streamAdvice() {
+	func streamAdvice() async {
 		streamingTask?.cancel()
 		
 		let userLanguage = IntakeConstants.appLocale.identifier
@@ -130,8 +130,8 @@ final class FMCoachService {
   REMINDER: The response MUST be in \(userLanguage).
   """
 		let stream = activeSession.streamResponse(to: prompt, generating: [CoachResponse].self)
-		
-		streamingTask = Task {
+		// Store task in a local constant; the body must NOT write through self.streamingTask
+		let adviceTask = Task {
 			do {
 				for try await chunk in stream {
 					withAnimation {
@@ -144,9 +144,8 @@ final class FMCoachService {
 			} catch {
 				handleError(error)
 			}
-			
-			streamingTask = nil
 		}
+		streamingTask = adviceTask
 	}
 
     private func handleError(_ error: Error) {

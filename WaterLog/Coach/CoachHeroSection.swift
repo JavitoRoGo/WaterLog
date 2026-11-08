@@ -95,7 +95,7 @@ struct CoachHeroSection:  View {
         }
 
         // 2. Consumir el stream del servicio
-		coachService.streamAdvice()
+		Task { await coachService.streamAdvice() }
     }
 	
 	private var coachColor: Color {
