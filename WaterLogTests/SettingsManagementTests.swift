@@ -15,11 +15,11 @@ struct SettingsManagementTests {
         init() {
             // Limpiar cualquier residuo previo de tests anteriores antes de empezar
             UserDefaults.standard.removePersistentDomain(forName: testSuiteName)
-            self.userDefaults = #require(UserDefaults(suiteName: testSuiteName))
-        }
-        
-        deinit {
-            userDefaults.removePersistentDomain(forName: testSuiteName)
+            do {
+                self.userDefaults = try #require(UserDefaults(suiteName: testSuiteName))
+            } catch {
+                self.userDefaults = UserDefaults.standard
+            }
         }
     }
 
