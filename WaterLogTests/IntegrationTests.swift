@@ -91,7 +91,7 @@ struct IntegrationTests {
             // 4. Validar que el resumen use el objetivo de la DB (3000) y no el default (2000)
             let summary = summaries.first
             #expect(summary?.dailyGoal == customGoalAmount)
-            #expect(summary?.progress == 0.5, "El progreso debe ser 1500/3000 = 0.5")
+            #expect(#require(summary?.progress).isApproximatelyEqual(to: 0.5, absoluteTolerance: 0.000001), "El progreso debe ser 1500/3000 = 0.5")
         }
     }
 
@@ -103,22 +103,22 @@ struct IntegrationTests {
         func testMonthlyAverageFromPersistedHistory() throws {
             let env = try TestEnvironment()
             let calendar = Calendar.current
-            let startOfMonth = calendar.date(from: DateComponents(year: 2024, month: 1, day: 1))!
+            #require(calendar.date(from: DateComponents(year: 2024, month: 1, day: 1)))
             
             // 1. Insertar datos para 3 días distintos del mes
             // Día 1: 1000ml
             env.context.insert(WaterIntakeEntry(date: startOfMonth, amount: 1000))
             // Día 2: 2000ml
-            env.context.insert(WaterIntakeEntry(date: calendar.date(byAdding: .day, value: 1, to: startOfMonth)!, amount: 2000))
+            env.context.insert(WaterIntakeEntry(date: #require(calendar.date(byAdding: .day, value: 1, to: startOfMonth)), amount: 2000))
             // Día 3: 3000ml
-            env.context.insert(WaterIntakeEntry(date: calendar.date(byAdding: .day, value: 2, to: startOfMonth)!, amount: 3000))
+            env.context.insert(WaterIntakeEntry(date: #require(calendar.date(byAdding: .day, value: 2, to: startOfMonth)), amount: 3000))
             // El resto del mes no tiene datos (deberían ser ignorados en el promedio según la lógica actual)
             
             try env.context.save()
             
             // 2. Recuperar
             let entries = try env.context.fetch(FetchDescriptor<WaterIntakeEntry>())
-            let endOfMonth = calendar.date(byAdding: .day, value: 30, to: startOfMonth)!
+            #require(calendar.date(byAdding: .day, value: 30, to: startOfMonth))
             
             // 3. Analizar
             let monthSummaries = IntakeAnalytics.monthSummaries(

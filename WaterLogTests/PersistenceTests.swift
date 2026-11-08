@@ -50,7 +50,7 @@ struct PersistenceTests {
             components.day = 20
             components.hour = 15
             components.minute = 30
-            let midDayDate = calendar.date(from: components)!
+            let midDayDate = #require(calendar.date(from: components))
             
             let expectedDate = calendar.startOfDay(for: midDayDate)
             let goal = DailyGoal(date: midDayDate, amount: 2000)
@@ -100,13 +100,13 @@ struct PersistenceTests {
                 components.month = calendar.component(.month, from: targetDate)
                 components.day = calendar.component(.day, from: targetDate)
                 components.hour = 10
-                let differentTimeSameDay = calendar.date(from: components)!
+                let differentTimeSameDay = #require(calendar.date(from: components))
                 
                 let goal2 = DailyGoal(date: differentTimeSameDay, amount: 3000)
                 env.context.insert(goal2)
                 
                 // Intentar guardar el duplicado debe ser manejado por la restricción de unicidad
-                try env.context.save()
+                #expect(throws: some Error) { try env.context.save() }
                 
                 let descriptor = FetchDescriptor<DailyGoal>()
                 let goals = try env.context.fetch(descriptor)

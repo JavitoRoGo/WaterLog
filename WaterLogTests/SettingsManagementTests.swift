@@ -8,18 +8,17 @@ struct SettingsManagementTests {
     // MARK: - Test Environment
     
     /// Entorno controlado para aislar las pruebas de UserDefaults del usuario real.
-    final class SettingsTestEnvironment {
+    struct SettingsTestEnvironment {
         let testSuiteName = "com.WaterLog.Tests.UserDefaults"
         let userDefaults: UserDefaults
         
         init() {
             // Limpiar cualquier residuo previo de tests anteriores antes de empezar
             UserDefaults.standard.removePersistentDomain(forName: testSuiteName)
-            self.userDefaults = UserDefaults(suiteName: testSuiteName)!
+            self.userDefaults = #require(UserDefaults(suiteName: testSuiteName))
         }
         
-        /// Elimina el dominio persistente para asegurar limpieza total después de los tests.
-        func tearDown() {
+        deinit {
             userDefaults.removePersistentDomain(forName: testSuiteName)
         }
     }
@@ -33,7 +32,6 @@ struct SettingsManagementTests {
         @Test("Validar que el cambio de objetivo estándar se guarda y recupera correctamente")
         func testStandardGoalPersistence() throws {
             let env = SettingsTestEnvironment()
-            defer { env.tearDown() }
             
             let newGoal = 2500
             
@@ -48,7 +46,6 @@ struct SettingsManagementTests {
         @Test("Validar recuperación de valores por defecto cuando el UserDefaults está vacío")
         func testDefaultGoalFallback() throws {
             let env = SettingsTestEnvironment()
-            defer { env.tearDown() }
             
             // No escribimos nada en el suite
             let retrievedGoal = env.userDefaults.integer(forKey: WaterLogStore.keyForStandardGoalMilliliters)
@@ -68,7 +65,6 @@ struct SettingsManagementTests {
         @Test("Validar persistencia de los tres volúmenes predeterminados")
         func testQuickAddButtonsPersistence() throws {
             let env = SettingsTestEnvironment()
-            defer { env.tearDown() }
             
             let amounts = [300, 500, 750]
             let keys = ["buttonAmount1", "buttonAmount2", "buttonAmount3"]
@@ -95,7 +91,6 @@ struct SettingsManagementTests {
         @Test("Validar que se pueden guardar valores extremos (Edge Cases)")
         func testExtremeValues() throws {
             let env = SettingsTestEnvironment()
-            defer { env.tearDown() }
             
             // Un objetivo muy alto pero válido
             let largeGoal = 10_000
@@ -111,7 +106,6 @@ struct SettingsManagementTests {
         @Test("Validar integridad de tipos (evitar corrupción por tipos incorrectos)")
         func testTypeIntegrity() throws {
             let env = SettingsTestEnvironment()
-            defer { env.tearDown() }
             
             // Intentar guardar un String donde se espera un Int (simulando posible error de migración o corrupción)
             env.userDefaults.set("no_soy_un_int", forKey: WaterLogStore.keyForStandardGoalMilliliters)

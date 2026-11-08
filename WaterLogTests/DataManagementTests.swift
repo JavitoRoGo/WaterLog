@@ -9,7 +9,7 @@ struct DataManagementTests {
     // MARK: - Test Environment
     
     @MainActor
-    final class TestEnvironment {
+    struct TestEnvironment {
         let container: ModelContainer
         let context: ModelContext
         
@@ -119,16 +119,16 @@ struct DataManagementTests {
             
             // Usamos una fecha base fija para evitar problemas con la precisión de .now o cambios de día
             let components = DateComponents(year: 2024, month: 5, day: 10)
-            let baseDate = calendar.date(from: components)!
+            let baseDate = #require(calendar.date(from: components))
             
             // Escenario Temporal:
             // - Registros antiguos (Día -2, Día -1) -> DEBEN BORRARSE
             // - Registro actual coincidente con backup (Día 0) -> SE MANTIENE/REEMPLAZA (según lógica de inserción)
             // - Registro futuro (Día +1) -> DEBE QUEDAR INTACTO
             
-            let oldDate = calendar.date(byAdding: .day, value: -2, to: baseDate)! 
+            let oldDate = #require(calendar.date(byAdding: .day, value: -2, to: baseDate)) 
             let currentDay = baseDate
-            let futureDate = calendar.date(byAdding: .day, value: 1, to: baseDate)! 
+            let futureDate = #require(calendar.date(byAdding: .day, value: 1, to: baseDate)) 
             
             env.context.insert(WaterIntakeEntry(date: oldDate, amount: 100))
             env.context.insert(WaterIntakeEntry(date: currentDay, amount: 500))
@@ -167,7 +167,7 @@ struct DataManagementTests {
             let oldEntriesExist = finalEntries.contains { entry in
                 entry.amount == 100 && entry.date < currentDay
             }
-            #expect(!oldEntriesExist, "Los datos antiguos (antes del cutoff) deben ser borrados")
+            #expect(oldEntriesExist == false, "Los datos antiguos (antes del cutoff) deben ser borrados")
             
             // El registro del "Día +1" debe seguir existiendo intacto
             #expect(finalEntries.contains { $0.amount == 999 }, "Los datos futuros fuera del rango de corte deben mantenerse")
@@ -190,7 +190,7 @@ struct DataManagementTests {
         func testMalformedJSON() throws {
             let env = try TestEnvironment()
             let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("malformed.json")
-            let garbageData = "{\"invalid\": \"data\"}".data(using: .utf8)!
+            let garbageData = #require("{\"invalid\": \"data\"}".data(using: .utf8))
             try garbageData.write(to: tempURL)
             
             let helper = DTOHelper(entries: [], modelContext: env.context)
@@ -218,7 +218,7 @@ struct DataManagementTests {
                 "exportDate": "2024-01-01T12:00:00Z",
                 "lastEntryDate": "2024-01-01T10:00:00Z"
             }
-            """.data(using: .utf8)!
+            """.data(using: .utf8)
             try partialJSON.write(to: tempURL)
             
             let helper = DTOHelper(entries: [], modelContext: env.context)
