@@ -17,7 +17,7 @@ struct CurrentStreakCard: View {
 	var body: some View {
 		VStack(spacing: 20) {
 			Text(streakInfo.currentEvolution.emoji)
-				.font(.system(size: 60))
+				.font(.largeTitle)
 				.shadow(radius: 5)
 			
 			VStack(spacing: 4) {
@@ -33,7 +33,7 @@ struct CurrentStreakCard: View {
 				
 				// Texto de motivación opcional basado en la evolución
 				Text(streakInfo.currentEvolution.evolutionMotivation)
-					.font(.caption2.weight(.medium))
+					.font(.caption.weight(.medium))
 					.foregroundStyle(.secondary)
 					.textCase(.uppercase)
 			}
@@ -43,7 +43,7 @@ struct CurrentStreakCard: View {
 		.padding(.vertical, 30)
 		.background(
 			RoundedRectangle(cornerRadius: 24)
-				.fill(Color(uiColor: .secondarySystemBackground))
+				.fill(.secondary.opacity(0.2))
 		)
 	}
 }

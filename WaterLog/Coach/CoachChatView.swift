@@ -33,17 +33,13 @@ struct CoachChatView: View {
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .topBarLeading) {
-					Button() {
+					Button("Close", systemImage: "xmark") {
 						dismiss()
-					} label: {
-						Image(systemName: "xmark")
 					}
 				}
 				ToolbarItem(placement: .topBarTrailing) {
-					Button() {
+					Button("New Chat", systemImage: "square.and.pencil") {
 						coachService.newChat()
-					} label: {
-						Image(systemName: "square.and.pencil")
 					}
 					.disabled(coachService.chatSession.transcript.count <= 1 || coachService.isChatResponding)
 				}
@@ -73,7 +69,7 @@ struct CoachChatView: View {
 				TextField("Ask me about hydration...", text: $inputText, axis: .vertical)
 					.padding(.horizontal, 16)
 					.padding(.vertical, 10)
-					.background(Color(.systemGray6))
+					.background(.background)
 					.clipShape(RoundedRectangle(cornerRadius: 20))
 					.lineLimit(1...5)
 					.disabled(coachService.isChatResponding)
@@ -87,6 +83,7 @@ struct CoachChatView: View {
 					Image(systemName: "arrow.up.circle.fill")
 						.font(.system(size: 32))
 						.foregroundStyle(inputText.isEmpty || coachService.isChatResponding ? .gray : .blue)
+						.accessibilityLabel("Send message")
 				}
 				.disabled(inputText.isEmpty || coachService.isChatResponding)
 			}

@@ -25,11 +25,10 @@ struct StatCard: View {
             
             Text(value)
                 .font(.headline)
-                .fontWeight(.bold)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(Color(uiColor: .secondarySystemBackground))
-        .cornerRadius(16)
+		.background(.secondary.opacity(0.2))
+        .clipShape(.rect(cornerRadius: 16))
     }
 }

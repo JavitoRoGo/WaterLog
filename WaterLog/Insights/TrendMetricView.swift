@@ -14,7 +14,7 @@ struct TrendMetricView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(label)
-                .font(.caption2)
+                .font(.caption)
                 .foregroundStyle(.secondary)
             Text(value)
                 .font(.callout.bold())

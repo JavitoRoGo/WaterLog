@@ -62,7 +62,7 @@ struct Provider: TimelineProvider {
     // Helper para centralizar la obtención de datos necesarios del contenedor compartido
     private func fetchData() -> (entries: [WaterIntakeEntry], goals: [DailyGoal], defaultGoal: Int) {
         do {
-            let container = try WaterLogStore.makeModelContainer()
+            let container = WaterLogStore.makeModelContainer
             let context = ModelContext(container)
             
             // 1. Obtener Entradas
@@ -193,9 +193,9 @@ struct WaterLogWidgetEntryView: View {
 
 private struct WaterAmountButtons: View {
 	// Usamos UserDefaults con el App Group para leer los mismos valores que la App
-	@AppStorage("buttonAmount1", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount1: Int = 125
-	@AppStorage("buttonAmount2", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount2: Int = 250
-	@AppStorage("buttonAmount3", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)!) private var amount3: Int = 500
+	@AppStorage("buttonAmount1", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)) private var amount1: Int = 125
+	@AppStorage("buttonAmount2", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)) private var amount2: Int = 250
+	@AppStorage("buttonAmount3", store: UserDefaults(suiteName: WaterLogStore.appGroupIdentifier)) private var amount3: Int = 500
 
 	var body: some View {
 		VStack {

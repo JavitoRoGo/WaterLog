@@ -27,21 +27,6 @@ struct TodayView: View {
 			}
 		}
 		
-		@ViewBuilder
-		func makeView(title: LocalizedStringResource) -> some View {
-			switch self {
-			case .today: DailyIntakeEditorContent(
-				date: Date.now,
-				title: .localized(title),
-				emptyTitle: "No entries today",
-				emptyDescription: "Add some water to stay hydrated!"
-			)
-			case .historical: StatisticsView()
-			case .achievements: StreaksView()
-			case .insights: InsightsView()
-			case .settings: SettingsView()
-			}
-		}
 	}
 	
     @Environment(\.scenePhase) private var scenePhase
@@ -50,9 +35,9 @@ struct TodayView: View {
 
     var body: some View {
         NavigationStack {
-			tabToShow.makeView(title: title)
+			TabContentView(tab: tabToShow, title: title)
 			.toolbar {
-				ToolbarItem(placement: .navigationBarLeading) {
+				ToolbarItem(placement: .topBarLeading) {
 					Menu {
 						ForEach(TabToShow.allCases) { tab in
 							Button {
@@ -73,6 +58,31 @@ struct TodayView: View {
         .onChange(of: scenePhase) { _, newPhase in
             guard newPhase == .active else { return }
             refreshCurrentDate()
+        }
+    }
+
+    private struct TabContentView: View {
+        let tab: TabToShow
+        let title: LocalizedStringResource
+
+        var body: some View {
+            switch tab {
+            case .today:
+                DailyIntakeEditorContent(
+                    date: Date.now,
+                    title: .localized(title),
+                    emptyTitle: "No entries today",
+                    emptyDescription: "Add some water to stay hydrated!"
+                )
+            case .historical:
+                StatisticsView()
+            case .achievements:
+                StreaksView()
+            case .insights:
+                InsightsView()
+            case .settings:
+                SettingsView()
+            }
         }
     }
 

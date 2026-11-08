@@ -17,24 +17,24 @@ struct AchievementCard: View {
 			
 			VStack(spacing: 2) {
 				Text(achievement.type.displayName)
-					.font(.system(size: 14, weight: .bold))
+					.font(.headline)
 					.multilineTextAlignment(.center)
 					.lineLimit(2)
 				
 				Text(achievement.type.requirementDescription)
-					.font(.system(size: 10))
+					.font(.caption)
 					.foregroundStyle(.secondary)
 			}
 			
 			Text("x\(achievement.count)")
-				.fontWeight(.semibold)
+				.fontWeight(.bold)
 				.foregroundStyle(.blue)
 		}
 		.frame(maxWidth: .infinity)
 		.padding(.vertical, 16)
 		.background(
 			RoundedRectangle(cornerRadius: 16)
-				.fill(Color(uiColor: .tertiarySystemBackground))
+				.fill(.secondary.opacity(0.2))
 				.shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
 		)
 	}

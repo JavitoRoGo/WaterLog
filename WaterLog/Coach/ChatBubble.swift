@@ -20,7 +20,7 @@ struct ChatBubble: View {
 				.foregroundStyle(isUser ? .white : .primary)
 				.padding(.horizontal, 12)
 				.padding(.vertical, 8)
-				.background(isUser ? Color.blue : Color(.systemGray5))
+				.background(isUser ? Color.blue : Color.secondary.opacity(0.2))
 				.clipShape(.rect(cornerRadius: 16))
 				.frame(maxWidth: .infinity, alignment: isUser ? .trailing : .leading)
 			
@@ -40,7 +40,7 @@ struct ThinkingBubble: View {
 			.imageScale(.large)
 			.padding(.horizontal, 12)
 			.padding(.vertical, 8)
-			.background(Color(.systemGray5))
+			.background(Color.secondary)
 			.clipShape(.rect(cornerRadius: 16))
 			.frame(maxWidth: .infinity, alignment: .leading)
 	}

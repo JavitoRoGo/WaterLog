@@ -45,6 +45,7 @@ struct SettingsView: View {
     @State private var importError: String?
     @State private var showImportAlert = false
     @State private var showImportError = false
+    @State private var exportURL: URL?
     
     // Local state for Standard Goal editing
     @State private var editingStandardGoal: Double = 0
@@ -69,15 +70,15 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section("Quick Add Buttons") {
-                    amountRow(title: "Button 1", value: $row1Value, unit: $row1Unit, isDirty: $row1IsDirty, saveAction: { save(value: row1Value, unit: row1Unit, to: &amount1, rowIndex: 1) })
+                    AmountRow(title: "Button 1", value: $row1Value, unit: $row1Unit, isDirty: $row1IsDirty, saveAction: { save(value: row1Value, unit: row1Unit, to: &amount1, rowIndex: 1) })
                         .onChange(of: row1Value) { _, newValue in checkDirty(rowIndex: 1, value: newValue, unit: row1Unit) }
                         .onChange(of: row1Unit) { _, newValue in checkDirty(rowIndex: 1, value: row1Value, unit: newValue) }
 
-                    amountRow(title: "Button 2", value: $row2Value, unit: $row2Unit, isDirty: $row2IsDirty, saveAction: { save(value: row2Value, unit: row2Unit, to: &amount2, rowIndex: 2) })
+                    AmountRow(title: "Button 2", value: $row2Value, unit: $row2Unit, isDirty: $row2IsDirty, saveAction: { save(value: row2Value, unit: row2Unit, to: &amount2, rowIndex: 2) })
                         .onChange(of: row2Value) { _, newValue in checkDirty(rowIndex: 2, value: newValue, unit: row2Unit) }
                         .onChange(of: row2Unit) { _, newValue in checkDirty(rowIndex: 2, value: row2Value, unit: newValue) }
 
-                    amountRow(title: "Button 3", value: $row3Value, unit: $row3Unit, isDirty: $row3IsDirty, saveAction: { save(value: row3Value, unit: row3Unit, to: &amount3, rowIndex: 3) })
+                    AmountRow(title: "Button 3", value: $row3Value, unit: $row3Unit, isDirty: $row3IsDirty, saveAction: { save(value: row3Value, unit: row3Unit, to: &amount3, rowIndex: 3) })
                         .onChange(of: row3Value) { _, newValue in checkDirty(rowIndex: 3, value: newValue, unit: row3Unit) }
                         .onChange(of: row3Unit) { _, newValue in checkDirty(rowIndex: 3, value: row3Value, unit: newValue) }
                 }
@@ -119,7 +120,7 @@ struct SettingsView: View {
 				
 				Section("Data base") {
 					// Exportación mediante ShareLink (más versátil que fileExporter para JSONs pequeños)
-					if let exportURL = dtoHelper.generateExportURL() {
+					if let exportURL {
 						ShareLink(item: exportURL, preview: SharePreview("WaterLog Backup", image: Image(systemName: "doc.text"))) {
 							Label("Export data", systemImage: "square.and.arrow.up")
 						}
@@ -137,6 +138,7 @@ struct SettingsView: View {
             .onAppear {
                 setupRows()
                 setupGoal()
+                setupExportURL()
             }
             .fileImporter(
                 isPresented: $isImporting,
@@ -177,34 +179,49 @@ struct SettingsView: View {
 
     // MARK: - UI Helpers & Existing Logic
 
-    @ViewBuilder
-    private func amountRow(
-        title: LocalizedStringKey,
-        value: Binding<Double>,
-        unit: Binding<VolumeUnit>,
-        isDirty: Binding<Bool>,
-        saveAction: @escaping () -> Void
-    ) -> some View {
-        HStack {
-            Text(title)
-            TextField("Amount", value: value, format: .number.precision(.fractionLength(unit.wrappedValue.unit == .milliliters ? 0 : 2)))
-                .keyboardType(.decimalPad)
-                .multilineTextAlignment(.trailing)
-				.textFieldStyle(.roundedBorder)
-            
-            Picker("Volume unit", selection: unit) {
-                ForEach(VolumeUnit.allCases) { volumeUnit in
-                    Text(volumeUnit.rawValue).tag(volumeUnit)
-                }
-            }
-            .pickerStyle(.menu)
-            .labelsHidden()
+    private struct AmountRow: View {
+        let title: LocalizedStringKey
+        @Binding var value: Double
+        @Binding var unit: VolumeUnit
+        @Binding var isDirty: Bool
+        let saveAction: () -> Void
 
-            Button(action: saveAction) {
-                Text("Save").font(.caption2)
+        init(
+            title: LocalizedStringKey,
+            value: Binding<Double>,
+            unit: Binding<VolumeUnit>,
+            isDirty: Binding<Bool>,
+            saveAction: @escaping () -> Void
+        ) {
+            self.title = title
+            self._value = value
+            self._unit = unit
+            self._isDirty = isDirty
+            self.saveAction = saveAction
+        }
+
+        var body: some View {
+            HStack {
+                Text(title)
+                TextField("Amount", value: $value, format: .number.precision(.fractionLength($unit.wrappedValue.unit == .milliliters ? 0 : 2)))
+                    .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                    .textFieldStyle(.roundedBorder)
+
+                Picker("Volume unit", selection: $unit) {
+                    ForEach(VolumeUnit.allCases) { volumeUnit in
+                        Text(volumeUnit.rawValue).tag(volumeUnit)
+                    }
+                }
+                .pickerStyle(.menu)
+                .labelsHidden()
+
+                Button(action: saveAction) {
+                    Text("Save").font(.caption2)
+                }
+                .buttonStyle(.borderedProminent)
+				.disabled(!$isDirty.wrappedValue || $value.wrappedValue <= 0)
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(!isDirty.wrappedValue || value.wrappedValue <= 0)
         }
     }
 	
@@ -214,6 +231,10 @@ struct SettingsView: View {
 		let converted = measurement.converted(to: standardGoalUnit.unit)
 		editingStandardGoal = converted.value
 	}
+
+    private func setupExportURL() {
+        exportURL = dtoHelper.generateExportURL()
+    }
 
     private func setupRows() {
         initializeRow(amount: amount1, value: &row1Value, unit: &row1Unit, lastSaved: &row1LastSaved, isDirty: &row1IsDirty)

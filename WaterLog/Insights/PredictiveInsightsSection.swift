@@ -14,7 +14,7 @@ struct PredictiveInsightsSection: View {
                 Text("Predictive Insights")
                     .font(.headline)
                 Spacer()
-                predictionIcon
+                RiskPredictionIcon(riskLevel: result.riskLevel)
                     .font(.largeTitle)
             }
             
@@ -50,7 +50,7 @@ struct PredictiveInsightsSection: View {
 						Image(systemName: "chevron.down")
 							.foregroundStyle(.secondary)
 					}
-					.font(.caption2)
+					.font(.caption)
 				}
 			}
 			.foregroundStyle(.secondary)
@@ -62,9 +62,21 @@ struct PredictiveInsightsSection: View {
         )
     }
 
-    @ViewBuilder
-    private var predictionIcon: some View {
+    private var riskBackground: Color {
         switch result.riskLevel {
+		case .low: return Color.secondary.opacity(0.2)
+        case .medium: return Color.orange.opacity(0.1)
+        case .high: return Color.red.opacity(0.1)
+        }
+    }
+}
+
+private struct RiskPredictionIcon: View {
+    let riskLevel: RiskLevel
+
+    @ViewBuilder
+    var body: some View {
+        switch riskLevel {
         case .low:
             Image(systemName: "sparkles")
                 .foregroundStyle(.blue)
@@ -74,14 +86,6 @@ struct PredictiveInsightsSection: View {
         case .high:
             Image(systemName: "bolt.shield.fill")
                 .foregroundStyle(.red)
-        }
-    }
-
-    private var riskBackground: Color {
-        switch result.riskLevel {
-        case .low: return Color(uiColor: .secondarySystemBackground)
-        case .medium: return Color.orange.opacity(0.1)
-        case .high: return Color.red.opacity(0.1)
         }
     }
 }

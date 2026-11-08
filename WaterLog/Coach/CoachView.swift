@@ -41,7 +41,7 @@ struct CoachView: View {
 					.padding()
 				}
 				.toolbar {
-					ToolbarItem(placement: .navigationBarTrailing) {
+					ToolbarItem(placement: .topBarTrailing) {
 						Menu {
 							Picker("Period", selection: $analysisPeriod) {
 								ForEach(AnalysisPeriod.allCases) { period in

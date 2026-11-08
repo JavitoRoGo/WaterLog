@@ -17,15 +17,7 @@ struct AchievementsGrid: View {
 	var body: some View {
 		VStack {
 			if achievements.isEmpty {
-				VStack(spacing: 10) {
-					Image(systemName: "medal.fill")
-						.font(.largeTitle)
-						.foregroundStyle(.secondary)
-					Text("No achievements yet")
-						.font(.subheadline)
-						.foregroundStyle(.secondary)
-				}
-				.padding(.top, 40)
+				ContentUnavailableView("No achievements yet", systemImage: "medal.fill")
 			} else {
 				VStack(alignment: .leading) {
 					Text("Your Medals")

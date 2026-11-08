@@ -1,60 +1,6 @@
 import Foundation
 import WidgetKit
 
-enum IntakeConstants {
-    // Este valor se usará solo como respaldo extremo si no hay nada en AppStorage,
-    static let defaultGoalMilliliters = 2_000
-    static let appLocale = Locale.autoupdatingCurrent
-}
-
-enum StatisticsPeriod: CaseIterable, Identifiable {
-    case sevenDays
-	case oneMonth
-    case oneYear
-    case total
-
-    var id: Self { self }
-
-    var title: LocalizedStringResource {
-        switch self {
-        case .sevenDays:
-            "7 days"
-		case .oneMonth:
-			"1 month"
-        case .oneYear:
-            "1 year"
-        case .total:
-            "Total"
-        }
-    }
-}
-
-enum AnalysisPeriod: Int, CaseIterable, Identifiable {
-	case lastWeek = 7    // 7 días
-	case lastMonth = 30   // 30 días
-	case lastYear = 365    // 365 días
-	case allTime = 0    // Todo el histórico
-	
-	var id: Self { self }
-	
-	var periodLabel: LocalizedStringResource {
-		switch self {
-		case .lastWeek:
-			"Last 7 days"
-		case .lastMonth:
-			"Last 30 days"
-		case .lastYear:
-			"Last year"
-		case .allTime:
-			"All time"
-		}
-	}
-}
-
-enum RiskLevel: Codable {
-	case low, medium, high
-}
-
 enum IntakeAnalytics {
     static func progress(for totalMilliliters: Int, goal: Int) -> Double {
         guard goal > 0 else { return 0 }
@@ -130,8 +76,8 @@ enum IntakeAnalytics {
 
         return groupedByMonth.map { monthStart, days in
             let total = days.reduce(0) { $0 + $1.totalMilliliters }
-            let registeredDays = days.filter { $0.totalMilliliters > 0 }
-            let average = registeredDays.isEmpty ? 0 : Int((Double(total) / Double(registeredDays.count)).rounded())
+            let registeredDaysCount = days.count(where: { $0.totalMilliliters > 0 })
+            let average = registeredDaysCount == 0 ? 0 : Int((Double(total) / Double(registeredDaysCount)).rounded())
             return MonthIntakeSummary(monthStart: monthStart, totalMilliliters: total, averageDailyMilliliters: average)
         }
         .sorted { $0.monthStart < $1.monthStart }
@@ -154,8 +100,8 @@ enum IntakeAnalytics {
 
         return groupedByYear.map { yearStart, days in
             let total = days.reduce(0) { $0 + $1.totalMilliliters }
-            let registeredDays = days.filter { $0.totalMilliliters > 0 }
-            let average = registeredDays.isEmpty ? 0 : Int((Double(total) / Double(registeredDays.count)).rounded())
+            let registeredDaysCount = days.count(where: { $0.totalMilliliters > 0 })
+            let average = registeredDaysCount == 0 ? 0 : Int((Double(total) / Double(registeredDaysCount)).rounded())
             return YearIntakeSummary(yearStart: yearStart, totalMilliliters: total, averageDailyMilliliters: average)
         }
         .sorted { $0.yearStart < $1.yearStart }
@@ -190,12 +136,12 @@ enum IntakeAnalytics {
 		// Filtramos los últimos 7 días (incluyendo hoy)
 		let sevenDaysAgo = calendar.date(byAdding: .day, value: -6, to: now) ?? now
 		let last7Days = summaries.filter { $0.date >= sevenDaysAgo }
-		let avg7d = last7Days.isEmpty ? 0 : last7Days.reduce(0) { $0 + $1.totalMilliliters } / last7Days.count
+		let avg7d = last7Days.isEmpty ? 0.0 : Double(last7Days.reduce(0) { $0 + $1.totalMilliliters }) / Double(last7Days.count)
 		
 		// Filtramos los últimos 30 días (incluyendo hoy)
 		let thirtyDaysAgo = calendar.date(byAdding: .day, value: -29, to: now) ?? now
 		let last30Days = summaries.filter { $0.date >= thirtyDaysAgo }
-		let avg30d = last30Days.isEmpty ? 0 : last30Days.reduce(0) { $0 + $1.totalMilliliters } / last30Days.count
+		let avg30d = last30Days.isEmpty ? 0.0 : Double(last30Days.reduce(0) { $0 + $1.totalMilliliters }) / Double(last30Days.count)
 		
 		let isImproving = avg7d > avg30d
 		

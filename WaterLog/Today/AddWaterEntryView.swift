@@ -52,12 +52,14 @@ struct AddWaterEntryView: View {
 		}
 	}
 	@State private var quantitySource: QuantitySource = .presets
+	@State private var showErrorAlert = false
+	@State private var errorMessage: String = ""
 
     var body: some View {
         NavigationStack {
             Form {
                 Section("Date and hour") {
-                    DatePicker("Date selection", selection: $selectedDate, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
+                    DatePicker("Date selection", selection: $selectedDate, in: Date.distantPast...Date(), displayedComponents: [.date, .hourAndMinute])
                 }
 
 				Section("Quantity") {
@@ -106,6 +108,11 @@ struct AddWaterEntryView: View {
 					.disabled((quantitySource == .presets && selectedAmount == 0) || (quantitySource == .custom && customAmountText.isEmpty))
                 }
             }
+            .alert("Invalid amount", isPresented: $showErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(errorMessage)
+            }
         }
     }
 
@@ -121,7 +128,8 @@ struct AddWaterEntryView: View {
 		
         // Comprobación: El valor debe ser mayor que cero
         guard finalAmount > 0 else {
-            print("Error: Amount must be positive and greater than zero.")
+            errorMessage = "Amount must be positive and greater than zero."
+            showErrorAlert = true
             return
         }
 		

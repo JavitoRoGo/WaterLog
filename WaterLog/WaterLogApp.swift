@@ -8,12 +8,8 @@ struct WaterLogApp: App {
     init() {
         WaterLogStore.migrateLegacyStoreIfNeeded()
 
-        do {
-            modelContainer = try WaterLogStore.makeModelContainer()
-            print("SwiftData store: \(WaterLogStore.storeURL.absoluteString)")
-        } catch {
-            fatalError("No se pudo crear el contenedor SwiftData: \(error.localizedDescription)")
-        }
+		modelContainer = WaterLogStore.makeModelContainer
+		print("SwiftData store: \(WaterLogStore.storeURL.absoluteString)")
     }
 
     var body: some Scene {

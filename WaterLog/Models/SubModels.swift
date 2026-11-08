@@ -38,8 +38,8 @@ struct YearIntakeSummary: Identifiable, Hashable {
 struct TrendResult {
 	let isImproving: Bool
 	let message: LocalizedStringResource
-	let shortTermAverage: Int // 7d
-	let longTermAverage: Int  // 30d
+	let shortTermAverage: Double // 7d
+	let longTermAverage: Double  // 30d
 }
 
 struct StatisticsChartData {

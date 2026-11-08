@@ -21,8 +21,8 @@ struct PatternsSection: View {
 				Divider().padding(.leading, 36)
 				PatternRow(label: "Momentum", value: coachingContext.patterns.isImproving ? "Improving" : "Declining", icon: "arrow.up.forward.circle")
 			}
-			.background(Color(uiColor: .secondarySystemBackground))
-			.cornerRadius(16)
+			.background(.secondary.opacity(0.2))
+			.clipShape(.rect(cornerRadius: 16))
 		}
 	}
 }

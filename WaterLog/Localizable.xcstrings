@@ -1067,6 +1067,9 @@
         }
       }
     },
+    "Close" : {
+
+    },
     "CoachAI" : {
       "shouldTranslate" : false
     },
@@ -1552,6 +1555,9 @@
         }
       }
     },
+    "Edit Goal" : {
+
+    },
     "Enable Apple Intelligence in System Settings." : {
       "localizations" : {
         "es" : {
@@ -1928,6 +1934,9 @@
         }
       }
     },
+    "Invalid amount" : {
+
+    },
     "It's hard to start, but every drop counts! 💧" : {
       "localizations" : {
         "es" : {
@@ -2245,6 +2254,9 @@
           }
         }
       }
+    },
+    "New Chat" : {
+
     },
     "New entry" : {
       "localizations" : {
@@ -2640,6 +2652,9 @@
           }
         }
       }
+    },
+    "Send message" : {
+
     },
     "Settings" : {
       "localizations" : {

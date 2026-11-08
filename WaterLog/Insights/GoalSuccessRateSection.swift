@@ -23,7 +23,7 @@ struct GoalSuccessRateSection: View {
                 // Porcentaje principal y mensaje
                 HStack(alignment: .bottom) {
                     Text("\(result.rate.formatted(.percent.precision(.fractionLength(0))))")
-                        .font(.system(size: 34, weight: .bold, design: .rounded))
+                        .font(.title3)
                     
                     Text(result.message)
                         .font(.caption)
@@ -78,7 +78,7 @@ struct GoalSuccessRateSection: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color(uiColor: .secondarySystemBackground))
+                .fill(.secondary.opacity(0.2))
         )
     }
 }

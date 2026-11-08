@@ -11,6 +11,7 @@ enum WaterLogStore {
     private static let schema = Schema([WaterIntakeEntry.self, DailyGoal.self])
     private static let legacyStoreURL = URL.applicationSupportDirectory.appending(path: storeFileName)
 
+    // Store URL computed after storeFileName/schema are initialized
     static var storeURL: URL {
         if let sharedContainerURL = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: appGroupIdentifier
@@ -21,9 +22,16 @@ enum WaterLogStore {
         return legacyStoreURL
     }
 
-    static func makeModelContainer() throws -> ModelContainer {
+    // Shared model container created once and reused (initialized on first access)
+    // Note: storeURL must be initialized before this is first accessed.
+    private static let sharedModelContainer: ModelContainer = {
         let configuration = ModelConfiguration(schema: schema, url: storeURL)
-        return try ModelContainer(for: schema, configurations: [configuration])
+        return try! ModelContainer(for: schema, configurations: [configuration])
+    }()
+
+    // Public accessor for the shared model container (used by App and Widget)
+    static var makeModelContainer: ModelContainer {
+        sharedModelContainer
     }
 
     static func migrateLegacyStoreIfNeeded() {
@@ -60,13 +68,11 @@ enum WaterLogStore {
         }
     }
 	
-	@MainActor
-	static func addEntry(amount: Int, date: Date = .now) throws {
-		let configuration = ModelConfiguration(schema: schema, url: storeURL)
-		let modelContainer = try ModelContainer(for: schema, configurations: [configuration])
-		let modelContext = ModelContext(modelContainer)
-		let entry = WaterIntakeEntry(date: date, amount: amount)
-		modelContext.insert(entry)
-		try modelContext.save()
-	}
+@MainActor
+static func addEntry(amount: Int, date: Date = .now) {
+    let modelContext = ModelContext(sharedModelContainer)
+    let entry = WaterIntakeEntry(date: date, amount: amount)
+    modelContext.insert(entry)
+    try? modelContext.save()
+}
 }

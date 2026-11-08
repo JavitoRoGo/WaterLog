@@ -51,7 +51,7 @@ struct WeeklyEvolutionSection: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color(uiColor: .secondarySystemBackground))
+                .fill(.secondary.opacity(0.2))
         )
     }
 }

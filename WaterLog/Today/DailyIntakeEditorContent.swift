@@ -69,10 +69,8 @@ struct DailyIntakeEditorContent: View {
         .toolbar {
 			ToolbarItem(placement: .primaryAction) {
                 HStack(spacing: 16) {
-                    Button {
+                    Button("Edit Goal", systemImage: "dot.scope") {
                         showingEditGoalSheet = true
-                    } label: {
-                        Image(systemName: "dot.scope")
                     }
 
                     Button("Add", systemImage: "plus") {
