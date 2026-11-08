@@ -81,7 +81,7 @@ struct DTOHelper {
 
 			// 2. Identificamos los registros existentes que debemos eliminar (los anteriores a la fecha del backup)
 			// Nota: Usamos entries (que son las actuales en memoria/contexto) para el filtrado.
-			for entry in entries where entry.date < cutoffDate {
+			for entry in entries where entry.date <= cutoffDate {
 				modelContext.delete(entry)
 			}
 			

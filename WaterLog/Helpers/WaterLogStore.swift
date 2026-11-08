@@ -70,6 +70,7 @@ enum WaterLogStore {
 	
 @MainActor
 static func addEntry(amount: Int, date: Date = .now) {
+    // Reuses the shared ModelContainer (created once, see sharedModelContainer above)
     let modelContext = ModelContext(sharedModelContainer)
     let entry = WaterIntakeEntry(date: date, amount: amount)
     modelContext.insert(entry)

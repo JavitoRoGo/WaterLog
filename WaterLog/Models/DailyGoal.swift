@@ -3,7 +3,7 @@ import SwiftData
 
 @Model
 final class DailyGoal {
-	@Attribute(.unique) var date: Date // We will ensure this is always startOfDay
+	var date: Date // We will ensure this is always startOfDay
 	var amount: Int
 	
 	init(date: Date, amount: Int) {
